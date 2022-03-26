@@ -2,6 +2,10 @@ import 'package:simple_framework/entity/entity.dart';
 
 typedef RepositorySubscription<T> = void Function(T);
 
+/// After I make my own testWidget, testBloc, testScreen methods:
+/// Make a method here called "setMock" or something like that which sets the repository to be
+/// mocked instead. This would be called automatically at the start of test methods.
+
 class Repository {
   Repository._();
 
