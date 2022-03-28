@@ -1,4 +1,4 @@
-import 'package:simple_framework/entity/entity.dart';
+import 'package:simple_framework/simple_framework.dart';
 
 typedef RepositorySubscription<T> = void Function(T);
 
