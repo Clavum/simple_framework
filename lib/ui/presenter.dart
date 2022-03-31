@@ -11,7 +11,7 @@ abstract class Presenter<B extends Bloc, E extends Entity, S extends Screen>
   @nonVirtual
   _PresenterState<B, E, S> createState() => _PresenterState<B, E, S>();
 
-  Stream<E> getEntityStream(B bloc);
+  //Stream<E> getEntityStream(B bloc);
 
   S buildScreen(BuildContext context, B bloc, E entity);
 
@@ -44,7 +44,7 @@ class _PresenterState<B extends Bloc, E extends Entity, S extends Screen>
     _bloc = context.bloc<B>();
     _subscribe();
     SchedulerBinding.instance!.addPostFrameCallback(
-          (_) => widget.sendEntityRequest(_bloc),
+          (_) => _bloc.sendEntity(),
     );
   }
 
@@ -60,10 +60,11 @@ class _PresenterState<B extends Bloc, E extends Entity, S extends Screen>
   }
 
   void _subscribe() {
-    widget.getEntityStream(_bloc).listen(
-      (viewModel) {
-        widget.onEntityUpdate(context, _bloc, viewModel);
-        _child = widget.buildScreen(context, _bloc, viewModel);
+    _bloc.entityPipe.receive.listen(
+      (entity) {
+        entity as E;
+        widget.onEntityUpdate(context, _bloc, entity);
+        _child = widget.buildScreen(context, _bloc, entity);
         setState(() {});
       },
       onError: (error, stackTrace) {

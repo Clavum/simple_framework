@@ -1,6 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:simple_framework/simple_framework.dart';
-
-typedef RepositorySubscription<T> = void Function(T);
 
 /// After I make my own testWidget, testBloc, testScreen methods:
 /// Make a method here called "setMock" or something like that which sets the repository to be
@@ -11,21 +10,38 @@ class Repository {
 
   static final Repository _repository = Repository._();
 
-  List<Entity> entities = [];
+  final List<Entity> _entities = [];
+
+  final Map<Type, Pipe> _entityPipeMap = {};
 
   factory Repository() {
     return _repository;
   }
 
   E get<E extends Entity>(E entity) {
-    return entities.firstWhere((entity) => entity.runtimeType == E, orElse: () {
-      entities.add(entity);
+    return _entities.firstWhere((entity) => entity.runtimeType == E, orElse: () {
+      _entities.add(entity);
       return entity;
     }) as E;
   }
 
-  void set<E extends Entity>(E entity) {
-    entities.retainWhere((element) => element.runtimeType != E);
-    entities.add(entity);
+  E set<E extends Entity>(E entity) {
+    _entities.retainWhere((element) => element.runtimeType != E);
+    _entities.add(entity);
+    return entity;
+  }
+
+  void setEntityPipe<E extends Entity>(Pipe entityPipe) {
+    _entityPipeMap[E] = entityPipe;
+  }
+
+  void sendEntity<E extends Entity>(E entity) {
+    if (_entityPipeMap[E] != null) {
+      _entityPipeMap[E]!.send(entity);
+    } else {
+      if (kDebugMode) {
+        print('');
+      }
+    }
   }
 }

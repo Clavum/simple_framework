@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:simple_framework/simple_framework.dart';
 
 @immutable
 class Entity extends Equatable {
@@ -16,6 +17,10 @@ class Entity extends Equatable {
 
   Entity merge({List<EntityFailure>? errors}) {
     return Entity(errors: errors ?? this.errors);
+  }
+
+  void send() {
+    Repository().sendEntity(this);
   }
 
   @override

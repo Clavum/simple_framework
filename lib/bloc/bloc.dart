@@ -5,23 +5,19 @@ abstract class Bloc<E extends Entity> {
 
   final E defaultEntity;
 
-  late Repository _repository;
+  E get entity => Repository().get(defaultEntity);
 
-  Bloc({required this.defaultEntity, Repository? repository}) {
-    _repository = repository ?? Repository();
+  Bloc(this.defaultEntity) {
+    Repository().setEntityPipe<E>(entityPipe);
   }
 
+  /// Used by the Presenter's initial entity request. This needs to be here because the default
+  /// entity is needed.
   void sendEntity() {
-    entityPipe.send(_repository.get(defaultEntity));
+    entityPipe.send(Repository().get(defaultEntity));
   }
 
   void dispose() {
     entityPipe.dispose();
-  }
-
-  void action(dynamic Function(E) action) async {
-    var entity = _repository.get(defaultEntity);
-    await action(entity);
-    sendEntity();
   }
 }
