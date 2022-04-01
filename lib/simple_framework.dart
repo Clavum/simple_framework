@@ -7,11 +7,9 @@ export 'package:simple_framework/bloc/use_case.dart';
 export 'package:simple_framework/core/locator.dart';
 export 'package:simple_framework/core/repository.dart';
 export 'package:simple_framework/entity/entity.dart';
-export 'package:simple_framework/ui/presenter.dart';
 export 'package:simple_framework/ui/screen.dart';
 
 export 'bloc/bloc.dart';
 export 'bloc/bloc_provider.dart';
 export 'entity/entity.dart';
-export 'ui/presenter.dart';
 export 'ui/screen.dart';
