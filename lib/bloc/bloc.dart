@@ -11,12 +11,6 @@ abstract class Bloc<E extends Entity> {
     Repository().setEntityPipe<E>(entityPipe);
   }
 
-  /// Used by the Presenter's initial entity request. This needs to be here because the default
-  /// entity is needed.
-  void sendEntity() {
-    entityPipe.send(Repository().get(defaultEntity));
-  }
-
   void dispose() {
     entityPipe.dispose();
   }

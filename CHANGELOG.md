@@ -9,4 +9,6 @@ Wanted to simplify having to get entity every method, and send it to the Screen.
 a method provided from the bloc that gives entity then sends when done. But then moved to getter and
 send method for Entity.
 
-TODO: Remove presenter and widget. Screen should just build for every Entity.
+Removed Presenter and moved it's functionality to the Screen. When the Screen is first built it
+builds with the defaultEntity of the Bloc. It listens to the entityPipe and simply builds the screen
+again with that Entity.
