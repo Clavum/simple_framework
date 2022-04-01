@@ -35,12 +35,12 @@ class Repository {
     _entityPipeMap[E] = entityPipe;
   }
 
-  void sendEntity<E extends Entity>(E entity) {
-    if (_entityPipeMap[E] != null) {
-      _entityPipeMap[E]!.send(entity);
+  void sendEntity(entity) {
+    if (_entityPipeMap.containsKey(entity.runtimeType)) {
+      _entityPipeMap[entity.runtimeType]!.send(entity);
     } else {
       if (kDebugMode) {
-        print('');
+        print('There is no Entity pipe defined for the Type: ${entity.runtimeType}');
       }
     }
   }
