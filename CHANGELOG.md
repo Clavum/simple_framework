@@ -12,3 +12,6 @@ send method for Entity.
 Removed Presenter and moved it's functionality to the Screen. When the Screen is first built it
 builds with the defaultEntity of the Bloc. It listens to the entityPipe and simply builds the screen
 again with that Entity.
+
+Since the Bloc is the only thing that uses a Pipe, I got rid of pipes.dart and simply made the bloc
+use a stream.

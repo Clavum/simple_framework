@@ -21,7 +21,7 @@ class _ScreenState<B extends Bloc, E extends Entity>
   void initState() {
     super.initState();
     _bloc = context.bloc<B>();
-    _bloc.entityPipe.receive.listen((entity) {
+    _bloc.entityStream.stream.listen((entity) {
       _entity = entity as E;
       setState(() {});
     });

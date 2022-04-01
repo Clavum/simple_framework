@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:simple_framework/simple_framework.dart';
 
@@ -12,7 +14,7 @@ class Repository {
 
   final List<Entity> _entities = [];
 
-  final Map<Type, Pipe> _entityPipeMap = {};
+  final Map<Type, StreamController> _entityStreamMap = {};
 
   factory Repository() {
     return _repository;
@@ -31,16 +33,16 @@ class Repository {
     return entity;
   }
 
-  void setEntityPipe<E extends Entity>(Pipe entityPipe) {
-    _entityPipeMap[E] = entityPipe;
+  void setEntityStream<E extends Entity>(StreamController entityStream) {
+    _entityStreamMap[E] = entityStream;
   }
 
   void sendEntity(entity) {
-    if (_entityPipeMap.containsKey(entity.runtimeType)) {
-      _entityPipeMap[entity.runtimeType]!.send(entity);
+    if (_entityStreamMap.containsKey(entity.runtimeType)) {
+      _entityStreamMap[entity.runtimeType]!.add(entity);
     } else {
       if (kDebugMode) {
-        print('There is no Entity pipe defined for the Type: ${entity.runtimeType}');
+        print('There is no Entity stream defined for the Type: ${entity.runtimeType}');
       }
     }
   }
