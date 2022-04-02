@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 abstract class Screen<B extends Bloc, E extends Entity> extends StatefulWidget {
-  const Screen({Key? key}) : super(key: key);
+  final B _bloc;
 
-  Widget buildScreen(BuildContext context, B bloc, E entity);
+  const Screen(this._bloc, {Key? key}) : super(key: key);
+
+  Widget build(BuildContext context, B bloc, E entity);
 
   @override
   @nonVirtual
@@ -14,22 +16,25 @@ abstract class Screen<B extends Bloc, E extends Entity> extends StatefulWidget {
 
 class _ScreenState<B extends Bloc, E extends Entity>
     extends State<Screen<B, E>> {
-  late B _bloc;
   late E _entity;
 
   @override
   void initState() {
     super.initState();
-    _bloc = context.bloc<B>();
-    _bloc.entityStream.stream.listen((entity) {
+    widget._bloc.entityStream.stream.listen((entity) {
       _entity = entity as E;
       setState(() {});
     });
-    _entity = _bloc.entity as E;
+    _entity = widget._bloc.entity as E;
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.buildScreen(context, _bloc, _entity);
+    return widget.build(context, widget._bloc, _entity);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

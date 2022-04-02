@@ -34,7 +34,9 @@ class Repository {
   }
 
   void setEntityStream<E extends Entity>(StreamController entityStream) {
-    _entityStreamMap[E] = entityStream;
+    if (!_entityStreamMap.containsKey(E)) {
+      _entityStreamMap[E] = entityStream;
+    }
   }
 
   void sendEntity(entity) {

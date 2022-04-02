@@ -15,3 +15,6 @@ again with that Entity.
 
 Since the Bloc is the only thing that uses a Pipe, I got rid of pipes.dart and simply made the bloc
 use a stream.
+
+Because a Bloc is only associated with one Screen, I removed the BlocProvider, and now a Screen
+creates it's own Bloc that only exists if it does.
