@@ -1,7 +1,7 @@
 name: simple_framework
 description: Simple version of clean framework
 version: 0.0.1
-homepage:
+publish_to: none
 
 environment:
   sdk: ">=2.16.0 <3.0.0"
