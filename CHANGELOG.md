@@ -20,3 +20,10 @@ Because a Bloc is only associated with one Screen, I removed the BlocProvider, a
 creates it's own Bloc that only exists if it does.
 
 Created the entity generator, which creates a while Entity file from a small class.
+
+I realize that having to have a 1:1 relationship between an Entity and Screen won't work out in the
+long run. For example, each Screen of an accounts feature should not have to store the account
+information. To fix this, I made it so that the Bloc no longer handles streams, and instead they
+are handled by the repository. The Repository holds a stream for each Entity type, so that multiple
+Screens can subscribe for that Entity when it is sent. The Accounts entity can be shared and used
+by multiple Screens. I still need to figure out a way to build a Screen using more than one Entity.

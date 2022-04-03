@@ -21,7 +21,7 @@ class _ScreenState<B extends Bloc, E extends Entity>
   @override
   void initState() {
     super.initState();
-    widget._bloc.entityStream.stream.listen((entity) {
+    Repository().streamOf<E>().listen((entity) {
       _entity = entity as E;
       setState(() {});
     });
