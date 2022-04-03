@@ -18,3 +18,5 @@ use a stream.
 
 Because a Bloc is only associated with one Screen, I removed the BlocProvider, and now a Screen
 creates it's own Bloc that only exists if it does.
+
+Created the entity generator, which creates a while Entity file from a small class.
