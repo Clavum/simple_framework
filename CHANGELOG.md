@@ -27,3 +27,13 @@ information. To fix this, I made it so that the Bloc no longer handles streams, 
 are handled by the repository. The Repository holds a stream for each Entity type, so that multiple
 Screens can subscribe for that Entity when it is sent. The Accounts entity can be shared and used
 by multiple Screens. I still need to figure out a way to build a Screen using more than one Entity.
+
+I made it so the entity send() method automatically updates the repo too.
+
+TODO:
+Need a way to build screen off of multiple entities. In a bloc method, you can set the Screen's
+parameters based on fetched entities, but what if the fetched entities update?
+Quick way of having build context in bloc?
+Test out navigation and shared navigator.
+Entity generator for parameters without defaults, and tests!
+Are there some framework parameters I should make private?

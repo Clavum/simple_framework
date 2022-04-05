@@ -14,7 +14,7 @@ class Repository {
 
   final List<Entity> _entities = [];
 
-  final Map<Type, StreamController> streams = {};
+  final Map<Type, StreamController> _streams = {};
 
   factory Repository() {
     return _repository;
@@ -34,8 +34,10 @@ class Repository {
   }
 
   void sendEntity(entity) {
-    if (streams.containsKey(entity.runtimeType)) {
-      streams[entity.runtimeType]!.add(entity);
+    _entities.retainWhere((element) => element.runtimeType != entity.runtimeType);
+    _entities.add(entity);
+    if (_streams.containsKey(entity.runtimeType)) {
+      _streams[entity.runtimeType]!.add(entity);
     } else {
       if (kDebugMode) {
         print('There is no Screen subscribed to receive ${entity.runtimeType}');
@@ -44,6 +46,6 @@ class Repository {
   }
 
   Stream streamOf<E extends Entity>() {
-    return (streams[E] = streams.putIfAbsent(E, () => StreamController<E>.broadcast())).stream;
+    return (_streams[E] = _streams.putIfAbsent(E, () => StreamController<E>.broadcast())).stream;
   }
 }
