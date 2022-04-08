@@ -30,10 +30,28 @@ by multiple Screens. I still need to figure out a way to build a Screen using mo
 
 I made it so the entity send() method automatically updates the repo too.
 
+I've been trying to figure out a way to allow a Screen to use more than one Entity. I was trying to
+figure out a way to automatically be able to create a single entity that depends on other entities,
+but that wasn't going to work. I then looked into doing it manually, by subscribing to entity
+updates with streamOf when the bloc is built and then using that Entity's info to update some fields
+in the Screen's actual Entity. But then it hit me; I can simply make an Entity that has Entities as
+parameters, then set those parameters in the stream listener:
+Repository().streamOf<OtherEntity>().listen((otherEntity) {
+  entity.merge(otherEntity: otherEntity).send(); // Updates screen's actual entity
+});
+
 TODO:
 Need a way to build screen off of multiple entities. In a bloc method, you can set the Screen's
 parameters based on fetched entities, but what if the fetched entities update?
 Quick way of having build context in bloc?
 Test out navigation and shared navigator.
-Entity generator for parameters without defaults, and tests!
 Are there some framework parameters I should make private?
+
+TODO for entity generator:
+I'm not sure I like it :(
+I think the best way forward is some tool external to the IDE which generates code.
+How will performance work when we have 100+ generate annotations across the app?
+How to do parameters without defaults?
+Need to do tests!
+With current way with field variables, "view model" methods won't work.
+Custom classes always show up as dynamic :(

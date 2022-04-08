@@ -21,6 +21,7 @@ class _ScreenState<B extends Bloc, E extends Entity>
   @override
   void initState() {
     super.initState();
+    widget._bloc.onCreate();
     Repository().streamOf<E>().listen((entity) {
       _entity = entity as E;
       setState(() {});
@@ -36,5 +37,6 @@ class _ScreenState<B extends Bloc, E extends Entity>
   @override
   void dispose() {
     super.dispose();
+    widget._bloc.dispose();
   }
 }

@@ -6,4 +6,8 @@ abstract class Bloc<E extends Entity> {
   E get entity => Repository().get(defaultEntity);
 
   Bloc(this.defaultEntity);
+
+  void onCreate() {}
+
+  void dispose() {}
 }
