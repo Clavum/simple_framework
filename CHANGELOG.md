@@ -35,17 +35,20 @@ figure out a way to automatically be able to create a single entity that depends
 but that wasn't going to work. I then looked into doing it manually, by subscribing to entity
 updates with streamOf when the bloc is built and then using that Entity's info to update some fields
 in the Screen's actual Entity. But then it hit me; I can simply make an Entity that has Entities as
-parameters, then set those parameters in the stream listener:
-Repository().streamOf<OtherEntity>().listen((otherEntity) {
-  entity.merge(otherEntity: otherEntity).send(); // Updates screen's actual entity
-});
+parameters, then set those parameters in the stream listener. I make this done mostly automatically
+in a new bloc method called synchronizeWithRepo, which should be called onCreate:
+@override
+void onCreate() {
+  synchronizeWithRepo(OtherEntity(), (OtherEntity otherEntity) {
+    return entity.merge(otherEntity: otherEntity);
+  });
+}
 
 TODO:
-Need a way to build screen off of multiple entities. In a bloc method, you can set the Screen's
-parameters based on fetched entities, but what if the fetched entities update?
 Quick way of having build context in bloc?
 Test out navigation and shared navigator.
 Are there some framework parameters I should make private?
+Tests!
 
 TODO for entity generator:
 I'm not sure I like it :(
