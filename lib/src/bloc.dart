@@ -6,7 +6,7 @@ import 'package:simple_framework/simple_framework.dart';
 abstract class Bloc<E extends Entity> {
   final E defaultEntity;
 
-  List<StreamSubscription<void>> entitySubscriptions = [];
+  final List<StreamSubscription<void>> _entitySubscriptions = [];
 
   Bloc(this.defaultEntity);
 
@@ -14,7 +14,7 @@ abstract class Bloc<E extends Entity> {
 
   void synchronizeWithRepo<T extends Entity>(T initialEntity, Entity Function(T) entityCreator) {
     Repository().set(entityCreator(Repository().get(initialEntity)));
-    entitySubscriptions.add(
+    _entitySubscriptions.add(
       Repository().streamOf<T>().listen((balanceEntity) {
         entityCreator(Repository().get(balanceEntity)).send();
       }),
@@ -25,7 +25,7 @@ abstract class Bloc<E extends Entity> {
 
   @mustCallSuper
   void dispose() {
-    for (var subscription in entitySubscriptions) {
+    for (var subscription in _entitySubscriptions) {
       subscription.cancel();
     }
   }

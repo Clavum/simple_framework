@@ -19,9 +19,7 @@ class Entity extends Equatable {
     return Entity(errors: errors ?? this.errors);
   }
 
-  void send() {
-    Repository().sendEntity(this);
-  }
+  void send() => Repository().sendEntity(this);
 
   @override
   List<Object?> get props => [errors];

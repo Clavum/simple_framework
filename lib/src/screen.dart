@@ -14,8 +14,7 @@ abstract class Screen<B extends Bloc, E extends Entity> extends StatefulWidget {
   _ScreenState<B, E> createState() => _ScreenState<B, E>();
 }
 
-class _ScreenState<B extends Bloc, E extends Entity>
-    extends State<Screen<B, E>> {
+class _ScreenState<B extends Bloc, E extends Entity> extends State<Screen<B, E>> {
   late E _entity;
 
   @override

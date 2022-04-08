@@ -49,6 +49,7 @@ Quick way of having build context in bloc?
 Test out navigation and shared navigator.
 Are there some framework parameters I should make private?
 Tests!
+What do I want to do with errors in the Entity?
 
 TODO for entity generator:
 I'm not sure I like it :(
