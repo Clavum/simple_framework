@@ -44,12 +44,19 @@ void onCreate() {
   });
 }
 
+I added the ClassProvider, which isn't a Provider (as in state management), but is simply a
+singleton which makes mocking a class easy. Instead of having to pass in mock instances into any
+class, you can instead use the ClassProvider, along with a factory constructor, to automatically
+mock a class from tests. I will do this for the Repository so that you can use Repository() in any
+file and it will be mocked without having to worry about passing a MockRepository.
+
 TODO:
 Quick way of having build context in bloc?
-Test out navigation and shared navigator.
 Are there some framework parameters I should make private?
 Tests!
 What do I want to do with errors in the Entity?
+Don't like how in Screen when you're trying to type an action, entity and defaultEntity show up.
+What can I do for screens that don't need an Entity?
 
 TODO for entity generator:
 I'm not sure I like it :(
@@ -59,3 +66,4 @@ How to do parameters without defaults?
 Need to do tests!
 With current way with field variables, "view model" methods won't work.
 Custom classes always show up as dynamic :(
+MAYBE JUST: Make annotation with parameters for fields
