@@ -1,14 +1,14 @@
 import 'dart:io';
 
-class ClassProvider {
-  ClassProvider._();
+class MockClassProvider {
+  MockClassProvider._();
 
-  static final ClassProvider _classProvider = ClassProvider._();
+  static final MockClassProvider _mockClassProvider = MockClassProvider._();
 
-  final List<dynamic> _classes = [];
+  final List<Object> _classes = [];
 
-  factory ClassProvider() {
-    return _classProvider;
+  factory MockClassProvider() {
+    return _mockClassProvider;
   }
 
   E get<E extends Object, M extends Object>(

@@ -44,11 +44,15 @@ void onCreate() {
   });
 }
 
-I added the ClassProvider, which isn't a Provider (as in state management), but is simply a
+I added the MockClassProvider, which isn't a Provider (as in state management), but is simply a
 singleton which makes mocking a class easy. Instead of having to pass in mock instances into any
 class, you can instead use the ClassProvider, along with a factory constructor, to automatically
 mock a class from tests. I will do this for the Repository so that you can use Repository() in any
 file and it will be mocked without having to worry about passing a MockRepository.
+
+I started making custom "test()" and "group" methods for making the framework tests simpler. I'm
+starting off with a test which makes testing synchronizeWithRepo easy, but that is only the start.
+I will make test groups which easily handle setting up and disposing things I need.
 
 TODO:
 Quick way of having build context in bloc?
@@ -67,3 +71,6 @@ Need to do tests!
 With current way with field variables, "view model" methods won't work.
 Custom classes always show up as dynamic :(
 MAYBE JUST: Make annotation with parameters for fields
+If I can make a nice entity generator, can I add a compare() method which takes two of the same
+entities and outputs the differences in the fields? This would be nice for tests when it's not
+obvious what the differences are.
