@@ -61,6 +61,7 @@ Tests!
 What do I want to do with errors in the Entity?
 Don't like how in Screen when you're trying to type an action, entity and defaultEntity show up.
 What can I do for screens that don't need an Entity?
+Consider using Hive instead of Repository? https://github.com/hivedb/hive
 
 TODO for entity generator:
 I'm not sure I like it :(

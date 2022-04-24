@@ -1,39 +1,72 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+A simple code organization and state management framework inspired by the
+[Clean Framework](https://pub.dev/packages/clean_framework/versions/0.4.2).
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+## Components
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+There are just three components in the Simple Framework:
+ - Entities (models which contain the app state, and are stored in the Repository for global use)
+ - Screens (widgets that display information based on an Entity)
+ - Blocs (classes which have methods triggered by the Screen and update the Entities as needed)
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Entity
 
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+Entities are immutable classes which hold state data. To update just one field, you must use the
+merge method to get a new instance.
 
 ```dart
-const like = 'sample';
+class ExampleEntity extends Entity {
+  final String example;
+
+  const ExampleEntity({
+    List<EntityFailure> errors = const [],
+    this.example = 'default value',
+  }) : super(errors: errors);
+
+  @override
+  List<Object> get props => [errors, example];
+
+  @override
+  ExampleEntity merge({errors, String? example}) {
+    return ExampleEntity(
+      errors: errors ?? this.errors,
+      example: example ?? this.example,
+    );
+  }
+}
 ```
 
-## Additional information
+## Screen
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+Each Screen has it's own Bloc, and defines which Entity it builds from. If that Entity is ever
+updated in the Repository, the build method will be called.
+
+```dart
+class ExampleScreen extends Screen<ExampleBloc, ExampleEntity> {
+  ExampleScreen() : super(ExampleBloc());
+
+  @override
+  Widget build(context, bloc, entity) {
+    // Build something here using the fields in the "entity"
+    // Call bloc methods when user interacts with components
+    return Container();
+  }
+}
+```
+
+## Bloc
+
+A Bloc is a simple class which updates Entities in the Repository as the Screen is interacted with,
+thus rebuilding the Screen with the new Entity.
+
+```dart
+class ExampleBloc extends Bloc<ExampleEntity> {
+  ExampleBloc() : super(const ExampleEntity());
+
+  void onTapExample() {
+    entity.merge(example: 'new value').send();
+  }
+}
+```
+
+See the `example` folder for an example of using the Simple Framework to make the classic Counter
+app.
