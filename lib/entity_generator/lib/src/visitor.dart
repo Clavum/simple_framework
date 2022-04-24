@@ -9,7 +9,7 @@ class Visitor extends SimpleElementVisitor<void> {
   @override
   void visitConstructorElement(ConstructorElement element) {
     final elementReturnType = element.type.returnType.toString();
-    if (elementReturnType.endsWith("Source")) {
+    if (elementReturnType.endsWith('Source')) {
       className = elementReturnType.replaceFirst('*', '').replaceFirst('Source', '');
     } else {
       throw Exception('A class annotated with @generateEntity should end in `Source`');
