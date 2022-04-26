@@ -22,7 +22,7 @@ void testSynchronizeWithRepo<E extends Entity, O extends Entity>(
 @isTestGroup
 @visibleForTesting
 void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B) body) {
-  group('$B tests', () {
+  group('$B test group', () {
     B bloc = blocCreator();
 
     setUp(() {

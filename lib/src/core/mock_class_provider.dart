@@ -12,8 +12,7 @@ import 'dart:io';
 ///   factory ExampleClass({bool allowMock = true}) {
 ///     return MockClassProvider().get(
 ///       real: ExampleClass._(),
-///       mock: MockExampleClass(),
-///       allowMock: allowMock,
+///       mock: allowMock ? MockExampleClass() : ExampleClass._(),
 ///     );
 ///   }
 /// }
@@ -38,11 +37,10 @@ class MockClassProvider {
     return _mockClassProvider;
   }
 
-  E get<E extends Object, M extends Object>(
-      {required E real, required M mock, bool allowMock = true}) {
+  E get<E extends Object, M extends Object>({required E real, required M mock}) {
     return _classes.firstWhere((object) => object.runtimeType == E || object.runtimeType == M,
         orElse: () {
-      if (Platform.environment.containsKey('FLUTTER_TEST') && allowMock) {
+      if (Platform.environment.containsKey('FLUTTER_TEST')) {
         _classes.add(mock);
         return mock;
       } else {

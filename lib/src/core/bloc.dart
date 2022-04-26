@@ -42,7 +42,7 @@ abstract class Bloc<E extends Entity> {
   /// well.
   ///
   /// This method MUST be called in the onCreate method of a Bloc. When its associated Screen is
-  /// first built, this method will be called *before* the Screen is built so that the Screen only
+  /// first built, the combiner will be called *before* the Screen is built so that the Screen only
   /// ever displays up-to-date data.
   void synchronizeWithRepo<T extends Entity>(T initialEntity, Entity Function(T) entityCombiner) {
     _entityCombiners[T] = entityCombiner;
@@ -58,8 +58,10 @@ abstract class Bloc<E extends Entity> {
   void onCreate() {}
 
   /// Optional method to override, to trigger events when the Screen (and Bloc) are disposed.
-  @mustCallSuper
-  void dispose() {
+  void dispose() {}
+
+  /// Called at the same time the Bloc is disposed, to prevent stream subscription leaks.
+  void clearSubscriptions() {
     for (var subscription in _entitySubscriptions) {
       subscription.cancel();
     }

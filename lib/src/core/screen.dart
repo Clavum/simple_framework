@@ -36,6 +36,7 @@ class _ScreenState<B extends Bloc, E extends Entity> extends State<Screen<B, E>>
   @override
   void dispose() {
     super.dispose();
+    widget._bloc.clearSubscriptions();
     widget._bloc.dispose();
   }
 }

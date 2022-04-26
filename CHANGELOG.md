@@ -63,9 +63,7 @@ Don't like how in Screen when you're trying to type an action, entity and defaul
 What can I do for screens that don't need an Entity?
 Consider using Hive instead of Repository? https://github.com/hivedb/hive
 Need to fix the potential for stack overflow when two entities are synchronized with each other.
-Remove mustCallSuper from Bloc by making a 'disposeListeners' method, so that dispose can be empty.
 I think I need a method to clear the MockClassProvider
-MockClassProvider factories should just do 'allowMock ?? mock : real' instead of passing allowMock
 
 TODO for entity generator:
 I'm not sure I like it :(
