@@ -19,13 +19,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CounterScreen extends Screen<CounterBloc, CounterEntity> {
+class CounterScreen extends Screen<CounterBloc> {
   final String title;
 
   CounterScreen({required this.title}) : super(CounterBloc());
 
   @override
-  Widget build(context, bloc, entity) {
+  Widget build(context, bloc, ref) {
+    CounterEntity counterEntity = ref.getEntity(const CounterEntity());
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -38,7 +40,7 @@ class CounterScreen extends Screen<CounterBloc, CounterEntity> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '${entity.counter}', // Display the "counter" field of the CounterEntity
+              '${counterEntity.counter}', // Display the "counter" field of the CounterEntity
               style: Theme.of(context).textTheme.headline4,
             ),
           ],

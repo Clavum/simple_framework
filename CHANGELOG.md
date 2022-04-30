@@ -54,6 +54,15 @@ I started making custom "test()" and "group" methods for making the framework te
 starting off with a test which makes testing synchronizeWithRepo easy, but that is only the start.
 I will make test groups which easily handle setting up and disposing things I need.
 
+Instead of Repository Synchronization, I provide an EntityRef to the Screen which can be called to
+get an Entity and listen to it. Now Screens can very easily be based on multiple Entities. Bye bye
+repo synchronization, you were great while you lasted. (This update was inspired by RiverPod)
+@override
+  Widget build(context, bloc, ref) {
+    // The build method will be updated when ExampleEntity is sent, which causes this method to be
+    // called again, so the exampleEntity variable is updated.
+    var exampleEntity = ref.getEntity(ExampleEntity());
+
 TODO:
 Quick way of having build context in bloc?
 Are there some framework parameters I should make private?
@@ -64,6 +73,7 @@ What can I do for screens that don't need an Entity?
 Consider using Hive instead of Repository? https://github.com/hivedb/hive
 Need to fix the potential for stack overflow when two entities are synchronized with each other.
 I think I need a method to clear the MockClassProvider
+Use Freezed for Entity generation?
 
 TODO for entity generator:
 I'm not sure I like it :(

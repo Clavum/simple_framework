@@ -41,13 +41,17 @@ Each Screen has it's own Bloc, and defines which Entity it builds from. If that 
 updated in the Repository, the build method will be called.
 
 ```dart
-class ExampleScreen extends Screen<ExampleBloc, ExampleEntity> {
+class ExampleScreen extends Screen<ExampleBloc> {
   ExampleScreen() : super(ExampleBloc());
 
   @override
-  Widget build(context, bloc, entity) {
-    // Build something here using the fields in the "entity"
-    // Call bloc methods when user interacts with components
+  Widget build(context, bloc, ref) {
+    // Get an entity using "ref". If that Entity is updated, the Screen will rebuild and this line
+    // will be called again with the latest data.
+    ExampleEntity exampleEntity = ref.getEntity(ExampleEntity());
+
+    // Build something here using exampleEntity's data.
+    // Call bloc methods when user interacts with components.
     return Container();
   }
 }
@@ -63,6 +67,7 @@ class ExampleBloc extends Bloc<ExampleEntity> {
   ExampleBloc() : super(const ExampleEntity());
 
   void onTapExample() {
+    // Using the send() method on an Entity will update Screens that use it.
     entity.merge(example: 'new value').send();
   }
 }
