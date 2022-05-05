@@ -12,75 +12,99 @@ class EntityGenerator extends GeneratorForAnnotation<EntityAnnotation> {
     element.visitChildren(visitor);
     final buffer = StringBuffer();
 
-    if (visitor.fields.isEmpty) {
-      throw Exception('A class annotated with @generateEntity should have at least one field');
-    }
+    buffer.writeln('// ignore_for_file: prefer_const_constructors_in_immutables');
+    buffer.writeln();
 
-    buffer.writeln('class ${visitor.className} extends Entity {');
+    buffer.writeln('''
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed an instance of your Entity using the private constructor, i.e. `Entity._()`. This constructor is only meant to be used by the Entity generator and you are not supposed to use it.');
 
-    generateFields(visitor, buffer);
+    ''');
+
+    buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
+    generateMixin(visitor, buffer);
     buffer.writeln();
 
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
+    buffer.writeln('/// @nodoc');
+    buffer.writeln('class _${visitor.className} extends Entity implements ${visitor.className} {');
     generateConstructor(visitor, buffer);
     buffer.writeln();
 
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
+    generateOverrideParameters(visitor, buffer);
+    buffer.writeln();
+
+    buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
+    buffer.writeln('@override');
     generateProps(visitor, buffer);
     buffer.writeln();
 
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
-    generateMerge(visitor, buffer);
+    buffer.writeln('@override');
+    generateMergeBody(visitor, buffer);
+    generateMergeReturn(visitor, buffer);
+    buffer.writeln('}');
 
     buffer.writeln('}');
 
     return buffer.toString();
   }
 
-  void generateFields(Visitor visitor, StringBuffer buffer) {
-    for (EntityFieldElement field in visitor.fields) {
-      buffer.writeln('final ${field.type} ${field.name};');
+  void generateMixin(Visitor visitor, StringBuffer buffer) {
+    buffer.writeln('/// @nodoc');
+    buffer.writeln('mixin _\$${visitor.className} {');
+    for (var parameter in visitor.parameters) {
+      buffer.writeln(
+          '${parameter.type} get ${parameter.name} => throw _privateConstructorUsedError;');
+      buffer.writeln();
     }
+
+    generateMergeBody(visitor, buffer);
+    buffer.writeln('throw _privateConstructorUsedError;');
+    buffer.writeln('}');
+    buffer.writeln('}');
   }
 
   void generateConstructor(Visitor visitor, StringBuffer buffer) {
-    buffer.writeln('${visitor.className}({');
-    buffer.writeln('List<EntityFailure> errors = const [],');
-    for (EntityFieldElement field in visitor.fields) {
-      buffer.writeln('${field.type}? ${field.name},');
+    buffer.writeln('_${visitor.className}({');
+    for (var parameter in visitor.parameters) {
+      buffer.writeln('this.${parameter.name} = ${parameter.defaultValue},');
     }
+    buffer.writeln('});');
+  }
 
-    buffer.writeln('})  : ');
-    for (EntityFieldElement field in visitor.fields) {
-      buffer.write('${field.name} = ${field.name} ?? ');
-      buffer.write('${visitor.className}Source().${field.name},\n');
+  void generateOverrideParameters(Visitor visitor, StringBuffer buffer) {
+    for (var parameter in visitor.parameters) {
+      buffer.writeln('@override');
+      buffer.writeln('final ${parameter.type} ${parameter.name};');
     }
-    buffer.writeln('super(errors: errors);');
   }
 
   void generateProps(Visitor visitor, StringBuffer buffer) {
     buffer.writeln('@override');
     buffer.writeln('List<Object> get props => [');
     buffer.writeln('errors,');
-    for (EntityFieldElement field in visitor.fields) {
-      buffer.writeln('${field.name},');
+    for (var parameter in visitor.parameters) {
+      buffer.writeln('${parameter.name},');
     }
     buffer.writeln('];');
   }
 
-  void generateMerge(Visitor visitor, StringBuffer buffer) {
-    buffer.writeln('@override');
-    buffer.writeln('${visitor.className} merge({');
+  void generateMergeBody(Visitor visitor, StringBuffer buffer) {
+    buffer.writeln('_${visitor.className} merge({');
     buffer.writeln('List<EntityFailure>? errors,');
-    for (EntityFieldElement field in visitor.fields) {
-      buffer.writeln('${field.type}? ${field.name},');
+    for (var parameter in visitor.parameters) {
+      buffer.writeln('${parameter.type}? ${parameter.name},');
     }
     buffer.writeln('}) {');
-    buffer.writeln('return ${visitor.className}(');
-    for (EntityFieldElement field in visitor.fields) {
-      buffer.writeln('${field.name}: ${field.name} ?? this.${field.name},');
+  }
+
+  void generateMergeReturn(Visitor visitor, StringBuffer buffer) {
+    buffer.writeln('return _${visitor.className}(');
+    for (var parameter in visitor.parameters) {
+      buffer.writeln('${parameter.name}: ${parameter.name} ?? this.${parameter.name},');
     }
     buffer.writeln(');');
-    buffer.writeln('}');
   }
 }

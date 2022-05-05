@@ -63,6 +63,8 @@ repo synchronization, you were great while you lasted. (This update was inspired
     // called again, so the exampleEntity variable is updated.
     var exampleEntity = ref.getEntity(ExampleEntity());
 
+I updated my entity generator to be much better, with syntax inspired by Freezed.
+
 TODO:
 Quick way of having build context in bloc?
 Are there some framework parameters I should make private?
