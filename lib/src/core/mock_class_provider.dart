@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 /// Used to create 'Mock Factories' which provide real class instances while running the app but
 /// mocked instances while running tests. Example:
 ///
@@ -37,16 +39,34 @@ class MockClassProvider {
     return _mockClassProvider;
   }
 
-  E get<E extends Object, M extends Object>({required E real, required M mock}) {
-    return _classes.firstWhere((object) => object.runtimeType == E || object.runtimeType == M,
-        orElse: () {
-      if (Platform.environment.containsKey('FLUTTER_TEST')) {
-        _classes.add(mock);
-        return mock;
-      } else {
-        _classes.add(real);
-        return real;
-      }
-    }) as E;
+  E get<E extends Object, M extends Object>({
+    required E real,
+    required M mock,
+    bool allowMock = true,
+  }) {
+    return _classes.firstWhere(
+          (object) => object.runtimeType == E || object.runtimeType == M,
+      orElse: () {
+        if (Platform.environment.containsKey('FLUTTER_TEST') && allowMock) {
+          _classes.add(mock);
+          return mock;
+        } else {
+          _classes.add(real);
+          return real;
+        }
+      },
+    ) as E;
+  }
+
+  @visibleForTesting
+  void clearClasses() {
+    _classes.clear();
+  }
+
+  @visibleForTesting
+  void setClass(Object object) {
+    _classes
+        .retainWhere((element) => element.runtimeType != object.runtimeType);
+    _classes.add(object);
   }
 }
