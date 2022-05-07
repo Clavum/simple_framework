@@ -74,6 +74,8 @@ field in the Entity being updated, even it doesn't use it.
 Secondly, this is more architecturally sound because the Screens only deal with ViewModels, which
 make it clear that it is a purely immutable model (no merge method available!).
 
+I added a generator for ViewModels.
+
 TODO:
 Tests!
 What do I want to do with errors in the Entity?
@@ -83,3 +85,5 @@ Consider using Hive instead of Repository? What makes it more performant than a 
 Entity generator - verify syntax
 Need to remove Entity type argument from Bloc. It isn't associated with a single Entity anymore.
 Need to update README with latest updates, like ViewModel/Builder, after I settle on something.
+Really need to refactor generators to be better. View model and Entity generators share a lot of
+code.

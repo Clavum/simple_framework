@@ -3,12 +3,14 @@ targets:
     builders:
       entity_generator:
         enabled: true
+        generate_for:
+          - "**/**entity.dart"
 
 builders:
   generators:
     target: ":generators"
-    import: "package:entity_generator/src/builder.dart"
-    builder_factories: ["generateEntityBuilder"]
+    import: "package:generators/src/builder.dart"
+    builder_factories: ["generateEntityBuilder", "generateViewModelBuilder"]
     build_extensions: { ".dart": [".g.dart"] }
     auto_apply: dependents
     build_to: cache

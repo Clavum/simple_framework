@@ -1,5 +1,5 @@
-name: entity_generator
-description: Generate an Entity
+name: generators
+description: Generates models for the framework
 version: 1.0.0
 publish_to: none
 environment:

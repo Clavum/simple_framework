@@ -13,4 +13,4 @@ export 'package:simple_framework/src/core/view_model_builder.dart';
 export 'package:simple_framework/src/test_helpers/bloc_test_helpers.dart';
 export 'package:simple_framework/src/test_helpers/general_helpers.dart';
 
-export 'package:entity_generator/entity_generator.dart';
+export 'package:generators/generators.dart';

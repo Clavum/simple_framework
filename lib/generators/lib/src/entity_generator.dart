@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:entity_generator/src/annotation.dart';
-import 'package:entity_generator/src/visitor.dart';
+import 'package:generators/src/annotation.dart';
+import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
 class EntityGenerator extends GeneratorForAnnotation<EntityAnnotation> {

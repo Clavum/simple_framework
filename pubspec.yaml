@@ -12,8 +12,8 @@ dependencies:
   source_gen: ^1.2.1
   build: ^2.2.1
   mocktail: ^0.3.0
-  entity_generator:
-    path: lib/entity_generator/
+  generators:
+    path: lib/generators/
 
   flutter:
     sdk: flutter

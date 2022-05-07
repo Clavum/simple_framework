@@ -1,3 +1,3 @@
-library entity_generator;
+library generators;
 
 export 'src/annotation.dart';
