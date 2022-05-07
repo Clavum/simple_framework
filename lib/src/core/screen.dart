@@ -4,64 +4,75 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_framework/simple_framework.dart';
 
-abstract class Screen<B extends Bloc> extends StatefulWidget {
+abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidget {
   final B _bloc;
 
-  const Screen(this._bloc, {Key? key}) : super(key: key);
+  final ViewModelBuilder<V> _builder;
 
-  Widget build(BuildContext context, B bloc, EntityRef ref);
+  const Screen(this._bloc, this._builder, {Key? key}) : super(key: key);
+
+  Widget build(BuildContext context, B bloc, V viewModel);
 
   @override
   @nonVirtual
-  _ScreenState<B> createState() => _ScreenState<B>();
+  _ScreenState<B, V> createState() => _ScreenState<B, V>();
 }
 
-class _ScreenState<B extends Bloc> extends State<Screen<B>> {
-  late EntityRef ref;
+class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, V>> {
+  late EntityRef _ref;
+  late V _viewModel;
+
+  V? _previousViewModel;
+
+  final Map<Type, StreamSubscription<void>> _streams = {};
 
   @override
   void initState() {
     super.initState();
     widget._bloc.onCreate();
-    ref = EntityRef(() {
-      if (mounted) setState(() {});
+    _ref = EntityRef(<E extends Entity>() {
+      _streams[E] ??= Repository().streamOf<E>().listen((entity) {
+        var nextViewModel = widget._builder.build(_ref);
+        if (nextViewModel != _previousViewModel) {
+          setState(() {
+            _previousViewModel = _viewModel;
+            _viewModel = nextViewModel;
+          });
+        }
+      });
     });
+    _viewModel = widget._builder.build(_ref);
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.build(context, widget._bloc, ref);
+    return widget.build(context, widget._bloc, _viewModel);
   }
 
   @override
   void dispose() {
     super.dispose();
     widget._bloc.dispose();
-    ref.close();
+    for (var key in _streams.keys) {
+      _streams[key]!.cancel();
+    }
+    _ref.close();
   }
 }
 
-/// This class is initialized by the ScreenState to allow it to be provided a state callback to
-/// update the Screen. This EntityRef will be provided to the Screen's build method so that an
-/// Entity can be obtained and the Screen will update if that Entity is sent through the repo.
 class EntityRef {
-  VoidCallback? stateCallback;
+  void Function<E extends Entity>()? streamCallback;
 
-  final Map<Type, StreamSubscription<void>> _streams = {};
-
-  EntityRef(this.stateCallback);
+  EntityRef(this.streamCallback);
 
   E getEntity<E extends Entity>(E entity) {
-    _streams[E] ??= Repository().streamOf<E>().listen((entity) {
-      stateCallback?.call();
-    });
+    if (streamCallback != null) {
+      streamCallback!<E>();
+    }
     return Repository().get<E>(entity);
   }
 
   void close() {
-    for (var key in _streams.keys) {
-      _streams[key]!.cancel();
-    }
-    stateCallback = null;
+    streamCallback = null;
   }
 }

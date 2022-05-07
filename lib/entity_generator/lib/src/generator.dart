@@ -45,6 +45,10 @@ final _privateConstructorUsedError = UnsupportedError(
     generateMergeBody(visitor, buffer);
     generateMergeReturn(visitor, buffer);
     buffer.writeln('}');
+    buffer.writeln();
+
+    buffer.writeln('@override');
+    buffer.writeln('Type get runtimeType => ${visitor.className};');
 
     buffer.writeln('}');
 

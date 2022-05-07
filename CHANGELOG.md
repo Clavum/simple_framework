@@ -65,27 +65,21 @@ repo synchronization, you were great while you lasted. (This update was inspired
 
 I updated my entity generator to be much better, with syntax inspired by Freezed.
 
+I've changed the Screen so that instead of directly being given ref, it expects you to provide a
+ViewModelBuilder. This builder is provided the ref which it can use to grab the Entities it wants
+and create a ViewModel, which is then provided to the Screen.
+This is better than what I had for a couple reasons. Firstly, it is able to prevent the Screen build
+method being called if the ViewModel isn't any different. Before, the screen would rebuild for ANY
+field in the Entity being updated, even it doesn't use it.
+Secondly, this is more architecturally sound because the Screens only deal with ViewModels, which
+make it clear that it is a purely immutable model (no merge method available!).
+
 TODO:
-Quick way of having build context in bloc?
-Are there some framework parameters I should make private?
 Tests!
 What do I want to do with errors in the Entity?
 Don't like how in Screen when you're trying to type an action, entity and defaultEntity show up.
 What can I do for screens that don't need an Entity?
-Consider using Hive instead of Repository? https://github.com/hivedb/hive
-Need to fix the potential for stack overflow when two entities are synchronized with each other.
-I think I need a method to clear the MockClassProvider
-Use Freezed for Entity generation?
-
-TODO for entity generator:
-I'm not sure I like it :(
-I think the best way forward is some tool external to the IDE which generates code.
-How will performance work when we have 100+ generate annotations across the app?
-How to do parameters without defaults?
-Need to do tests!
-With current way with field variables, "view model" methods won't work.
-Custom classes always show up as dynamic :(
-MAYBE JUST: Make annotation with parameters for fields
-If I can make a nice entity generator, can I add a compare() method which takes two of the same
-entities and outputs the differences in the fields? This would be nice for tests when it's not
-obvious what the differences are.
+Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive
+Entity generator - verify syntax
+Need to remove Entity type argument from Bloc. It isn't associated with a single Entity anymore.
+Need to update README with latest updates, like ViewModel/Builder, after I settle on something.

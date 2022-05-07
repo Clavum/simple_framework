@@ -19,15 +19,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CounterScreen extends Screen<CounterBloc> {
+class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
   final String title;
 
-  CounterScreen({required this.title}) : super(CounterBloc());
+  CounterScreen({required this.title}) : super(CounterBloc(), CounterBuilder());
 
   @override
-  Widget build(context, bloc, ref) {
-    CounterEntity counterEntity = ref.getEntity(const CounterEntity());
-
+  Widget build(context, bloc, viewModel) {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -40,7 +38,7 @@ class CounterScreen extends Screen<CounterBloc> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '${counterEntity.counter}', // Display the "counter" field of the CounterEntity
+              viewModel.counter, // Display the "counter" field of the CounterViewModel
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
@@ -61,8 +59,8 @@ class CounterBloc extends Bloc<CounterEntity> {
   void incrementCounter() {
     // "entity" - fetch the current CounterEntity in the Repository
     // ".merge" - Entities are immutable, so use merge to update it
-    // "counter: entity.counter + 1" - Increase the counter by one more than what it currently is
-    // ".send()" - Send the new Entity to the Screen (also updates Repository)
+    // "counter: entity.counter + 1" - Increment the counter
+    // ".send()" - Send the new Entity to the Screen (also updates the Repository)
     entity.merge(counter: entity.counter + 1).send();
   }
 }
@@ -83,6 +81,36 @@ class CounterEntity extends Entity {
     return CounterEntity(
       errors: errors ?? this.errors,
       counter: counter ?? this.counter,
+    );
+  }
+}
+
+class CounterViewModel extends ViewModel {
+  final String counter;
+
+  CounterViewModel({
+    required this.counter,
+  });
+
+  @override
+  List<Object?> get props => [
+    counter,
+  ];
+}
+
+class CounterBuilder extends ViewModelBuilder<CounterViewModel> {
+  @override
+  CounterViewModel build(ref) {
+    // First, use ref to get the Entity/Entities needed to build the Screen.
+    var counterEntity = ref.getEntity(const CounterEntity());
+
+    // Now, the builder is "subscriber" to CounterEntity updates, and this build method will be
+    // called on every update. However, the build method of the Screen which uses this builder will
+    // only update if the ViewModel is new, sparing resources if a field is updated in the Entity
+    // that is used for a different Screen.
+
+    return CounterViewModel(
+      counter: '${counterEntity.counter}',
     );
   }
 }
