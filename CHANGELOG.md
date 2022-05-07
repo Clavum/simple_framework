@@ -76,6 +76,10 @@ make it clear that it is a purely immutable model (no merge method available!).
 
 I added a generator for ViewModels.
 
+I made it so that Blocs no longer require an Entity type parameter, because now there isn't a
+strict relationship between a Screen and an Entity. I added global Entity getters to the Entity
+generator, so now a Bloc can quickly get any Entity without excess syntax.
+
 TODO:
 Tests!
 What do I want to do with errors in the Entity?
@@ -87,3 +91,4 @@ Need to remove Entity type argument from Bloc. It isn't associated with a single
 Need to update README with latest updates, like ViewModel/Builder, after I settle on something.
 Really need to refactor generators to be better. View model and Entity generators share a lot of
 code.
+Add an "EmptyBuilder" class or something for Screens to use if they use a Bloc, but not a ViewModel.

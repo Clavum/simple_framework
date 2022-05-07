@@ -8,12 +8,15 @@ import 'package:collection/collection.dart';
 
 class Visitor extends GeneralizingElementVisitor<void> {
   late String className;
+  late String camelCaseClassName;
 
   final List<Parameter> parameters = [];
 
   @override
   void visitConstructorElement(ConstructorElement element) {
     className = element.type.returnType.toString();
+    String firstLetter = className.substring(0, 1);
+    camelCaseClassName = '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
 
     /// Must be called so that visitParameterElement is called.
     visitExecutableElement(element);

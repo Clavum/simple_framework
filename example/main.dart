@@ -53,15 +53,15 @@ class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
   }
 }
 
-class CounterBloc extends Bloc<CounterEntity> {
-  CounterBloc() : super(const CounterEntity());
+class CounterBloc extends Bloc {
+  CounterEntity get counterEntity => Repository().get(const CounterEntity());
 
   void incrementCounter() {
-    // "entity" - fetch the current CounterEntity in the Repository
+    // "counterEntity" - fetch the current CounterEntity in the Repository
     // ".merge" - Entities are immutable, so use merge to update it
-    // "counter: entity.counter + 1" - Increment the counter
+    // "counter: counterEntity.counter + 1" - Increment the counter
     // ".send()" - Send the new Entity to the Screen (also updates the Repository)
-    entity.merge(counter: entity.counter + 1).send();
+    counterEntity.merge(counter: counterEntity.counter + 1).send();
   }
 }
 
@@ -94,8 +94,8 @@ class CounterViewModel extends ViewModel {
 
   @override
   List<Object?> get props => [
-    counter,
-  ];
+        counter,
+      ];
 }
 
 class CounterBuilder extends ViewModelBuilder<CounterViewModel> {
@@ -104,7 +104,7 @@ class CounterBuilder extends ViewModelBuilder<CounterViewModel> {
     // First, use ref to get the Entity/Entities needed to build the Screen.
     var counterEntity = ref.getEntity(const CounterEntity());
 
-    // Now, the builder is "subscriber" to CounterEntity updates, and this build method will be
+    // Now, the builder is "subscribed" to CounterEntity updates, and this build method will be
     // called on every update. However, the build method of the Screen which uses this builder will
     // only update if the ViewModel is new, sparing resources if a field is updated in the Entity
     // that is used for a different Screen.
