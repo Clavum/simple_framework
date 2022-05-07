@@ -2,7 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 @immutable
-abstract class ViewModel extends Equatable {
+class ViewModel extends Equatable {
   @override
   bool? get stringify => true;
+
+  @override
+  List<Object?> get props => [];
 }
