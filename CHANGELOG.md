@@ -80,15 +80,18 @@ I made it so that Blocs no longer require an Entity type parameter, because now 
 strict relationship between a Screen and an Entity. I added global Entity getters to the Entity
 generator, so now a Bloc can quickly get any Entity without excess syntax.
 
+Added a StatelessScreen for times when you need a Bloc, but not a View Model.
+
 TODO:
 Tests!
 What do I want to do with errors in the Entity?
 Don't like how in Screen when you're trying to type an action, entity and defaultEntity show up.
 What can I do for screens that don't need an Entity?
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive
-Entity generator - verify syntax
+Entity generator - verify syntax - fix no parameters failing
 Need to remove Entity type argument from Bloc. It isn't associated with a single Entity anymore.
 Need to update README with latest updates, like ViewModel/Builder, after I settle on something.
 Really need to refactor generators to be better. View model and Entity generators share a lot of
 code.
 Add an "EmptyBuilder" class or something for Screens to use if they use a Bloc, but not a ViewModel.
+^ I think the best thing to do is make a StatelessScreen class
