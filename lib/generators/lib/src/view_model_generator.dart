@@ -61,7 +61,7 @@ final _privateConstructorUsedError = UnsupportedError(
   void generateConstructor(Visitor visitor, StringBuffer buffer) {
     buffer.writeln('_${visitor.className}({');
     for (var parameter in visitor.parameters) {
-      buffer.writeln('this.${parameter.name} = ${parameter.defaultValue},');
+      buffer.writeln('required this.${parameter.name},');
     }
     buffer.writeln('});');
   }

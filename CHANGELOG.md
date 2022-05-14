@@ -93,5 +93,3 @@ Need to remove Entity type argument from Bloc. It isn't associated with a single
 Need to update README with latest updates, like ViewModel/Builder, after I settle on something.
 Really need to refactor generators to be better. View model and Entity generators share a lot of
 code.
-Add an "EmptyBuilder" class or something for Screens to use if they use a Bloc, but not a ViewModel.
-^ I think the best thing to do is make a StatelessScreen class
