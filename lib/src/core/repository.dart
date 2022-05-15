@@ -53,6 +53,21 @@ class Repository {
     }
   }
 
+  /// Whether the [Repository] contains the Entity of the specified type.
+  bool containsEntity<E extends Entity>() {
+    for (var entity in _entities) {
+      if (entity.runtimeType == E) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /// Removes the Entity of the specified type from the [Repository], if it exists.
+  void removeEntity<E extends Entity>() {
+    _entities.removeWhere((element) => element.runtimeType == E);
+  }
+
   /// Is generally meant to be used by the framework only but is also available for you to use in
   /// rare circumstances.
   Stream streamOf<E extends Entity>() {

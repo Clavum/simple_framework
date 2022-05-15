@@ -82,6 +82,10 @@ generator, so now a Bloc can quickly get any Entity without excess syntax.
 
 Added a StatelessScreen for times when you need a Bloc, but not a View Model.
 
+Added EntityScope. Any amount of EntityScopes can be set up in a Screen. They are used to call a
+method to load an Entity's data, refresh the Screen after a delay, or to clear an Entity when the
+Screen is navigated away from.
+
 TODO:
 Tests!
 What do I want to do with errors in the Entity?
@@ -93,3 +97,8 @@ Need to remove Entity type argument from Bloc. It isn't associated with a single
 Need to update README with latest updates, like ViewModel/Builder, after I settle on something.
 Really need to refactor generators to be better. View model and Entity generators share a lot of
 code.
+Need a new generator for Entities that aren't intended to be in the Repository. They can have
+required parameters, and they won't have the global getter.
+Fix not being able to have methods in an Entity. Generated entity has errors because it doesn't
+implement the method.
+Screen has grown to be very complex... break it down a bit with more classes?
