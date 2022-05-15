@@ -15,7 +15,7 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
 
   Widget build(BuildContext context, B bloc, V viewModel);
 
-  Widget buildLoadingScreen(BuildContext context) {
+  Widget buildLoadingScreen(BuildContext context, B bloc) {
     return const SizedBox.shrink();
   }
 
@@ -48,7 +48,7 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return widget.buildLoadingScreen(context);
+      return widget.buildLoadingScreen(context, widget._bloc);
     } else {
       return widget.build(context, widget._bloc, _viewModel);
     }
