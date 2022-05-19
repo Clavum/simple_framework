@@ -2,7 +2,7 @@ library simple_framework;
 
 export 'package:simple_framework/src/core/bloc.dart';
 export 'package:simple_framework/src/core/entity.dart';
-export 'package:simple_framework/src/core/entity_scope.dart';
+export 'package:simple_framework/src/core/entity_controller.dart';
 export 'package:simple_framework/src/core/locator.dart';
 export 'package:simple_framework/src/core/mock_class_provider.dart';
 export 'package:simple_framework/src/core/repository.dart';

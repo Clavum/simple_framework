@@ -82,9 +82,9 @@ generator, so now a Bloc can quickly get any Entity without excess syntax.
 
 Added a StatelessScreen for times when you need a Bloc, but not a View Model.
 
-Added EntityScope. Any amount of EntityScopes can be set up in a Screen. They are used to call a
-method to load an Entity's data, refresh the Screen after a delay, or to clear an Entity when the
-Screen is navigated away from.
+Added EntityController. Any amount of EntityControllers can be set up in a Screen. They are used to
+call a method to load an Entity's data, refresh the Screen after a delay, clear an Entity when the
+Screen is navigated away from, and more.
 
 TODO:
 Tests!

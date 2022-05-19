@@ -2,40 +2,39 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:simple_framework/simple_framework.dart';
 
+enum EntityState {
+  /// Something is working on updating this [Entity].
+  loading,
+
+  /// The data in the [Entity] is out of date or invalid for some other reason.
+  invalid,
+
+  /// The data was unable to be loaded (such as from service issues).
+  error,
+
+  /// The default state.
+  active,
+
+  /// If you try to get an [Entity] from the [Repository] which doesn't exist, a new one will be
+  /// created, with the state of `fresh`.
+  fresh,
+}
+
 @immutable
 class Entity extends Equatable {
-  final List<EntityFailure> errors;
+  final EntityState state;
 
   @override
   bool get stringify => true;
 
-  const Entity({this.errors = const []});
+  const Entity({this.state = EntityState.active});
 
-  bool hasErrors() => errors.isNotEmpty;
-
-  bool hasError(EntityFailure error) => errors.indexOf(error) > 0;
-
-  Entity merge({List<EntityFailure>? errors}) {
-    return Entity(errors: errors ?? this.errors);
+  Entity merge({EntityState? state}) {
+    return Entity(state: state ?? this.state);
   }
 
   void send() => Repository().sendEntity(this);
 
   @override
-  List<Object?> get props => [errors];
-}
-
-class EntityFailure extends Equatable {
-  const EntityFailure();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class GeneralEntityFailure extends EntityFailure {
-  const GeneralEntityFailure();
-}
-
-class NoConnectivityEntityFailure extends EntityFailure {
-  const NoConnectivityEntityFailure();
+  List<Object?> get props => [state];
 }

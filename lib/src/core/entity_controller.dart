@@ -1,6 +1,6 @@
 import 'package:simple_framework/simple_framework.dart';
 
-class EntityScope<E extends Entity> {
+class EntityController<E extends Entity> {
   /// This method will be called when the [Entity] is not in the [Repository] yet, meaning it has
   /// not yet been initialized. Use this to call some method which will fetch the information needed
   /// for the [Entity] and update it (preferably send() it so that the [Screen] will update).
@@ -14,12 +14,12 @@ class EntityScope<E extends Entity> {
   /// Use this to refresh a Widget without user interaction.
   Duration? refreshPeriod;
 
-  /// If the [Screen] which holds this [EntityScope] is disposed, this determines if the [Entity]
-  /// should be reset. This effectively accomplishes the same thing as state management solutions
-  /// like Provider by having data tied to the widget tree.
+  /// If the [Screen] which holds this [EntityController] is disposed, this determines if the
+  /// [Entity] should be reset. This effectively accomplishes the same thing as state management
+  /// solutions like Provider by having data tied to the widget tree.
   bool clearOnDispose;
 
-  EntityScope({
+  EntityController({
     this.loader,
     this.refreshPeriod,
     this.clearOnDispose = false,

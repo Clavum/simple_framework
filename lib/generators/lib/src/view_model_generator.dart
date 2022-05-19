@@ -27,7 +27,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
     buffer.writeln('/// @nodoc');
-    buffer.writeln('class _${visitor.className} extends Entity implements ${visitor.className} {');
+    buffer.writeln('class _${visitor.className} extends ViewModel ');
+    buffer.write('implements ${visitor.className} {');
     generateConstructor(visitor, buffer);
     buffer.writeln();
 
@@ -76,7 +77,6 @@ final _privateConstructorUsedError = UnsupportedError(
   void generateProps(Visitor visitor, StringBuffer buffer) {
     buffer.writeln('@override');
     buffer.writeln('List<Object> get props => [');
-    buffer.writeln('errors,');
     for (var parameter in visitor.parameters) {
       buffer.writeln('${parameter.name},');
     }

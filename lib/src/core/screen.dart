@@ -9,7 +9,7 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
 
   final ViewModelBuilder<V> _builder;
 
-  final List<EntityScope> scopes = const [];
+  final List<EntityController> controllers = const [];
 
   const Screen(this._bloc, this._builder, {Key? key}) : super(key: key);
 
@@ -38,7 +38,7 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
   @override
   void initState() {
     super.initState();
-    setUpScopes();
+    setUpControllers();
 
     widget._bloc.onCreate();
     setUpRef();
@@ -59,33 +59,33 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
     super.dispose();
     widget._bloc.dispose();
 
-    /// Cancel streams;
     for (var key in _streams.keys) {
       _streams[key]!.cancel();
     }
 
-    /// Invalidate ref.
     _ref.close();
 
-    /// Cancel timers.
     for (var timer in refreshTimers) {
       timer.cancel();
     }
 
-    /// Trigger scope clear.
-    for (var scope in widget.scopes) {
-      scope.maybeClear();
+    for (var controller in widget.controllers) {
+      controller.maybeClear();
     }
   }
 
-  void setUpScopes() async {
-    for (var scope in widget.scopes) {
-      await scope.maybeLoad();
-      if (scope.refreshPeriod != null) {
-        refreshTimers.add(Timer.periodic(scope.refreshPeriod!, (_) => scope.loader?.call()));
+  void setUpControllers() async {
+    for (var controller in widget.controllers) {
+      await controller.maybeLoad();
+      if (controller.refreshPeriod != null) {
+        refreshTimers.add(Timer.periodic(
+          controller.refreshPeriod!,
+          (_) => controller.loader?.call(),
+        ));
       }
     }
     setState(() {
+      _viewModel = widget._builder.build(_ref);
       loading = false;
     });
   }

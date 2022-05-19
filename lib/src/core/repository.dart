@@ -25,8 +25,8 @@ class Repository {
   /// infer the Type from the parameter.
   E get<E extends Entity>(E entity) {
     return _entities.firstWhere((entity) => entity.runtimeType == E, orElse: () {
-      _entities.add(entity);
-      return entity;
+      _entities.add(entity.merge(state: EntityState.fresh));
+      return entity.merge(state: EntityState.fresh);
     }) as E;
   }
 
@@ -34,7 +34,7 @@ class Repository {
   /// if the Entity does not exist in the Repository yet.
   E set<E extends Entity>(E entity) {
     _entities.retainWhere((element) => element.runtimeType != E);
-    _entities.add(entity);
+    _entities.add(entity.merge(state: EntityState.active));
     return entity;
   }
 

@@ -41,8 +41,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
     buffer.writeln('@override');
+    generateMerge(visitor, buffer);
     generateMergeBody(visitor, buffer);
-    generateMergeReturn(visitor, buffer);
     buffer.writeln('}');
     buffer.writeln();
 
@@ -68,7 +68,7 @@ final _privateConstructorUsedError = UnsupportedError(
       buffer.writeln();
     }
 
-    generateMergeBody(visitor, buffer);
+    generateMerge(visitor, buffer);
     buffer.writeln('throw _privateConstructorUsedError;');
     buffer.writeln('}');
     buffer.writeln('}');
@@ -76,10 +76,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
   void generateConstructor(Visitor visitor, StringBuffer buffer) {
     buffer.writeln('_${visitor.className}({');
+    buffer.writeln('EntityState state = EntityState.fresh,');
     for (var parameter in visitor.parameters) {
       buffer.writeln('this.${parameter.name} = ${parameter.defaultValue},');
     }
-    buffer.writeln('});');
+    buffer.writeln('}) : super(state: EntityState.fresh);');
   }
 
   void generateOverrideParameters(Visitor visitor, StringBuffer buffer) {
@@ -92,24 +93,25 @@ final _privateConstructorUsedError = UnsupportedError(
   void generateProps(Visitor visitor, StringBuffer buffer) {
     buffer.writeln('@override');
     buffer.writeln('List<Object> get props => [');
-    buffer.writeln('errors,');
+    buffer.writeln('state,');
     for (var parameter in visitor.parameters) {
       buffer.writeln('${parameter.name},');
     }
     buffer.writeln('];');
   }
 
-  void generateMergeBody(Visitor visitor, StringBuffer buffer) {
+  void generateMerge(Visitor visitor, StringBuffer buffer) {
     buffer.writeln('_${visitor.className} merge({');
-    buffer.writeln('List<EntityFailure>? errors,');
+    buffer.writeln('EntityState? state,');
     for (var parameter in visitor.parameters) {
       buffer.writeln('${parameter.type}? ${parameter.name},');
     }
     buffer.writeln('}) {');
   }
 
-  void generateMergeReturn(Visitor visitor, StringBuffer buffer) {
+  void generateMergeBody(Visitor visitor, StringBuffer buffer) {
     buffer.writeln('return _${visitor.className}(');
+    buffer.writeln('state: state ?? this.state,');
     for (var parameter in visitor.parameters) {
       buffer.writeln('${parameter.name}: ${parameter.name} ?? this.${parameter.name},');
     }

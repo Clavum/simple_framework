@@ -69,17 +69,17 @@ class CounterEntity extends Entity {
   final int counter;
 
   const CounterEntity({
-    List<EntityFailure> errors = const [],
+    EntityState state = EntityState.active,
     this.counter = 0,
-  }) : super(errors: errors);
+  }) : super(state: state);
 
   @override
-  List<Object> get props => [errors, counter];
+  List<Object> get props => [state, counter];
 
   @override
-  CounterEntity merge({errors, int? counter}) {
+  CounterEntity merge({state, int? counter}) {
     return CounterEntity(
-      errors: errors ?? this.errors,
+      state: state ?? this.state,
       counter: counter ?? this.counter,
     );
   }
