@@ -102,3 +102,4 @@ required parameters, and they won't have the global getter.
 Fix not being able to have methods in an Entity. Generated entity has errors because it doesn't
 implement the method.
 Screen has grown to be very complex... break it down a bit with more classes?
+Potentially make EntityBuilders which would act like Riverpod's combined providers.

@@ -26,10 +26,8 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
 
 class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, V>> {
   late EntityRef _ref;
-  late V _viewModel;
+  V? _viewModel;
   final List<Timer> refreshTimers = [];
-
-  V? _previousViewModel;
 
   final Map<Type, StreamSubscription<void>> _streams = {};
 
@@ -38,11 +36,10 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
   @override
   void initState() {
     super.initState();
+    setUpRef();
     setUpControllers();
 
     widget._bloc.onCreate();
-    setUpRef();
-    _viewModel = widget._builder.build(_ref);
   }
 
   @override
@@ -50,7 +47,7 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
     if (loading) {
       return widget.buildLoadingScreen(context, widget._bloc);
     } else {
-      return widget.build(context, widget._bloc, _viewModel);
+      return widget.build(context, widget._bloc, _viewModel!);
     }
   }
 
@@ -94,9 +91,8 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
     _ref = EntityRef(<E extends Entity>() {
       _streams[E] ??= Repository().streamOf<E>().listen((entity) {
         var nextViewModel = widget._builder.build(_ref);
-        if (nextViewModel != _previousViewModel) {
+        if (nextViewModel != _viewModel) {
           setState(() {
-            _previousViewModel = _viewModel;
             _viewModel = nextViewModel;
           });
         }
