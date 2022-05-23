@@ -29,8 +29,15 @@ class EntityController<E extends Entity> {
     if (loader != null) {
       if (!Repository().containsEntity<E>()) {
         E entity = await loader!();
-        Repository().set(entity);
+        Repository().set<E>(entity);
       }
+    }
+  }
+
+  Future<void> load() async {
+    if (loader != null) {
+      E entity = await loader!();
+      Repository().set<E>(entity);
     }
   }
 

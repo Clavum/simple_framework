@@ -77,7 +77,12 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
       if (controller.refreshPeriod != null) {
         refreshTimers.add(Timer.periodic(
           controller.refreshPeriod!,
-          (_) => controller.loader?.call(),
+          (_) async {
+            await controller.load();
+            setState(() {
+              _viewModel = widget._builder.build(_ref);
+            });
+          },
         ));
       }
     }

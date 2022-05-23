@@ -88,7 +88,6 @@ Screen is navigated away from, and more.
 
 TODO:
 Tests!
-What do I want to do with errors in the Entity?
 Don't like how in Screen when you're trying to type an action, entity and defaultEntity show up.
 What can I do for screens that don't need an Entity?
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive
@@ -103,3 +102,10 @@ Fix not being able to have methods in an Entity. Generated entity has errors bec
 implement the method.
 Screen has grown to be very complex... break it down a bit with more classes?
 Potentially make EntityBuilders which would act like Riverpod's combined providers.
+Don't forget about the EntityState field I added to Entities; can I get rid of it?
+Maybe it's not good to have so much business logic in the Builder class. Maybe provide the Bloc to
+it so that you can call methods to do the calculations? Or, instead of even using a builder class,
+just allow passing in a Bloc method to do the same thing...
+Can I somehow add load priority to loading Entities (service calls?)? Load important things first,
+just with low, med, high priority. Really this doesn't need to be done by the framework, since you
+can coordinate this in the loaders.
