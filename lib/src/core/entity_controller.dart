@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 class EntityController<E extends Entity> {
@@ -19,31 +22,42 @@ class EntityController<E extends Entity> {
   /// solutions like Provider by having data tied to the widget tree.
   bool clearOnDispose;
 
+  final List<Timer> _refreshTimers = [];
+
   EntityController({
     this.loader,
     this.refreshPeriod,
     this.clearOnDispose = false,
   });
 
-  Future<void> maybeLoad() async {
-    if (loader != null) {
-      if (!Repository().containsEntity<E>()) {
-        E entity = await loader!();
-        Repository().set<E>(entity);
-      }
+  Future<void> initialize({required VoidCallback updateViewModelCallback}) async {
+    _callLoader(onlyIfEmpty: true);
+
+    if (refreshPeriod != null) {
+      _refreshTimers.add(Timer.periodic(
+        refreshPeriod!,
+        (_) async {
+          await _callLoader();
+          updateViewModelCallback();
+        },
+      ));
     }
   }
 
-  Future<void> load() async {
+  Future<void> _callLoader({bool onlyIfEmpty = false}) async {
     if (loader != null) {
       E entity = await loader!();
       Repository().set<E>(entity);
     }
   }
 
-  void maybeClear() {
+  void onDispose() {
     if (clearOnDispose) {
       Repository().removeEntity<E>();
+    }
+
+    for (var timer in _refreshTimers) {
+      timer.cancel();
     }
   }
 }

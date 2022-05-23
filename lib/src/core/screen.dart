@@ -27,7 +27,6 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
 class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, V>> {
   late EntityRef _ref;
   V? _viewModel;
-  final List<Timer> refreshTimers = [];
 
   final Map<Type, StreamSubscription<void>> _streams = {};
 
@@ -62,29 +61,18 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
 
     _ref.close();
 
-    for (var timer in refreshTimers) {
-      timer.cancel();
-    }
-
     for (var controller in widget.controllers) {
-      controller.maybeClear();
+      controller.onDispose();
     }
   }
 
   void setUpControllers() async {
     for (var controller in widget.controllers) {
-      await controller.maybeLoad();
-      if (controller.refreshPeriod != null) {
-        refreshTimers.add(Timer.periodic(
-          controller.refreshPeriod!,
-          (_) async {
-            await controller.load();
-            setState(() {
-              _viewModel = widget._builder.build(_ref);
-            });
-          },
-        ));
-      }
+      await controller.initialize(updateViewModelCallback: () {
+        setState(() {
+          _viewModel = widget._builder.build(_ref);
+        });
+      });
     }
     setState(() {
       _viewModel = widget._builder.build(_ref);
