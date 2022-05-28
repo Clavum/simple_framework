@@ -9,8 +9,6 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
 
   final ViewModelBuilder<V> _builder;
 
-  final List<EntityController> controllers = const [];
-
   const Screen(this._bloc, this._builder, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context, B bloc, V viewModel);
@@ -36,9 +34,19 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
   void initState() {
     super.initState();
     setUpRef();
-    setUpControllers();
 
-    widget._bloc.onCreate();
+    awaitOnCreate();
+  }
+
+  /// A loading screen will be shown until the user defined onCreate method is finished. This allows
+  /// having asynchronous calls in the onCreate method of the Bloc which prevent the Screen from
+  /// loading until they are finished.
+  void awaitOnCreate() async {
+    await widget._bloc.onCreate();
+    setState(() {
+      _viewModel = widget._builder.build(_ref);
+      loading = false;
+    });
   }
 
   @override
@@ -60,24 +68,6 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
     }
 
     _ref.close();
-
-    for (var controller in widget.controllers) {
-      controller.onDispose();
-    }
-  }
-
-  void setUpControllers() async {
-    for (var controller in widget.controllers) {
-      await controller.initialize(updateViewModelCallback: () {
-        setState(() {
-          _viewModel = widget._builder.build(_ref);
-        });
-      });
-    }
-    setState(() {
-      _viewModel = widget._builder.build(_ref);
-      loading = false;
-    });
   }
 
   void setUpRef() {

@@ -86,6 +86,10 @@ Added EntityController. Any amount of EntityControllers can be set up in a Scree
 call a method to load an Entity's data, refresh the Screen after a delay, clear an Entity when the
 Screen is navigated away from, and more.
 
+onCreate method of Bloc is now a Future<void>, and the loading screen is shown until the Future is
+complete. This way I can get rid of EntityControllers I just added, and do this outside of the
+framework.
+
 TODO:
 Tests!
 Don't like how in Screen when you're trying to type an action, entity and defaultEntity show up.
@@ -103,9 +107,3 @@ implement the method.
 Screen has grown to be very complex... break it down a bit with more classes?
 Potentially make EntityBuilders which would act like Riverpod's combined providers.
 Don't forget about the EntityState field I added to Entities; can I get rid of it?
-Maybe it's not good to have so much business logic in the Builder class. Maybe provide the Bloc to
-it so that you can call methods to do the calculations? Or, instead of even using a builder class,
-just allow passing in a Bloc method to do the same thing...
-Can I somehow add load priority to loading Entities (service calls?)? Load important things first,
-just with low, med, high priority. Really this doesn't need to be done by the framework, since you
-can coordinate this in the loaders.
