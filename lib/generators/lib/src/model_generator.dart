@@ -4,6 +4,11 @@ import 'package:generators/src/annotation.dart';
 import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
+// TODO list:
+// Fix not being able to have methods in a model. Generated model has errors because it doesn't
+// implement the method.
+// Verify user's code syntax is correct for the model.
+// Fix generated model has errors when user makes model with no parameters.
 class ModelGenerator extends GeneratorForAnnotation<EntityAnnotation> {
   final bool shouldGenerateMerge; //TODO: Use this!
   final bool parametersRequired;
