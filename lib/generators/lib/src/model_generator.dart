@@ -8,7 +8,9 @@ import 'package:source_gen/source_gen.dart';
 // Fix not being able to have methods in a model. Generated model has errors because it doesn't
 // implement the method.
 // Verify user's code syntax is correct for the model.
-// Fix generated model has errors when user makes model with no parameters.
+// Fix generated model has errors when user makes model with no parameters - best way to do this,
+// because so much is different when you don't have any parameters, is to check if there's any
+// parameters right at the start, and there aren't any, build a special empty model.
 class ModelGenerator extends GeneratorForAnnotation<EntityAnnotation> {
   final bool shouldGenerateMerge; //TODO: Use this!
   final bool parametersRequired;
@@ -87,9 +89,7 @@ class MixinGenerator {
 /// @nodoc
 mixin _\$${generator.visitor.className} {
   ${parameterGettersBuffer.toString()}
-
   _${generator.visitor.className} merge({
-    EntityState? state,
     ${mergeParametersBuffer.toString()}
   }) {
     throw _privateConstructorUsedError;
@@ -140,9 +140,8 @@ class MainClassGenerator {
 /// @nodoc
 class _${generator.visitor.className} extends Entity implements ${generator.visitor.className} {
   _${generator.visitor.className}({
-    EntityState state = EntityState.fresh,
     ${constructorParametersBuffer.toString()}
-  }) : super(state: EntityState.fresh);
+  });
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   ${parameterOverridesBuffer.toString()}
@@ -150,18 +149,15 @@ class _${generator.visitor.className} extends Entity implements ${generator.visi
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object> get props => [
-        state,
         ${propsBuffer.toString()}
       ];
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   _${generator.visitor.className} merge({
-    EntityState? state,
     ${mergeParametersBuffer.toString()}
   }) {
     return _${generator.visitor.className}(
-      state: state ?? this.state,
       ${mergeBodyBuffer.toString()}
     );
   }
