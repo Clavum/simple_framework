@@ -90,20 +90,24 @@ onCreate method of Bloc is now a Future<void>, and the loading screen is shown u
 complete. This way I can get rid of EntityControllers I just added, and do this outside of the
 framework.
 
+Made the EntityGenerator better by sharing a Generator between all "model" types and just passing
+in parameters for the differences.
+
 TODO:
 Tests!
 Don't like how in Screen when you're trying to type an action, entity and defaultEntity show up.
 What can I do for screens that don't need an Entity?
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive
-Entity generator - verify syntax - fix no parameters failing
-Need to remove Entity type argument from Bloc. It isn't associated with a single Entity anymore.
+Entity generator - make sure user's syntax is valid and throw errors - fix no parameters failing
 Need to update README with latest updates, like ViewModel/Builder, after I settle on something.
-Really need to refactor generators to be better. View model and Entity generators share a lot of
-code.
 Need a new generator for Entities that aren't intended to be in the Repository. They can have
 required parameters, and they won't have the global getter.
 Fix not being able to have methods in an Entity. Generated entity has errors because it doesn't
 implement the method.
 Screen has grown to be very complex... break it down a bit with more classes?
-Potentially make EntityBuilders which would act like Riverpod's combined providers.
+Potentially make EntityBuilders which would act like Riverpod's combined providers - I did this in
+Bitcoin, but can I make a class specifically for this?
 Don't forget about the EntityState field I added to Entities; can I get rid of it?
+MockClassProvider, allow option to have it real unless explicitly overridden.
+Instead of awaiting onCreate, await the builder. Then the builder can potentially fetch service
+models.

@@ -30,6 +30,10 @@ class Visitor extends GeneralizingElementVisitor<void> {
       name: element.name.toString(),
     ));
   }
+
+  void clear() {
+    parameters.clear();
+  }
 }
 
 class Parameter {
