@@ -11,21 +11,17 @@ import 'package:source_gen/source_gen.dart';
 // Fix generated model has errors when user makes model with no parameters - best way to do this,
 // because so much is different when you don't have any parameters, is to check if there's any
 // parameters right at the start, and there aren't any, build a special empty model.
-class ModelGenerator extends GeneratorForAnnotation<EntityAnnotation> {
-  final bool shouldGenerateMerge; //TODO: Use this!
-  final bool parametersRequired;
-  final bool shouldGenerateGetter;
+// Replace "Entity" text with correct model name. Default to Model.
+class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
+  late bool shouldGenerateMerge;
+  late bool parametersRequired;
+  late bool shouldGenerateGetter;
   final Visitor visitor;
   final StringBuffer buffer;
 
-  ModelGenerator({
-    required this.shouldGenerateMerge,
-    required this.parametersRequired,
-    required this.shouldGenerateGetter,
-  })  : visitor = Visitor(),
-        buffer = StringBuffer(),
-        assert(parametersRequired && shouldGenerateGetter,
-            'Cannot generate a getter if parameters are required');
+  ModelGenerator()
+      : visitor = Visitor(),
+        buffer = StringBuffer();
 
   @override
   String generateForAnnotatedElement(
@@ -33,6 +29,10 @@ class ModelGenerator extends GeneratorForAnnotation<EntityAnnotation> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
+    shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
+    parametersRequired = annotation.read('parametersRequired').boolValue;
+    shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
+
     buffer.clear();
     visitor.clear();
     element.visitChildren(visitor);
@@ -84,16 +84,23 @@ class MixinGenerator {
       mergeParametersBuffer.writeln('${parameter.type}? ${parameter.name},');
     }
 
+    final StringBuffer mergeBuffer = StringBuffer();
+    if (generator.shouldGenerateMerge) {
+      mergeBuffer.writeln('''
+_${generator.visitor.className} merge({
+    ${mergeParametersBuffer.toString()}
+  }) {
+    throw _privateConstructorUsedError;
+  }
+      ''');
+    }
+
     generator.buffer.writeln('''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _\$${generator.visitor.className} {
   ${parameterGettersBuffer.toString()}
-  _${generator.visitor.className} merge({
-    ${mergeParametersBuffer.toString()}
-  }) {
-    throw _privateConstructorUsedError;
-  }
+  ${mergeBuffer.toString()}
 }
     ''');
   }
@@ -135,6 +142,22 @@ class MainClassGenerator {
       mergeBodyBuffer.writeln('${parameter.name}: ${parameter.name} ?? this.${parameter.name},');
     }
 
+    final StringBuffer mergeBuffer = StringBuffer();
+    if (generator.shouldGenerateMerge) {
+      mergeBuffer.writeln('''
+// GENERATED CODE - DO NOT MODIFY BY HAND
+  @override
+  _${generator.visitor.className} merge({
+    ${mergeParametersBuffer.toString()}
+  }) {
+    return _${generator.visitor.className}(
+      ${mergeBodyBuffer.toString()}
+    );
+  }
+
+      ''');
+    }
+
     generator.buffer.writeln('''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
@@ -152,16 +175,7 @@ class _${generator.visitor.className} extends Entity implements ${generator.visi
         ${propsBuffer.toString()}
       ];
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
-  @override
-  _${generator.visitor.className} merge({
-    ${mergeParametersBuffer.toString()}
-  }) {
-    return _${generator.visitor.className}(
-      ${mergeBodyBuffer.toString()}
-    );
-  }
-
+  ${mergeBuffer.toString()}
   @override
   Type get runtimeType => ${generator.visitor.className};
 }

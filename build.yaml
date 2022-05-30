@@ -10,7 +10,7 @@ builders:
   generators:
     target: ":generators"
     import: "package:generators/src/builder.dart"
-    builder_factories: ["generateEntityBuilder", "generateViewModelBuilder"]
+    builder_factories: [ "generateModelBuilder" ]
     build_extensions: { ".dart": [".g.dart"] }
     auto_apply: dependents
     build_to: cache
