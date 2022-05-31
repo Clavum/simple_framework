@@ -11,11 +11,11 @@ import 'package:source_gen/source_gen.dart';
 // Fix generated model has errors when user makes model with no parameters - best way to do this,
 // because so much is different when you don't have any parameters, is to check if there's any
 // parameters right at the start, and there aren't any, build a special empty model.
-// Replace "Entity" text with correct model name. Default to Model.
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   late bool shouldGenerateMerge;
   late bool parametersRequired;
   late bool shouldGenerateGetter;
+  late String modelName;
   final Visitor visitor;
   final StringBuffer buffer;
 
@@ -32,6 +32,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
     parametersRequired = annotation.read('parametersRequired').boolValue;
     shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
+    modelName = annotation.read('modelName').stringValue;
 
     buffer.clear();
     visitor.clear();
@@ -55,14 +56,14 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed an instance of your Entity using the private constructor, i.e. `Entity._()`. This constructor is only meant to be used by the Entity generator and you are not supposed to use it.');
+    'The Model\\'s factory constructor was bypassed by a private constructor.');
 
     ''');
   }
 
   generateGetter() {
-    buffer.writeln('${visitor.className} get ${visitor.camelCaseClassName}'
-        ' => Repository().get(${visitor.className}());');
+    buffer.write('${visitor.className} get ${visitor.camelCaseClassName} ');
+    buffer.writeln('=> Repository().get(${visitor.className}());');
   }
 }
 
@@ -161,7 +162,7 @@ class MainClassGenerator {
     generator.buffer.writeln('''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class _${generator.visitor.className} extends Entity implements ${generator.visitor.className} {
+class _${generator.visitor.className} extends ${generator.modelName} implements ${generator.visitor.className} {
   _${generator.visitor.className}({
     ${constructorParametersBuffer.toString()}
   });
