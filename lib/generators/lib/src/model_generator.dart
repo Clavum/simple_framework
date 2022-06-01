@@ -5,8 +5,6 @@ import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
 // TODO list:
-// Fix not being able to have methods in a model. Generated model has errors because it doesn't
-// implement the method.
 // Verify user's code syntax is correct for the model.
 // Fix generated model has errors when user makes model with no parameters - best way to do this,
 // because so much is different when you don't have any parameters, is to check if there's any
@@ -15,6 +13,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   late bool shouldGenerateMerge;
   late bool parametersRequired;
   late bool shouldGenerateGetter;
+  late bool allowCustomMethods;
   late String modelName;
   final Visitor visitor;
   final StringBuffer buffer;
@@ -32,6 +31,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
     parametersRequired = annotation.read('parametersRequired').boolValue;
     shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
+    allowCustomMethods = annotation.read('allowCustomMethods').boolValue;
     modelName = annotation.read('modelName').stringValue;
 
     buffer.clear();
@@ -43,6 +43,10 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     MixinGenerator(this).generate();
 
     MainClassGenerator(this).generate();
+
+    if (allowCustomMethods) {
+      AbstractClassGenerator(this).generate();
+    }
 
     if (shouldGenerateGetter) {
       generateGetter();
@@ -103,6 +107,7 @@ mixin _\$${generator.visitor.className} {
   ${parameterGettersBuffer.toString()}
   ${mergeBuffer.toString()}
 }
+
     ''');
   }
 }
@@ -159,13 +164,33 @@ class MainClassGenerator {
       ''');
     }
 
+    late String className;
+    if (generator.allowCustomMethods) {
+      className = '_\$_${generator.visitor.className}';
+    } else {
+      className = '_${generator.visitor.className}';
+    }
+
+    late String classDeclaration;
+    if (generator.allowCustomMethods) {
+      classDeclaration = 'class $className extends _${generator.visitor.className} {';
+    } else {
+      classDeclaration =
+          'class $className extends ${generator.modelName} implements ${generator.visitor.className} {';
+    }
+
+    String superCall = '';
+    if (generator.allowCustomMethods) {
+      superCall = ' : super._()';
+    }
+
     generator.buffer.writeln('''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class _${generator.visitor.className} extends ${generator.modelName} implements ${generator.visitor.className} {
-  _${generator.visitor.className}({
+$classDeclaration
+  $className({
     ${constructorParametersBuffer.toString()}
-  });
+  })$superCall;
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   ${parameterOverridesBuffer.toString()}
@@ -180,6 +205,39 @@ class _${generator.visitor.className} extends ${generator.modelName} implements 
   @override
   Type get runtimeType => ${generator.visitor.className};
 }
+
+    ''');
+  }
+}
+
+class AbstractClassGenerator {
+  final ModelGenerator generator;
+
+  AbstractClassGenerator(this.generator);
+
+  void generate() {
+    StringBuffer factoryParametersBuffer = StringBuffer();
+    for (var parameter in generator.visitor.parameters) {
+      factoryParametersBuffer.writeln('${parameter.type} ${parameter.name},');
+    }
+
+    StringBuffer parameterGettersBuffer = StringBuffer();
+    for (var parameter in generator.visitor.parameters) {
+      parameterGettersBuffer.writeln('@override');
+      parameterGettersBuffer.writeln('${parameter.type} get ${parameter.name};');
+      parameterGettersBuffer.writeln();
+    }
+
+    generator.buffer.writeln('''
+abstract class _${generator.visitor.className} extends ${generator.visitor.className} {
+  factory _${generator.visitor.className}({
+    ${factoryParametersBuffer.toString()}
+  }) = _\$_${generator.visitor.className};
+  _${generator.visitor.className}._() : super._();
+
+  ${parameterGettersBuffer.toString()}
+}
+
     ''');
   }
 }

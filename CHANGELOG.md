@@ -91,7 +91,10 @@ complete. This way I can get rid of EntityControllers I just added, and do this 
 framework.
 
 Made the EntityGenerator better by sharing a Generator between all "model" types and just passing
-in parameters for the differences.
+in parameters for the differences. It's referred to as the Model Generator from now on.
+
+Fixed the Model Generator so that Models can now work when they define custom methods. I'll now be
+able to make a ServiceModel which has a method defined to load itself, as well as other settings.
 
 TODO:
 Tests!
@@ -104,7 +107,7 @@ required parameters, and they won't have the global getter.
 Screen has grown to be very complex... break it down a bit with more classes?
 Potentially make EntityBuilders which would act like Riverpod's combined providers - I did this in
 Bitcoin, but can I make a class specifically for this?
-Don't forget about the EntityState field I added to Entities; can I get rid of it?
 MockClassProvider, allow option to have it real unless explicitly overridden.
 Instead of awaiting onCreate, await the builder. Then the builder can potentially fetch service
 models.
+Make a ServiceModel.
