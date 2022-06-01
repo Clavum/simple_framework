@@ -15,12 +15,8 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   late bool shouldGenerateGetter;
   late bool allowCustomMethods;
   late String modelName;
-  final Visitor visitor;
-  final StringBuffer buffer;
-
-  ModelGenerator()
-      : visitor = Visitor(),
-        buffer = StringBuffer();
+  late Visitor visitor;
+  late StringBuffer buffer;
 
   @override
   String generateForAnnotatedElement(
@@ -34,8 +30,8 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     allowCustomMethods = annotation.read('allowCustomMethods').boolValue;
     modelName = annotation.read('modelName').stringValue;
 
-    buffer.clear();
-    visitor.clear();
+    visitor = Visitor();
+    buffer = StringBuffer();
     element.visitChildren(visitor);
 
     generateHeaderInfo();
