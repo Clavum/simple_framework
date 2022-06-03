@@ -98,7 +98,7 @@ class CounterViewModel extends ViewModel {
 
 class CounterBuilder extends ViewModelBuilder<CounterViewModel> {
   @override
-  CounterViewModel build(ref) {
+  Future<CounterViewModel> build(ref) async {
     // First, use ref to get the Entity/Entities needed to build the Screen.
     var counterEntity = ref.getEntity(const CounterEntity());
 
