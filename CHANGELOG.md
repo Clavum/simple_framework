@@ -104,6 +104,10 @@ on it will rebuild, just like with Entities. However, a ServiceModel can only ev
 first time a Screen is built, because otherwise you could have service calls every single time an
 Entity is updated.
 
+Made ViewModelBuilder into just ModelBuilder, so that you can make a Builder for Entities and other
+Models as well. For example, you can make a ModelBuilder to build an Entity out of ServiceModels,
+then manually create and call this builder in a Screen's builder.
+
 TODO:
 Tests!
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive

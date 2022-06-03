@@ -7,7 +7,7 @@ import 'package:simple_framework/simple_framework.dart';
 abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidget {
   final B _bloc;
 
-  final ViewModelBuilder<V> _builder;
+  final ModelBuilder<V> _builder;
 
   const Screen(this._bloc, this._builder, {Key? key}) : super(key: key);
 
