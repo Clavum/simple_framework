@@ -1,9 +1,13 @@
 import 'package:simple_framework/simple_framework.dart';
 
 class ScreenRef {
+  late bool firstLoad;
+
   void Function<T extends RepositoryModel>()? streamCallback;
 
-  ScreenRef(this.streamCallback);
+  ScreenRef(this.streamCallback) {
+    firstLoad = true;
+  }
 
   E getEntity<E extends Entity>(E entity) {
     if (streamCallback != null) {
@@ -13,7 +17,7 @@ class ScreenRef {
   }
 
   Future<M> getServiceModel<M extends ServiceModel>(M model) async {
-    if (Repository().getServiceModelStatus<M>() == ServiceModelStatus.valid) {
+    if (!firstLoad || Repository().getServiceModelStatus<M>() == ServiceModelStatus.valid) {
       return Repository().get<M>(model);
     }
     //TODO: if state is loading, what should I do?

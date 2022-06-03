@@ -96,10 +96,13 @@ in parameters for the differences. It's referred to as the Model Generator from 
 Fixed the Model Generator so that Models can now work when they define custom methods. I'll now be
 able to make a ServiceModel which has a method defined to load itself, as well as other settings.
 
-Added ServiceModel. Repository not just for Entities.
-Problem: If some random Entity is updated and causes a screen to rebuild, it will re-call the loader
-and cause a service call. I might need to just "trigger" the load without actually being
-asynchronous.
+Added ServiceModel. Repository is not just for Entities anymore, but any class which extends Model.
+Builders can now use getServiceModel to get a service model, and it's a future, because the load
+method of the ServiceModel will be called if the model isn't 'active'. The Screen will show the
+loading screen until build method is complete. If a ServiceModel is updated, Screens which depend
+on it will rebuild, just like with Entities. However, a ServiceModel can only ever be loaded the
+first time a Screen is built, because otherwise you could have service calls every single time an
+Entity is updated.
 
 TODO:
 Tests!
@@ -112,3 +115,6 @@ Potentially make EntityBuilders which would act like Riverpod's combined provide
 Bitcoin, but can I make a class specifically for this?
 MockClassProvider, allow option to have it real unless explicitly overridden.
 Fix ScreenRef getServiceModel when state is loading.
+Build needs to be synchronous, and just return an object indicating it's loading(?)
+Basically assume all the time that it's going to be loading, build loading screen, subscribe to
+service model updates, and then it'll rebuild and not be loading.
