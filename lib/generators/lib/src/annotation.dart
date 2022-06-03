@@ -30,6 +30,14 @@ const generateViewModel = GenerateModel(
   modelName: 'ViewModel',
 );
 
+const generateServiceModel = GenerateModel(
+  shouldGenerateMerge: false,
+  parametersRequired: true,
+  shouldGenerateGetter: false,
+  allowCustomMethods: true,
+  modelName: 'ServiceModel',
+);
+
 /// Allows using `@Default('value')` on a parameter to provide a default value.
 class Default {
   const Default(this.defaultValue);

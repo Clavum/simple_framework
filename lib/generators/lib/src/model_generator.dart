@@ -9,6 +9,7 @@ import 'package:source_gen/source_gen.dart';
 // Fix generated model has errors when user makes model with no parameters - best way to do this,
 // because so much is different when you don't have any parameters, is to check if there's any
 // parameters right at the start, and there aren't any, build a special empty model.
+// Instead of having parametersRequired, can I just check if defaultValue is null?
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   late bool shouldGenerateMerge;
   late bool parametersRequired;
@@ -214,7 +215,8 @@ class AbstractClassGenerator {
   void generate() {
     StringBuffer factoryParametersBuffer = StringBuffer();
     for (var parameter in generator.visitor.parameters) {
-      factoryParametersBuffer.writeln('${parameter.type} ${parameter.name},');
+      String required = (generator.parametersRequired) ? 'required ' : '';
+      factoryParametersBuffer.writeln('$required${parameter.type} ${parameter.name},');
     }
 
     StringBuffer parameterGettersBuffer = StringBuffer();
@@ -229,7 +231,7 @@ abstract class _${generator.visitor.className} extends ${generator.visitor.class
   factory _${generator.visitor.className}({
     ${factoryParametersBuffer.toString()}
   }) = _\$_${generator.visitor.className};
-  _${generator.visitor.className}._() : super._();
+  _${generator.visitor.className}._() : super.empty();
 
   ${parameterGettersBuffer.toString()}
 }

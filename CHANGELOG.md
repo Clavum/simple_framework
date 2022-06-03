@@ -96,10 +96,13 @@ in parameters for the differences. It's referred to as the Model Generator from 
 Fixed the Model Generator so that Models can now work when they define custom methods. I'll now be
 able to make a ServiceModel which has a method defined to load itself, as well as other settings.
 
+Added ServiceModel. Repository not just for Entities.
+Problem: If some random Entity is updated and causes a screen to rebuild, it will re-call the loader
+and cause a service call. I might need to just "trigger" the load without actually being
+asynchronous.
+
 TODO:
 Tests!
-Don't like how in Screen when you're trying to type an action, entity and defaultEntity show up.
-What can I do for screens that don't need an Entity?
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive
 Need to update README with latest updates, like ViewModel/Builder, after I settle on something.
 Need a new generator for Entities that aren't intended to be in the Repository. They can have
@@ -108,6 +111,4 @@ Screen has grown to be very complex... break it down a bit with more classes?
 Potentially make EntityBuilders which would act like Riverpod's combined providers - I did this in
 Bitcoin, but can I make a class specifically for this?
 MockClassProvider, allow option to have it real unless explicitly overridden.
-Instead of awaiting onCreate, await the builder. Then the builder can potentially fetch service
-models.
-Make a ServiceModel.
+Fix ScreenRef getServiceModel when state is loading.

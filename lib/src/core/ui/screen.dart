@@ -23,7 +23,7 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
 }
 
 class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, V>> {
-  late EntityRef _ref;
+  late ScreenRef _ref;
   V? _viewModel;
 
   final Map<Type, StreamSubscription<void>> _streams = {};
@@ -35,16 +35,14 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
     super.initState();
     setUpRef();
 
-    awaitOnCreate();
+    awaitBuilder();
   }
 
-  /// A loading screen will be shown until the user defined onCreate method is finished. This allows
-  /// having asynchronous calls in the onCreate method of the Bloc which prevent the Screen from
-  /// loading until they are finished.
-  void awaitOnCreate() async {
-    await widget._bloc.onCreate();
+  /// A loading screen will be shown until the builder is done loading.
+  void awaitBuilder() async {
+    widget._bloc.onCreate();
+    _viewModel = await widget._builder.build(_ref);
     setState(() {
-      _viewModel = widget._builder.build(_ref);
       loading = false;
     });
   }
@@ -71,9 +69,9 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
   }
 
   void setUpRef() {
-    _ref = EntityRef(<E extends Entity>() {
-      _streams[E] ??= Repository().streamOf<E>().listen((entity) {
-        var nextViewModel = widget._builder.build(_ref);
+    _ref = ScreenRef(<T extends RepositoryModel>() {
+      _streams[T] ??= Repository().streamOf<T>().listen((entity) async {
+        var nextViewModel = await widget._builder.build(_ref);
         if (nextViewModel != _viewModel) {
           setState(() {
             _viewModel = nextViewModel;
@@ -81,22 +79,5 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
         }
       });
     });
-  }
-}
-
-class EntityRef {
-  void Function<E extends Entity>()? streamCallback;
-
-  EntityRef(this.streamCallback);
-
-  E getEntity<E extends Entity>(E entity) {
-    if (streamCallback != null) {
-      streamCallback!<E>();
-    }
-    return Repository().get<E>(entity);
-  }
-
-  void close() {
-    streamCallback = null;
   }
 }

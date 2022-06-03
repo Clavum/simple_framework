@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 @immutable
-class Entity extends Model {
+class Entity extends RepositoryModel {
   const Entity();
 
   @override
@@ -10,5 +10,5 @@ class Entity extends Model {
     return const Entity();
   }
 
-  void send() => Repository().sendEntity(this);
+  void send() => Repository().sendModel(this);
 }
