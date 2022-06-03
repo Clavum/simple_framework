@@ -20,7 +20,15 @@ class ScreenRef {
     if (!firstLoad || Repository().getServiceModelStatus<M>() == ServiceModelStatus.valid) {
       return Repository().get<M>(model);
     }
-    //TODO: if state is loading, what should I do?
+    //TODO: if state is loading, what should I do? At this point it just loads it too.
+    //
+    // Build needs to be synchronous, and just return an object indicating it's loading(?)
+    // Basically assume all the time that it's going to be loading, build loading screen, subscribe
+    // to service model updates, and then it'll rebuild and not be loading. Not sure this works.
+
+    // Make builders have a different method just for loading service models, it doesn't have to
+    // return anything. Wait for this first, then call build, which will get the loaded models.
+    // I don't like how it makes it harder for users though, needed to be sure to list them all.
     Repository().setServiceModelStatus<M>(ServiceModelStatus.loading);
 
     M loadedModel;

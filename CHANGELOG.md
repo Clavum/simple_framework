@@ -114,7 +114,4 @@ Screen has grown to be very complex... break it down a bit with more classes?
 Potentially make EntityBuilders which would act like Riverpod's combined providers - I did this in
 Bitcoin, but can I make a class specifically for this?
 MockClassProvider, allow option to have it real unless explicitly overridden.
-Fix ScreenRef getServiceModel when state is loading.
-Build needs to be synchronous, and just return an object indicating it's loading(?)
-Basically assume all the time that it's going to be loading, build loading screen, subscribe to
-service model updates, and then it'll rebuild and not be loading.
+Can I improve needing .empty model constructor.
