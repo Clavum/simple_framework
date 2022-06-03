@@ -32,7 +32,7 @@ const generateViewModel = GenerateModel(
 
 const generateServiceModel = GenerateModel(
   shouldGenerateMerge: false,
-  parametersRequired: true,
+  parametersRequired: false,
   shouldGenerateGetter: false,
   allowCustomMethods: true,
   modelName: 'ServiceModel',

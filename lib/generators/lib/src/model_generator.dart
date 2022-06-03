@@ -54,7 +54,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
 
   generateHeaderInfo() {
     buffer.writeln('''
-// ignore_for_file: prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors_in_immutables, unused_element
 
 final _privateConstructorUsedError = UnsupportedError(
     'The Model\\'s factory constructor was bypassed by a private constructor.');
@@ -231,7 +231,7 @@ abstract class _${generator.visitor.className} extends ${generator.visitor.class
   factory _${generator.visitor.className}({
     ${factoryParametersBuffer.toString()}
   }) = _\$_${generator.visitor.className};
-  _${generator.visitor.className}._() : super.empty();
+  _${generator.visitor.className}._() : super._();
 
   ${parameterGettersBuffer.toString()}
 }

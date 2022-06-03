@@ -114,4 +114,3 @@ Screen has grown to be very complex... break it down a bit with more classes?
 Potentially make EntityBuilders which would act like Riverpod's combined providers - I did this in
 Bitcoin, but can I make a class specifically for this?
 MockClassProvider, allow option to have it real unless explicitly overridden.
-Can I improve needing .empty model constructor.
