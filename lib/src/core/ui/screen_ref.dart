@@ -40,7 +40,7 @@ class ScreenRef {
     }
     Repository().setServiceModelStatus<M>(ServiceModelStatus.valid);
 
-    loadedModel.send();
+    Repository().set(loadedModel);
     if (streamCallback != null) {
       streamCallback!<M>();
     }

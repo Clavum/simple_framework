@@ -29,7 +29,7 @@ class Repository {
   /// The provided model is required because it is what will be used if the [Model] does not exist
   /// in the [Repository] yet.
   M get<M extends RepositoryModel>(M model) {
-    return _models.firstWhere((model) => model.runtimeType == M, orElse: () {
+    return _models.firstWhere((model) => model.runtimeType == model.runtimeType, orElse: () {
       _models.add(model);
       return model;
     }) as M;
@@ -38,7 +38,7 @@ class Repository {
   /// Set a [Model] in the [Repository]. See comments on [get] above. The provided model will be
   /// used if the [Model] does not exist in the [Repository] yet.
   M set<M extends RepositoryModel>(M model) {
-    _models.retainWhere((element) => element.runtimeType != M);
+    _models.retainWhere((element) => element.runtimeType != model.runtimeType);
     _models.add(model);
     return model;
   }
