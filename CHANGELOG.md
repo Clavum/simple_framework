@@ -108,6 +108,8 @@ Made ViewModelBuilder into just ModelBuilder, so that you can make a Builder for
 Models as well. For example, you can make a ModelBuilder to build an Entity out of ServiceModels,
 then manually create and call this builder in a Screen's builder.
 
+Added an EmptyBloc class for Screens that need a ViewModel but have no actions.
+
 TODO:
 Tests!
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive
@@ -115,6 +117,4 @@ Need to update README with latest updates, like ViewModel/Builder, after I settl
 Need a new generator for Entities that aren't intended to be in the Repository. They can have
 required parameters, and they won't have the global getter.
 Screen has grown to be very complex... break it down a bit with more classes?
-Potentially make EntityBuilders which would act like Riverpod's combined providers - I did this in
-Bitcoin, but can I make a class specifically for this?
 MockClassProvider, allow option to have it real unless explicitly overridden.

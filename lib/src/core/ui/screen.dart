@@ -40,7 +40,7 @@ class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, 
 
   /// A loading screen will be shown until the builder is done loading.
   void awaitBuilder() async {
-    widget._bloc.onCreate();
+    await widget._bloc.onCreate();
     _viewModel = await widget._builder.build(_ref);
     _ref.firstLoad = false;
     setState(() {
