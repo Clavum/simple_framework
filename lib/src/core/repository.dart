@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 class Repository {
@@ -14,7 +13,7 @@ class Repository {
   final Map<Type, ServiceModelStatus> _serviceModelStatuses = {};
 
   factory Repository() {
-    return MockClassProvider().getMockIfTest(real: Repository._(), mock: MockRepository());
+    return MockClassProvider().getMockIfTest(real: Repository._(), mock: RepositoryMock());
   }
 
   /// Get a [Model] from the [Repository]. Ideal usage is:
@@ -90,47 +89,13 @@ class Repository {
   }
 
   /// Because [Repository] uses Mock Factories, this method is needed to avoid needing to cast
-  /// as a [MockRepository]. Because 'Repository()' will always return a [MockRepository] in tests,
-  /// this method should never be called on a real [Repository]. See the [MockRepository] below for
+  /// as a [RepositoryMock]. Because 'Repository()' will always return a [RepositoryMock] in tests,
+  /// this method will never be called on a real [Repository]. See the [RepositoryMock] class for
   /// the actual implementation, as well as usage information.
   @visibleForTesting
   void addMockModel<M extends RepositoryModel>(M model) => throw _addMockModelCalledOnReal();
 }
 
-class MockStreamSubscription extends Mock implements StreamSubscription<Model> {
-  @override
-  Future<void> cancel() async {}
-}
-
-class MockStream extends Mock implements Stream<Model> {
-  MockStream() {
-    when(() => listen(any())).thenAnswer((Invocation invocation) {
-      return MockStreamSubscription();
-    });
-  }
-}
-
-class MockRepository extends Mock implements Repository {
-  /// Use this method in the `setUp` method of Bloc tests to mock a Model to be returned when it
-  /// is tried to be fetched.
-  @override
-  void addMockModel<M extends RepositoryModel>(M mockModel) {
-    if (M == RepositoryModel) throw _addMockModelCalledWithoutType();
-    registerFallbackValue(mockModel);
-    when(() => get<M>(any())).thenAnswer((_) => mockModel);
-    when(() => set<M>(any())).thenAnswer((_) => mockModel);
-  }
-
-  @override
-  Stream<dynamic> streamOf<M extends RepositoryModel>() {
-    return MockStream();
-  }
-}
-
 Exception _addMockModelCalledOnReal() {
   return Exception('addMockModel was called on a real instance of the Repository.');
-}
-
-Exception _addMockModelCalledWithoutType() {
-  return Exception('addMockModel was called without a specific model type.');
 }

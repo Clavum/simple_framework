@@ -52,6 +52,7 @@ class MockClassProvider {
           _classes.add(mock);
           return mock;
         } else {
+          //TODO: Don't singleton-ify real classes.
           _classes.add(real);
           return real;
         }

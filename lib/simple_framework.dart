@@ -15,8 +15,11 @@ export 'package:simple_framework/src/core/mock_class_provider.dart';
 export 'package:simple_framework/src/core/repository.dart';
 export 'package:simple_framework/src/core/use_case.dart';
 
-export 'package:simple_framework/src/test_helpers/bloc_test_helpers.dart';
-export 'package:simple_framework/src/test_helpers/general_helpers.dart';
-export 'package:simple_framework/src/test_helpers/screen_test_helpers.dart';
+export 'package:simple_framework/src/testing/mocks/repository_mock.dart';
+export 'package:simple_framework/src/testing/mocks/screen_ref_mock.dart';
+export 'package:simple_framework/src/testing/test_groups/bloc_test_group.dart';
+export 'package:simple_framework/src/testing/test_groups/builder_test_group.dart';
+export 'package:simple_framework/src/testing/test_groups/screen_test_group.dart';
+export 'package:simple_framework/src/testing/general_helpers.dart';
 
 export 'package:generators/generators.dart';
