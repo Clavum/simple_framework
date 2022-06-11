@@ -8,7 +8,7 @@ class ExampleClass {
   ExampleClass._();
 
   factory ExampleClass({bool allowMock = true}) {
-    return MockClassProvider().get(
+    return MockClassProvider().getMockIfTest(
       real: ExampleClass._(),
       mock: MockExampleClass(),
       allowMock: allowMock,

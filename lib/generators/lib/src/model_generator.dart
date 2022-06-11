@@ -89,7 +89,7 @@ class MixinGenerator {
     final StringBuffer mergeBuffer = StringBuffer();
     if (generator.shouldGenerateMerge) {
       mergeBuffer.writeln('''
-_${generator.visitor.className} merge({
+${generator.visitor.className} merge({
     ${mergeParametersBuffer.toString()}
   }) {
     throw _privateConstructorUsedError;

@@ -14,7 +14,7 @@ class Repository {
   final Map<Type, ServiceModelStatus> _serviceModelStatuses = {};
 
   factory Repository() {
-    return MockClassProvider().get(real: Repository._(), mock: MockRepository());
+    return MockClassProvider().getMockIfTest(real: Repository._(), mock: MockRepository());
   }
 
   /// Get a [Model] from the [Repository]. Ideal usage is:
@@ -97,7 +97,10 @@ class Repository {
   void addMockModel<M extends RepositoryModel>(M model) => throw _addMockModelCalledOnReal();
 }
 
-class MockStreamSubscription extends Mock implements StreamSubscription<Model> {}
+class MockStreamSubscription extends Mock implements StreamSubscription<Model> {
+  @override
+  Future<void> cancel() async {}
+}
 
 class MockStream extends Mock implements Stream<Model> {
   MockStream() {

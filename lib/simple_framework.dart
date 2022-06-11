@@ -17,5 +17,6 @@ export 'package:simple_framework/src/core/use_case.dart';
 
 export 'package:simple_framework/src/test_helpers/bloc_test_helpers.dart';
 export 'package:simple_framework/src/test_helpers/general_helpers.dart';
+export 'package:simple_framework/src/test_helpers/screen_test_helpers.dart';
 
 export 'package:generators/generators.dart';

@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 ///   ExampleClass._();
 ///
 ///   factory ExampleClass({bool allowMock = true}) {
-///     return MockClassProvider().get(
+///     return MockClassProvider().getMockIfTest(
 ///       real: ExampleClass._(),
 ///       mock: allowMock ? MockExampleClass() : ExampleClass._(),
 ///     );
@@ -39,13 +39,14 @@ class MockClassProvider {
     return _mockClassProvider;
   }
 
-  E get<E extends Object, M extends Object>({
+  /// Returns [real] if running real code, and returns [mock] if running a test.
+  E getMockIfTest<E extends Object, M extends Object>({
     required E real,
     required M mock,
     bool allowMock = true,
   }) {
     return _classes.firstWhere(
-          (object) => object.runtimeType == E || object.runtimeType == M,
+      (object) => object.runtimeType == E || object.runtimeType == M,
       orElse: () {
         if (Platform.environment.containsKey('FLUTTER_TEST') && allowMock) {
           _classes.add(mock);
