@@ -10,6 +10,7 @@ void screenTestGroup(String screenName, void Function() body) {
   group('$screenName test group', () {
     setUpAll(() async {
       await setupFirebaseMock();
+      setupCommonFallbackValues();
     });
 
     tearDown(() {
