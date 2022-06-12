@@ -16,6 +16,7 @@ void screenTestGroup(String screenName, void Function() body) {
     tearDown(() {
       reset(Repository());
       resetMocktailState();
+      MockClassProvider().clearClasses();
     });
 
     body();

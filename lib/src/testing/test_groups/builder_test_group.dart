@@ -8,13 +8,12 @@ import 'package:utilities/utilities.dart';
 @visibleForTesting
 void builderTest(String builderName, void Function() body) {
   test('$builderName test', () {
-    setUpAll(() {
-      setupCommonFallbackValues();
-    });
+    setupCommonFallbackValues();
 
     addTearDown(() {
       reset(Repository());
       resetMocktailState();
+      MockClassProvider().clearClasses();
     });
 
     body();
