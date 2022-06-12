@@ -55,6 +55,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   generateHeaderInfo() {
     buffer.writeln('''
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_element
+// coverage:ignore-file
 
 final _privateConstructorUsedError = UnsupportedError(
     'The Model\\'s factory constructor was bypassed by a private constructor.');
