@@ -67,8 +67,7 @@ class MockClassProvider {
 
   @visibleForTesting
   void setClass(Object object) {
-    _classes
-        .retainWhere((element) => element.runtimeType != object.runtimeType);
+    _classes.retainWhere((element) => element.runtimeType != object.runtimeType);
     _classes.add(object);
   }
 }

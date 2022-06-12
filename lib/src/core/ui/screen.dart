@@ -17,6 +17,9 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
     return const SizedBox.shrink();
   }
 
+  @visibleForTesting
+  B get debugGetBloc => _bloc;
+
   @override
   @nonVirtual
   _ScreenState<B, V> createState() => _ScreenState<B, V>();
