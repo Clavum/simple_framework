@@ -13,7 +13,7 @@ void builderTest(String builderName, void Function() body) {
     addTearDown(() {
       reset(Repository());
       resetMocktailState();
-      MockClassProvider().clearClasses();
+      MockClassProvider().clear();
     });
 
     body();

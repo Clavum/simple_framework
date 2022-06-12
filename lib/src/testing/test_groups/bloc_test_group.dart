@@ -9,9 +9,11 @@ import 'package:utilities/utilities.dart';
 void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B) body) {
   group('$B test group', () {
     setupCommonFallbackValues();
+    MockClassProvider().forceUseRealClass<B>();
     B bloc = blocCreator();
 
     setUp(() {
+      MockClassProvider().forceUseRealClass<B>();
       bloc = blocCreator();
     });
 
@@ -19,7 +21,7 @@ void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B) bo
       bloc.dispose();
       reset(Repository());
       resetMocktailState();
-      MockClassProvider().clearClasses();
+      MockClassProvider().clear();
     });
 
     body(bloc);
