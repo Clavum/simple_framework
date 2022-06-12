@@ -6,11 +6,15 @@ import 'package:utilities/utilities.dart';
 
 @isTestGroup
 @visibleForTesting
-void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B) body) {
+void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B Function()) body) {
+  late B bloc;
+
+  B blocGetter() => bloc;
+
   group('$B test group', () {
     setupCommonFallbackValues();
     MockClassProvider().forceUseRealClass<B>();
-    B bloc = blocCreator();
+    bloc = blocCreator();
 
     setUp(() {
       MockClassProvider().forceUseRealClass<B>();
@@ -24,6 +28,6 @@ void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B) bo
       MockClassProvider().clear();
     });
 
-    body(bloc);
+    body(blocGetter);
   });
 }
