@@ -1,24 +1,28 @@
 import 'package:simple_framework/simple_framework.dart';
 
 class ScreenRef {
-  late bool firstLoad;
+  bool firstLoad = true;
 
-  void Function<T extends RepositoryModel>()? streamCallback;
+  final void Function<T extends RepositoryModel>() streamCallback;
 
-  ScreenRef(this.streamCallback) {
-    firstLoad = true;
-  }
+  bool _validSession = true;
+
+  ScreenRef(this.streamCallback);
 
   E getEntity<E extends Entity>(E entity) {
-    if (streamCallback != null) {
-      streamCallback!<E>();
-    }
+    if (!_validSession) throw _disposedScreenRefUsedError();
+
+    streamCallback<E>();
     return Repository().get<E>(entity);
   }
 
   Future<M> getServiceModel<M extends ServiceModel>(M model) async {
+    if (!_validSession) throw _disposedScreenRefUsedError();
+
     /// If this is not the first time the Builder has run, it should not load the model again.
-    /// Otherwise, a simple screen rebuild will cause another service call.
+    /// Otherwise, a simple screen rebuild will cause another service call. We can safely get the
+    /// model from the Repository knowing that it exists from the first builder call.
+    ///
     /// If the ServiceModel already exists and is valid, it is returned.
     if (!firstLoad || Repository().getServiceModelStatus<M>() == ServiceModelStatus.valid) {
       return Repository().get<M>(model);
@@ -48,13 +52,15 @@ class ScreenRef {
     /// because we might as well display the latest information.
     loadedModel.send();
 
-    if (streamCallback != null) {
-      streamCallback!<M>();
-    }
+    streamCallback<M>();
     return loadedModel;
   }
 
   void close() {
-    streamCallback = null;
+    _validSession = false;
   }
+}
+
+StateError _disposedScreenRefUsedError() {
+  return StateError('A method was called on a ScreenRef instance which has been disposed.');
 }
