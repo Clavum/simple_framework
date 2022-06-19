@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:simple_framework/src/testing/setup_common_mock_stubs.dart';
 
 /// Used to create 'Mock Factories' which provide real class instances while running the app but
 /// mocked instances while running tests. Example:
@@ -54,6 +55,7 @@ class MockClassProvider {
       orElse: () {
         if (Platform.environment.containsKey('FLUTTER_TEST') && allowMock) {
           _classes.add(mock);
+          setupCommonMockStubs(mock);
           return mock;
         } else {
           //TODO: Don't singleton-ify real classes.

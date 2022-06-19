@@ -8,7 +8,6 @@ class TestBuilderMock extends Mock implements TestBuilder {
   TestBuilderMock._();
 
   factory TestBuilderMock() {
-    registerFallbackValue(TestViewModel(value: '0'));
     TestBuilderMock testBuilderMock = TestBuilderMock._();
     when(() => testBuilderMock.build(any()))
         .thenAnswer((_) => Future.value(TestViewModel(value: '5')));

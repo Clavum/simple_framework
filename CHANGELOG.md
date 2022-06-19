@@ -110,6 +110,12 @@ then manually create and call this builder in a Screen's builder.
 
 Added an EmptyBloc class for Screens that need a ViewModel but have no actions.
 
+With Mockito and null safety, non-void methods need to be stubbed or they will return an error. For
+example, when making a Bloc mock, you will need to stub the onCreate method every time. To handle
+this automatically, I added a setupCommonMockStubs method, which takes any object, and based on its
+type, creates the common stubs. This is used by the MockClassProvider when first using a mock, so
+the developer will never need to worry about it.
+
 TODO:
 Tests!
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive
