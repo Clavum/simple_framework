@@ -118,6 +118,8 @@ Need a new generator for Entities that aren't intended to be in the Repository. 
 required parameters, and they won't have the global getter.
 Screen has grown to be very complex... break it down a bit with more classes?
 MockClassProvider, allow option to have it real unless explicitly overridden.
+Have MockClassProvider identify class type (Bloc, Model, etc.) and add some method stubs for you,
+such as for the onCreate method of a bloc.
 
 Instead of Screens needing a Builder, have them require a function which takes ref and returns a
 future view model. This way you can just provide a bloc method which does the building, if simple.
