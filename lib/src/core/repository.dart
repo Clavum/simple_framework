@@ -55,8 +55,8 @@ class Repository {
     if (_streams.containsKey(model.runtimeType)) {
       _streams[model.runtimeType]!.add(model);
     } else {
-      if (kDebugMode) {
-        print('There is no Screen subscribed to receive ${model.runtimeType}');
+      if (model is Entity) {
+        debugPrint('There is no Screen subscribed to receive ${model.runtimeType}');
       }
     }
   }

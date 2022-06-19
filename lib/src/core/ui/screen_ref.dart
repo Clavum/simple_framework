@@ -17,20 +17,23 @@ class ScreenRef {
   }
 
   Future<M> getServiceModel<M extends ServiceModel>(M model) async {
+    /// If this is not the first time the Builder has run, it should not load the model again.
+    /// Otherwise, a simple screen rebuild will cause another service call.
+    /// If the ServiceModel already exists and is valid, it is returned.
     if (!firstLoad || Repository().getServiceModelStatus<M>() == ServiceModelStatus.valid) {
       return Repository().get<M>(model);
     }
-    //TODO: if state is loading, what should I do? At this point it just loads it too.
-    //
-    // Build needs to be synchronous, and just return an object indicating it's loading(?)
-    // Basically assume all the time that it's going to be loading, build loading screen, subscribe
-    // to service model updates, and then it'll rebuild and not be loading. Not sure this works.
 
-    // Make builders have a different method just for loading service models, it doesn't have to
-    // return anything. Wait for this first, then call build, which will get the loaded models.
-    // I don't like how it makes it harder for users though, needed to be sure to list them all.
+    /// If the ServiceModel is loading, that means another Builder is loading it, and will send it
+    /// once done. This code waits for and sends the next model from the stream.
+    if (Repository().getServiceModelStatus<M>() == ServiceModelStatus.loading) {
+      await for (var model in Repository().streamOf<M>()) {
+        return model;
+      }
+    }
+
+    /// In all other scenarios, use the ServiceModel's build method to load itself.
     Repository().setServiceModelStatus<M>(ServiceModelStatus.loading);
-
     M loadedModel;
     try {
       loadedModel = await model.load() as M;
@@ -40,7 +43,11 @@ class ScreenRef {
     }
     Repository().setServiceModelStatus<M>(ServiceModelStatus.valid);
 
-    Repository().set(loadedModel);
+    /// Sending as apposed to setting here is important. Most importantly, it is needed to notify
+    /// that the model is done loading. Another advantage is rebuilding Screens based on this model,
+    /// because we might as well display the latest information.
+    loadedModel.send();
+
     if (streamCallback != null) {
       streamCallback!<M>();
     }
