@@ -18,6 +18,7 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
   }
 
   @visibleForTesting
+  @nonVirtual
   B get debugGetBloc => _bloc;
 
   @override
@@ -27,6 +28,7 @@ abstract class Screen<B extends Bloc, V extends ViewModel> extends StatefulWidge
 
 class _ScreenState<B extends Bloc, V extends ViewModel> extends State<Screen<B, V>> {
   late ScreenRef _ref;
+
   V? _viewModel;
 
   final Map<Type, StreamSubscription<void>> _streams = {};

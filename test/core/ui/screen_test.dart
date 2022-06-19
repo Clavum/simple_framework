@@ -17,7 +17,7 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('Waits for bloc.onCreate', (tester) async {
+    testWidgets('waits for bloc.onCreate', (tester) async {
       TestBlocMock bloc = TestBloc() as TestBlocMock;
       when(() => bloc.onCreate()).thenAnswer((_) async {
         await Future.delayed(const Duration(seconds: 1));
@@ -32,13 +32,28 @@ void main() {
       expect(find.text('Loaded'), findsOneWidget);
     });
 
-    testWidgets('Builds from the Builder', (tester) async {
+    testWidgets('builds from the Builder', (tester) async {
       TestBuilderMock builder = TestBuilder() as TestBuilderMock;
       when(() => builder.build(any())).thenAnswer((_) => Future.value(TestViewModel(value: '10')));
 
       await pumpTestScreen(tester);
 
       expect(find.text('Value: 10'), findsOneWidget);
+    });
+
+    testWidgets('builds loading screen while waiting for builder', (tester) async {
+      TestBuilderMock builder = TestBuilder() as TestBuilderMock;
+      when(() => builder.build(any())).thenAnswer((_) async {
+        await Future.delayed(const Duration(seconds: 1));
+        return TestViewModel(value: '10');
+      });
+
+      await pumpTestScreen(tester);
+
+      expect(find.text('Loading Screen'), findsOneWidget);
+
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      expect(find.text('Loaded'), findsOneWidget);
     });
   });
 }
