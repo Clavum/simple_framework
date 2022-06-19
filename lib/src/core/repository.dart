@@ -46,7 +46,7 @@ class Repository {
   /// Sends a [Model] to its corresponding Stream. This allows any [Screen] streaming from this
   /// [Model] to be updated. The repository is updated at the same time, so using [set] before
   /// [sendModel] is redundant.
-  void sendModel<M extends RepositoryModel>(M model) {
+  void sendModel(RepositoryModel model) {
     // The type parameters are used to verify only Models are passed as a parameter, but runtimeType
     // is used instead of the type parameter because this method is typically used by the send
     // method in the models, at which point we do not know the type.

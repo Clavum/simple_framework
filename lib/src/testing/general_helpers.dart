@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 @visibleForTesting
 M getSentModel<M extends RepositoryModel>() {
-  List<dynamic> models = verify(() => Repository().sendModel<M>(captureAny())).captured;
+  List<dynamic> models = verify(() => Repository().sendModel(captureAny(that: isA<M>()))).captured;
 
   if (models.isEmpty) throw _noMatchingModelSent<M>();
   return models.firstWhere((model) => model.runtimeType == M, orElse: () {
