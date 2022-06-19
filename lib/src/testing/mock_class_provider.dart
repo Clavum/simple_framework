@@ -49,7 +49,12 @@ class MockClassProvider {
     required M mock,
     bool allowMock = true,
   }) {
-    if (_realOverrides.contains(E)) return real;
+    if (_realOverrides.contains(E)) {
+      return _classes.firstWhere((object) => object.runtimeType == E, orElse: () {
+        _classes.add(real);
+        return real;
+      }) as E;
+    }
     return _classes.firstWhere(
       (object) => object.runtimeType == E || object.runtimeType == M,
       orElse: () {

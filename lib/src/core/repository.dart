@@ -46,9 +46,6 @@ class Repository {
   /// [Model] to be updated. The repository is updated at the same time, so using [set] before
   /// [sendModel] is redundant.
   void sendModel(RepositoryModel model) {
-    // The type parameters are used to verify only Models are passed as a parameter, but runtimeType
-    // is used instead of the type parameter because this method is typically used by the send
-    // method in the models, at which point we do not know the type.
     _models.retainWhere((element) => element.runtimeType != model.runtimeType);
     _models.add(model);
     if (_streams.containsKey(model.runtimeType)) {
@@ -93,9 +90,5 @@ class Repository {
   /// this method will never be called on a real [Repository]. See the [RepositoryMock] class for
   /// the actual implementation, as well as usage information.
   @visibleForTesting
-  void addMockModel<M extends RepositoryModel>(M model) => throw _addMockModelCalledOnReal();
-}
-
-Exception _addMockModelCalledOnReal() {
-  return Exception('addMockModel was called on a real instance of the Repository.');
+  void addMockModel<M extends RepositoryModel>(M model) {}
 }

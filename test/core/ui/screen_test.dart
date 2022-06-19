@@ -17,7 +17,7 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('waits for bloc.onCreate', (tester) async {
+    testWidgets('builds loading screen while waiting for bloc.onCreate', (tester) async {
       TestBlocMock bloc = TestBloc() as TestBlocMock;
       when(() => bloc.onCreate()).thenAnswer((_) async {
         await Future.delayed(const Duration(seconds: 1));
@@ -54,6 +54,28 @@ void main() {
 
       await tester.pumpAndSettle(const Duration(seconds: 1));
       expect(find.text('Loaded'), findsOneWidget);
+    });
+
+    testWidgets('rebuilds on Entity updates', (tester) async {
+      MockClassProvider().forceUseRealClass<TestBloc>();
+      MockClassProvider().forceUseRealClass<TestBuilder>();
+      MockClassProvider().forceUseRealClass<Repository>();
+
+      expect(Repository().hashCode, Repository().hashCode);
+
+      await pumpTestScreen(tester);
+
+      expect(find.text('Value: 0'), findsOneWidget);
+
+      const TestEntity(value: 2).send();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Value: 2'), findsOneWidget);
+
+      const TestEntity(value: 5).send();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Value: 5'), findsOneWidget);
     });
   });
 }

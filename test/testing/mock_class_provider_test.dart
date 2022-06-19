@@ -40,5 +40,6 @@ void main() {
   test('MockClassProvider forceUseRealClass', () {
     MockClassProvider().forceUseRealClass<ExampleClass>();
     expect(ExampleClass().runtimeType, ExampleClass);
+    expect(ExampleClass().hashCode, ExampleClass().hashCode);
   });
 }
