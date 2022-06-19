@@ -1,6 +1,5 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
-import 'package:utilities/utilities.dart';
 
 class TestBlocMock extends Mock implements TestBloc {
   TestBlocMock._();

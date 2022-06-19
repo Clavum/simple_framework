@@ -1,6 +1,5 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
-import 'package:utilities/utilities.dart';
 
 import 'test_entity.dart';
 import 'test_view_model.dart';
