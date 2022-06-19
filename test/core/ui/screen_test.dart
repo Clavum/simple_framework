@@ -10,11 +10,7 @@ import '../../test_screen.dart';
 import '../../test_view_model.dart';
 
 void main() {
-  group('Screen', () {
-    tearDown(() {
-      MockClassProvider().clear();
-    });
-
+  screenTestGroup('Screen', () {
     Future<void> pumpTestScreen(WidgetTester tester) async {
       Repository().addMockModel(const TestEntity());
       await tester.pumpWidget(MaterialApp(home: TestScreen()));
