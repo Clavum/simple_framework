@@ -18,7 +18,7 @@ class StreamMock extends Mock implements Stream<Model> {
 
 class RepositoryMock extends Mock implements Repository {
   /// Use this method in the `setUp` method of Bloc tests to mock a Model to be returned when it
-  /// is tried to be fetched.
+  /// is attempted to be fetched.
   @override
   void addMockModel<M extends RepositoryModel>(M mockModel) {
     if (M == RepositoryModel) throw _addMockModelCalledWithoutType();
@@ -30,6 +30,11 @@ class RepositoryMock extends Mock implements Repository {
   @override
   Stream<dynamic> streamOf<M extends RepositoryModel>() {
     return StreamMock();
+  }
+
+  @override
+  void setServiceModelStatus<S extends ServiceModel>(ServiceModelStatus status) {
+    when(() => getServiceModelStatus<S>()).thenAnswer((_) => status);
   }
 }
 
