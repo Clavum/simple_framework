@@ -93,5 +93,37 @@ void main() {
               Repository().setServiceModelStatus<BrokenServiceModel>(ServiceModelStatus.invalid))
           .called(1);
     });
+
+    test('when loaded by multiple refs', () async {
+      MockClassProvider().forceUseRealClass<Repository>();
+      ScreenRef secondRef = ScreenRef(<T extends RepositoryModel>() async {});
+
+      TestServiceModel? firstModel;
+      TestServiceModel? secondModel;
+
+      void setFirstModelAsync() async {
+        firstModel = await ref.getServiceModel(TestServiceModel());
+      }
+
+      setFirstModelAsync();
+
+      expect(Repository().getServiceModelStatus<TestServiceModel>(), ServiceModelStatus.loading);
+
+      void setSecondModelAsync() async {
+        secondModel = await secondRef.getServiceModel(TestServiceModel());
+      }
+
+      await Future.delayed(const Duration(milliseconds: 50));
+      setSecondModelAsync();
+
+      await Future.delayed(const Duration(milliseconds: 50));
+
+      // There were two requests to get the same model, at different times, but they both were
+      // completed at the same time because only one load attempt was made. The second call to load
+      // did not make a second load attempt, but instead depended on the first.
+      expect(firstModel, isNotNull);
+      expect(secondModel, isNotNull);
+      expect(firstModel, secondModel);
+    });
   });
 }

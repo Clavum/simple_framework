@@ -77,7 +77,9 @@ class Repository {
   }
 
   ServiceModelStatus getServiceModelStatus<S extends ServiceModel>() {
-    if (!containsModel<S>()) return ServiceModelStatus.invalid;
+    if (_serviceModelStatuses[S] == ServiceModelStatus.valid && !containsModel<S>()) {
+      _serviceModelStatuses[S] = ServiceModelStatus.invalid;
+    }
     return _serviceModelStatuses[S] ?? ServiceModelStatus.invalid;
   }
 
