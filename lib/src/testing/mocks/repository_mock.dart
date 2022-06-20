@@ -31,11 +31,6 @@ class RepositoryMock extends Mock implements Repository {
   Stream<dynamic> streamOf<M extends RepositoryModel>() {
     return StreamMock();
   }
-
-  @override
-  void setServiceModelStatus<S extends ServiceModel>(ServiceModelStatus status) {
-    when(() => getServiceModelStatus<S>()).thenAnswer((_) => status);
-  }
 }
 
 Error _addMockModelCalledWithoutType() {

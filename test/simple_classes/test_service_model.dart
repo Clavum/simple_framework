@@ -27,7 +27,7 @@ class TestServiceModel extends ServiceModel {
   }
 
   @override
-  Future<ServiceModel> load() async {
+  Future<TestServiceModel> load() async {
     await Future.delayed(const Duration(milliseconds: 100));
     return TestServiceModel(
       state: TestServiceModelState.fromLoad,

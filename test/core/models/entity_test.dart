@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
-import '../../test_entity.dart';
+import '../../simple_classes/test_entity.dart';
 
 void main() {
   test('Entity send', () {

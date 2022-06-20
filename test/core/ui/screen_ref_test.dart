@@ -2,8 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
-import '../../test_entity.dart';
-import '../../test_service_model.dart';
+import '../../simple_classes/broken_service_model.dart';
+import '../../simple_classes/test_entity.dart';
+import '../../simple_classes/test_service_model.dart';
 
 void main() {
   late ScreenRef ref;
@@ -15,6 +16,10 @@ void main() {
       callbackCallCount++;
     });
   });
+
+  void setMockServiceModelStatus<S extends ServiceModel>(ServiceModelStatus status) {
+    when(() => Repository().getServiceModelStatus<S>()).thenAnswer((_) => status);
+  }
 
   test('getEntity', () {
     Repository().addMockModel(const TestEntity());
@@ -42,7 +47,7 @@ void main() {
     });
 
     test('model is already valid', () async {
-      Repository().setServiceModelStatus<TestServiceModel>(ServiceModelStatus.valid);
+      setMockServiceModelStatus<TestServiceModel>(ServiceModelStatus.valid);
       TestServiceModel serviceModel = await ref.getServiceModel(TestServiceModel());
 
       expect(serviceModel.state, TestServiceModelState.fromRepository);
@@ -57,19 +62,36 @@ void main() {
         serviceModel = await ref.getServiceModel(TestServiceModel());
       }
 
-      Repository().setServiceModelStatus<TestServiceModel>(ServiceModelStatus.invalid);
-      setModelAsync();
+      setMockServiceModelStatus<TestServiceModel>(ServiceModelStatus.invalid);
 
-      expect(Repository().getServiceModelStatus<TestServiceModel>(), ServiceModelStatus.loading);
+      setModelAsync();
+      verify(() => Repository().setServiceModelStatus<TestServiceModel>(ServiceModelStatus.loading))
+          .called(1);
 
       await Future.delayed(const Duration(milliseconds: 100));
 
       expect(serviceModel, isNotNull);
-      expect(Repository().getServiceModelStatus<TestServiceModel>(), ServiceModelStatus.valid);
+      verify(() => Repository().setServiceModelStatus<TestServiceModel>(ServiceModelStatus.valid))
+          .called(1);
       expect(serviceModel?.state, TestServiceModelState.fromLoad);
 
       verify(() => Repository().sendModel(serviceModel!)).called(1);
       expect(callbackCallCount, 1);
+    });
+
+    test('when load method returns wrong class', () async {
+      setMockServiceModelStatus<BrokenServiceModel>(ServiceModelStatus.invalid);
+
+      bool threwError = false;
+      try {
+        await ref.getServiceModel(BrokenServiceModel());
+      } on ArgumentError {
+        threwError = true;
+      }
+      expect(threwError, true);
+      verify(() =>
+              Repository().setServiceModelStatus<BrokenServiceModel>(ServiceModelStatus.invalid))
+          .called(1);
     });
   });
 }

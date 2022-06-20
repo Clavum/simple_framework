@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
-import '../../test_bloc.dart';
-import '../../test_builder.dart';
-import '../../test_entity.dart';
-import '../../test_screen.dart';
-import '../../test_view_model.dart';
+import '../../simple_classes/test_bloc.dart';
+import '../../simple_classes/test_builder.dart';
+import '../../simple_classes/test_entity.dart';
+import '../../simple_classes/test_screen.dart';
+import '../../simple_classes/test_view_model.dart';
 
 void main() {
   screenTestGroup('Screen', () {
