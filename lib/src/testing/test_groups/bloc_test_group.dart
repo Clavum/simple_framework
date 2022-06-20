@@ -10,7 +10,7 @@ void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B Fun
 
   B blocGetter() => bloc;
 
-  group('$B test group', () {
+  group('$B tests', () {
     setupCommonFallbackValues();
     MockClassProvider().forceUseRealClass<B>();
     bloc = blocCreator();
