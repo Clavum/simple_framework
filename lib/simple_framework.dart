@@ -10,9 +10,7 @@ export 'package:simple_framework/src/core/ui/screen.dart';
 export 'package:simple_framework/src/core/ui/screen_ref.dart';
 export 'package:simple_framework/src/core/ui/stateless_screen.dart';
 export 'package:simple_framework/src/core/bloc.dart';
-export 'package:simple_framework/src/core/locator.dart';
 export 'package:simple_framework/src/core/repository.dart';
-export 'package:simple_framework/src/core/use_case.dart';
 
 export 'package:simple_framework/src/testing/mocks/repository_mock.dart';
 export 'package:simple_framework/src/testing/mocks/screen_ref_mock.dart';
