@@ -19,7 +19,10 @@ class TestBuilder extends ModelBuilder<TestViewModel> {
   TestBuilder._();
 
   factory TestBuilder() {
-    return MockClassProvider().getMockIfTest(real: TestBuilder._(), mock: TestBuilderMock());
+    return MockClassProvider().getMockIfTest(
+      real: () => TestBuilder._(),
+      mock: () => TestBuilderMock(),
+    );
   }
 
   @override

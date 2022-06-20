@@ -9,7 +9,10 @@ class TestBloc extends Bloc {
   TestBloc._();
 
   factory TestBloc() {
-    return MockClassProvider().getMockIfTest(real: TestBloc._(), mock: TestBlocMock());
+    return MockClassProvider().getMockIfTest(
+      real: () => TestBloc._(),
+      mock: () => TestBlocMock(),
+    );
   }
 
   void buildCalled() {

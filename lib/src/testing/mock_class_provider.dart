@@ -43,31 +43,34 @@ class MockClassProvider {
     return _instance!;
   }
 
-  /// Returns [real] if running real code, and returns [mock] if running a test.
+  /// Returns the instance returned by [real] if running real code, and [mock] if running a test.
   E getMockIfTest<E extends Object, M extends Object>({
-    required E real,
-    required M mock,
+    required E Function() real,
+    required M Function() mock,
     bool allowMock = true,
   }) {
     if (_realOverrides.contains(E)) {
       return _classes.firstWhere((object) => object.runtimeType == E, orElse: () {
-        _classes.add(real);
-        return real;
+        final E realInstance = real();
+        _classes.add(realInstance);
+        return realInstance;
       }) as E;
     }
     return _classes.firstWhere(
       (object) => object.runtimeType == E || object.runtimeType == M,
       orElse: () {
         if (Platform.environment.containsKey('FLUTTER_TEST') && allowMock) {
-          _classes.add(mock);
-          setupCommonMockStubs(mock);
-          return mock;
+          final M mockInstance = mock();
+          _classes.add(mockInstance);
+          setupCommonMockStubs(mockInstance);
+          return mockInstance;
         } else {
           //TODO: Don't singleton-ify real classes.
           //They're singletons so that you can do Repository() many times and get the same instance.
           //I need to look into this more.
-          _classes.add(real);
-          return real;
+          final E realInstance = real();
+          _classes.add(realInstance);
+          return realInstance;
         }
       },
     ) as E;

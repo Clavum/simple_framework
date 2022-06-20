@@ -9,8 +9,8 @@ class ExampleClass {
 
   factory ExampleClass({bool allowMock = true}) {
     return MockClassProvider().getMockIfTest(
-      real: ExampleClass._(),
-      mock: MockExampleClass(),
+      real: () => ExampleClass._(),
+      mock: () => MockExampleClass(),
       allowMock: allowMock,
     );
   }

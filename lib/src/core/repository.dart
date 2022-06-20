@@ -13,7 +13,10 @@ class Repository {
   final Map<Type, ServiceModelStatus> _serviceModelStatuses = {};
 
   factory Repository() {
-    return MockClassProvider().getMockIfTest(real: Repository._(), mock: RepositoryMock());
+    return MockClassProvider().getMockIfTest(
+      real: () => Repository._(),
+      mock: () => RepositoryMock(),
+    );
   }
 
   /// Get a [Model] from the [Repository]. Ideal usage is:
