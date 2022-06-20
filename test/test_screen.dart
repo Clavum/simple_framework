@@ -10,6 +10,7 @@ class TestScreen extends Screen<TestBloc, TestViewModel> {
 
   @override
   Widget build(context, bloc, viewModel) {
+    bloc.buildCalled();
     return Column(
       children: [
         const Text('Loaded'),

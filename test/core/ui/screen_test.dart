@@ -61,21 +61,40 @@ void main() {
       MockClassProvider().forceUseRealClass<TestBuilder>();
       MockClassProvider().forceUseRealClass<Repository>();
 
-      expect(Repository().hashCode, Repository().hashCode);
-
       await pumpTestScreen(tester);
-
       expect(find.text('Value: 0'), findsOneWidget);
 
       const TestEntity(value: 2).send();
       await tester.pumpAndSettle();
-
       expect(find.text('Value: 2'), findsOneWidget);
 
       const TestEntity(value: 5).send();
       await tester.pumpAndSettle();
-
       expect(find.text('Value: 5'), findsOneWidget);
+    });
+
+    testWidgets('avoids rebuild when builder returns duplicate model', (tester) async {
+      MockClassProvider().forceUseRealClass<TestBloc>();
+      MockClassProvider().forceUseRealClass<TestBuilder>();
+      MockClassProvider().forceUseRealClass<Repository>();
+
+      await pumpTestScreen(tester);
+      expect(testEntity.buildCallCount, 1);
+
+      testEntity.merge(value: testEntity.value + 1).send();
+      await tester.pumpAndSettle();
+      expect(testEntity.buildCallCount, 2);
+
+      // Sending the same model shouldn't rebuild the Screen.
+      testEntity.send();
+      await tester.pumpAndSettle();
+      expect(testEntity.buildCallCount, 2);
+
+      // If the Entity is updated, but it is to a field that the Builder doesn't use, the Screen
+      // shouldn't rebuild.
+      testEntity.merge(extraneousField: 10).send();
+      await tester.pumpAndSettle();
+      expect(testEntity.buildCallCount, 2);
     });
   });
 }

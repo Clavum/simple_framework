@@ -19,7 +19,7 @@ class TestServiceModel extends ServiceModel {
 }
 
 void main() {
-  test('Entity send', () {
+  test('ServiceModel send', () {
     TestServiceModel testServiceModel = TestServiceModel(value: 1);
     testServiceModel.send();
 

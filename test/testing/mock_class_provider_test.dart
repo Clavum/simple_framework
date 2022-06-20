@@ -17,29 +17,31 @@ class ExampleClass {
 }
 
 void main() {
-  test('MockClassProvider getMockIfTest', () {
-    expect(ExampleClass().runtimeType, MockExampleClass);
-    MockClassProvider().clear();
-    expect(ExampleClass(allowMock: false).runtimeType, ExampleClass);
-  });
+  group('MockClassProvider', () {
+    test('getMockIfTest', () {
+      expect(ExampleClass().runtimeType, MockExampleClass);
+      MockClassProvider().clear();
+      expect(ExampleClass(allowMock: false).runtimeType, ExampleClass);
+    });
 
-  test('MockClassProvider real classes are singletons', () {
-    expect(ExampleClass(allowMock: false).hashCode, ExampleClass(allowMock: false).hashCode);
-  });
+    test('real classes are singletons', () {
+      expect(ExampleClass(allowMock: false).hashCode, ExampleClass(allowMock: false).hashCode);
+    });
 
-  test('MockClassProvider mock classes are singletons', () {
-    expect(ExampleClass().hashCode, ExampleClass().hashCode);
-  });
+    test('mock classes are singletons', () {
+      expect(ExampleClass().hashCode, ExampleClass().hashCode);
+    });
 
-  test('MockClassProvider setClass', () {
-    ExampleClass real = ExampleClass._();
-    MockClassProvider().setClass(real);
-    expect(ExampleClass().hashCode, real.hashCode);
-  });
+    test('setClass', () {
+      ExampleClass real = ExampleClass._();
+      MockClassProvider().setClass(real);
+      expect(ExampleClass().hashCode, real.hashCode);
+    });
 
-  test('MockClassProvider forceUseRealClass', () {
-    MockClassProvider().forceUseRealClass<ExampleClass>();
-    expect(ExampleClass().runtimeType, ExampleClass);
-    expect(ExampleClass().hashCode, ExampleClass().hashCode);
+    test('forceUseRealClass', () {
+      MockClassProvider().forceUseRealClass<ExampleClass>();
+      expect(ExampleClass().runtimeType, ExampleClass);
+      expect(ExampleClass().hashCode, ExampleClass().hashCode);
+    });
   });
 }
