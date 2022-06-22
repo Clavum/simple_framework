@@ -10,12 +10,14 @@ import 'package:source_gen/source_gen.dart';
 // because so much is different when you don't have any parameters, is to check if there's any
 // parameters right at the start, and there aren't any, build a special empty model.
 // Instead of having parametersRequired, can I just check if defaultValue is null?
+// Change modelName to modelExtends, and if null, don't extend.
+// Change shouldGenerateGetter to shouldGenerateRepoGetter.
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   late bool shouldGenerateMerge;
   late bool parametersRequired;
   late bool shouldGenerateGetter;
-  late bool allowCustomMethods;
   late String modelName;
+
   late Visitor visitor;
   late StringBuffer buffer;
 
@@ -28,7 +30,6 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
     parametersRequired = annotation.read('parametersRequired').boolValue;
     shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
-    allowCustomMethods = annotation.read('allowCustomMethods').boolValue;
     modelName = annotation.read('modelName').stringValue;
 
     visitor = Visitor();
@@ -41,9 +42,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
 
     MainClassGenerator(this).generate();
 
-    if (allowCustomMethods) {
-      AbstractClassGenerator(this).generate();
-    }
+    AbstractClassGenerator(this).generate();
 
     if (shouldGenerateGetter) {
       generateGetter();
@@ -162,33 +161,17 @@ class MainClassGenerator {
       ''');
     }
 
-    late String className;
-    if (generator.allowCustomMethods) {
-      className = '_\$_${generator.visitor.className}';
-    } else {
-      className = '_${generator.visitor.className}';
-    }
+    String className = '_\$_${generator.visitor.className}';
 
-    late String classDeclaration;
-    if (generator.allowCustomMethods) {
-      classDeclaration = 'class $className extends _${generator.visitor.className} {';
-    } else {
-      classDeclaration =
-          'class $className extends ${generator.modelName} implements ${generator.visitor.className} {';
-    }
-
-    String superCall = '';
-    if (generator.allowCustomMethods) {
-      superCall = ' : super._()';
-    }
+    String classDeclaration = 'class $className extends _${generator.visitor.className} {';
 
     generator.buffer.writeln('''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 $classDeclaration
-  $className({
+  const $className({
     ${constructorParametersBuffer.toString()}
-  })$superCall;
+  }) : super._();
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   ${parameterOverridesBuffer.toString()}
@@ -228,11 +211,13 @@ class AbstractClassGenerator {
     }
 
     generator.buffer.writeln('''
+/// @nodoc
 abstract class _${generator.visitor.className} extends ${generator.visitor.className} {
-  factory _${generator.visitor.className}({
+  const factory _${generator.visitor.className}({
     ${factoryParametersBuffer.toString()}
   }) = _\$_${generator.visitor.className};
-  _${generator.visitor.className}._() : super._();
+
+  const _${generator.visitor.className}._() : super._();
 
   ${parameterGettersBuffer.toString()}
 }
