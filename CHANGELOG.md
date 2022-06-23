@@ -129,3 +129,9 @@ such as for the onCreate method of a bloc.
 
 Instead of Screens needing a Builder, have them require a function which takes ref and returns a
 future view model. This way you can just provide a bloc method which does the building, if simple.
+
+Idea: Have Entity extend View Model, but add merge method. Then can have a SimpleBuilder which
+automatically casts Entity as View Model for use in the Screen.
+Doesn't really work well.
+Think much better idea is have the model generator create a view model with the same parameters,
+and have toViewModel method in entity.
