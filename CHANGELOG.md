@@ -135,3 +135,6 @@ automatically casts Entity as View Model for use in the Screen.
 Doesn't really work well.
 Think much better idea is have the model generator create a view model with the same parameters,
 and have toViewModel method in entity.
+
+Make is to Screen doesn't have to have it's own bloc, by making Screen have overridable methods
+for create/dispose, and pass in bloc, so that you can call a method.
