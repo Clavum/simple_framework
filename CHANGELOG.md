@@ -133,5 +133,19 @@ Doesn't really work well.
 Think much better idea is have the model generator create a view model with the same parameters,
 and have toViewModel method in entity.
 
-Make is to Screen doesn't have to have it's own bloc, by making Screen have overridable methods
+Make it so Screen doesn't have to have it's own bloc, by making Screen have overridable methods
 for create/dispose, and pass in bloc, so that you can call a method.
+
+If a Bloc is made into a mock factory, then even if it is disposed, next time the screen is
+built, it will be the same bloc, right? Is this okay or does it break things?
+
+I have debugGetBloc in Screen class so that I can directly use the build method, but really
+I should just have a testing method to build with a view model. It returns result of build
+method passed with _bloc and mock build context.
+OR, add mockViewModel parameter, then initState of build method skips everything and uses vm.
+
+When MockRepository is created, can I stub get for any model, then throw a more detailed error
+that it must be added as a mock?
+Just a thought, why can't I use the generated entityGetter somehow to automatically add mock
+models to the Repo? I could even make a global variable, entityNameDefault. Then instead of
+throwing error, return this getter.
