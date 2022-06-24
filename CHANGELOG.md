@@ -116,6 +116,10 @@ this automatically, I added a setupCommonMockStubs method, which takes any objec
 type, creates the common stubs. This is used by the MockClassProvider when first using a mock, so
 the developer will never need to worry about it.
 
+Made it so ScreenRef's streamCallback parameter is optional, so that you can easily create a new
+instance for testing purposes. For example, you can test a ModelBuilder by passing in ScreenRef()
+to the build method. It will be a real instance, but will refer to the mock repository.
+
 TODO:
 Tests!
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive

@@ -4,16 +4,16 @@ import 'package:simple_framework/simple_framework.dart';
 class ScreenRef {
   bool firstLoad = true;
 
-  final void Function<T extends RepositoryModel>() _streamCallback;
+  final void Function<T extends RepositoryModel>()? _streamCallback;
 
   bool _validSession = true;
 
-  ScreenRef(this._streamCallback);
+  ScreenRef([this._streamCallback]);
 
   E getEntity<E extends Entity>(E entity) {
     if (!_validSession) throw _disposedScreenRefUsedError();
 
-    _streamCallback<E>();
+    _streamCallback?.call<E>();
     return Repository().get<E>(entity);
   }
 
@@ -53,7 +53,7 @@ class ScreenRef {
     /// because we might as well display the latest information.
     loadedModel.send();
 
-    _streamCallback<M>();
+    _streamCallback?.call<M>();
     return loadedModel;
   }
 
