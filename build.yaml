@@ -1,17 +1,19 @@
+#https://github.com/dart-lang/build/blob/master/build_config/README.md
+#https://github.com/dart-lang/build/blob/master/docs/faq.md
+
 targets:
   $default:
     builders:
-      entity_generator:
+      generators:generate_model_builder:
         enabled: true
         generate_for:
-          - "**/**entity.dart"
+          - lib/**/*_entity.dart
 
 builders:
-  generators:
-    target: ":generators"
+  generators:generate_model_builder:
     import: "package:generators/src/builder.dart"
     builder_factories: [ "generateModelBuilder" ]
-    build_extensions: { ".dart": [".g.dart"] }
+    # Extension should match the partId from builder.dart
+    build_extensions: { ".dart": [ "test.dart" ] }
     auto_apply: dependents
-    build_to: cache
-    applies_builders: ["source_gen|combining_builder"]
+    build_to: source
