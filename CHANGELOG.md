@@ -116,6 +116,15 @@ this automatically, I added a setupCommonMockStubs method, which takes any objec
 type, creates the common stubs. This is used by the MockClassProvider when first using a mock, so
 the developer will never need to worry about it.
 
+Still a work in progress, but I'm probably going to replace the MockClassProvider with a new
+class, Mockable. MockClassProvider's getMockIfTest method has issues, because the mock has to be in
+source code. It's also not very clear in tests which classes are automatically mocked or not, for
+developers unfamiliar with the code.
+Mockable is much simpler, because you can just do "mockable(SomeClass._())" in a factory, then
+"setMock<SomeClass>(SomeClassMock())" in a test. It works mostly how we're familiar with now.
+With this, real code should be the only place that uses the mock factory, while tests instead keep
+the mock as a local variable.
+
 TODO:
 Tests!
 Consider using Hive instead of Repository? What makes it more performant than a singleton with a map? https://github.com/hivedb/hive
