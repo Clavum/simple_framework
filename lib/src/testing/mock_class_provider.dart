@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:simple_framework/src/testing/setup_common_mock_stubs.dart';
+import 'package:simple_framework/simple_framework.dart';
 
 /// Used to create 'Mock Factories' which provide real class instances while running the app but
 /// mocked instances while running tests. Example:

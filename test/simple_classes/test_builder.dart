@@ -10,7 +10,7 @@ class TestBuilderMock extends Mock implements TestBuilder {
   factory TestBuilderMock() {
     TestBuilderMock testBuilderMock = TestBuilderMock._();
     when(() => testBuilderMock.build(any()))
-        .thenAnswer((_) => Future.value(TestViewModel(value: '5')));
+        .thenAnswer((_) => Future.value(const TestViewModel(value: '5')));
     return testBuilderMock;
   }
 }

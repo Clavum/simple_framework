@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_framework/src/testing/common_test_methods.dart';
 
 /// A shortcut to:
 /// ```dart
@@ -69,6 +70,7 @@ class Mockable {
   @visibleForTesting
   void setMock<T extends Object>(Object mock) {
     assert(T != Object, 'setMock must be provided a type parameter');
+    setupCommonMockStubs(mock);
     _mocks[T] = mock;
   }
 

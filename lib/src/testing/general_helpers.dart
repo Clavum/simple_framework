@@ -13,6 +13,10 @@ M getSentModel<M extends RepositoryModel>() {
   });
 }
 
+void verifyModelSent(RepositoryModel model) {
+  verify(() => Repository().sendModel(model)).called(1);
+}
+
 Exception _noMatchingModelSent<M>() {
   return Exception('getSentModel was called for the Type $M, but no '
       'matching Repository().sendModel calls were found.');

@@ -34,7 +34,8 @@ void main() {
 
     testWidgets('builds from the Builder', (tester) async {
       TestBuilderMock builder = TestBuilder() as TestBuilderMock;
-      when(() => builder.build(any())).thenAnswer((_) => Future.value(TestViewModel(value: '10')));
+      when(() => builder.build(any()))
+          .thenAnswer((_) => Future.value(const TestViewModel(value: '10')));
 
       await pumpTestScreen(tester);
 
@@ -45,7 +46,7 @@ void main() {
       TestBuilderMock builder = TestBuilder() as TestBuilderMock;
       when(() => builder.build(any())).thenAnswer((_) async {
         await Future.delayed(const Duration(seconds: 1));
-        return TestViewModel(value: '10');
+        return const TestViewModel(value: '10');
       });
 
       await pumpTestScreen(tester);

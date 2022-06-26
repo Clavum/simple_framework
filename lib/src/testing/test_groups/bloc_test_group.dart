@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meta/meta.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 @isTestGroup
@@ -22,9 +21,7 @@ void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B Fun
 
     tearDown(() {
       bloc.dispose();
-      reset(Repository());
-      resetMocktailState();
-      MockClassProvider().clear();
+      commonTearDown();
     });
 
     body(blocGetter);
