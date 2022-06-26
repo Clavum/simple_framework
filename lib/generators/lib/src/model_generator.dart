@@ -64,7 +64,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
   generateGetter() {
     buffer.write('${visitor.className} get ${visitor.camelCaseClassName} ');
-    buffer.writeln('=> Repository().get(${visitor.className}());');
+    buffer.writeln('=> Repository().get(const ${visitor.className}());');
   }
 }
 
