@@ -11,14 +11,14 @@ T Function<T extends Object>(T Function() real) get mockable {
   return <T extends Object>(T Function() real) => Mockable().getClass(real);
 }
 
-/// See [Mockable.getClass] for more information.
+/// See [Mockable.setMock] for more information.
 ///
 /// A shortcut to:
-/// `Mockable().setMock<SomeClass>(SomeClassMock());`
+/// `Mockable().setMock(SomeClassMock());`
 /// Instead, it's:
-/// `setMock<SomeClass>(SomeClassMock());`
-void Function<T extends Object>(Object mock) get setMock {
-  return <T extends Object>(Object mock) => Mockable().setMock<T>(mock);
+/// `setMock(SomeClassMock());`
+void Function<T extends Object>(T mock) get setMock {
+  return <T extends Object>(T mock) => Mockable().setMock(mock);
 }
 
 /// See [Mockable.clear] for more information.
@@ -36,14 +36,16 @@ class Mockable {
 
   static Mockable? _instance;
 
-  final Map<Type, Object> _mocks = {};
+  final List<Object> _mocks = [];
 
   factory Mockable() {
     _instance ??= Mockable._();
     return _instance!;
   }
 
-  /// Returns a mock if one has been set, otherwise returns the real instance.
+  /// Checks every mock which has been provided by [setMock] and returns the
+  /// first one which extends the [real] class. If no matching mocks are found,
+  /// the [real] instance is used.
   ///
   /// Consider using:
   /// `mockable(() => SomeClass())`
@@ -57,33 +59,24 @@ class Mockable {
   /// This is to allow lazy initialization. If the class has been mocked, then
   /// we can spare resources by not creating the real class.
   T getClass<T extends Object>(T Function() real) {
-    return (_mocks[T] ?? real()) as T;
+    return _mocks.firstWhere((mock) => mock is T, orElse: real) as T;
   }
 
   /// Used to mock a class. It will only work if the class uses [mockable] in
-  /// its constructor.
-  /// A type argument must be provided, which the class which you want to mock.
-  /// A parameter must also be provided, which is the mock instance.
-  /// For example:
-  /// `setMock<ClassToMock>(MockInstance());`
+  /// a factory constructor. The target class to mock is inferred by which class
+  /// the mock implements.
   @visibleForTesting
-  void setMock<T extends Object>(Object mock) {
-    if (mock is! T) {
-      throw _incompatibleMockError<T>(mock);
-    }
+  void setMock<T extends Object>(T mock) {
     if (mock is! Mock && mock is! Fake) {
       throw _setMockUsedWithRealClassError(mock);
     }
-    _mocks[T] = mock;
+    _mocks.retainWhere((mockElement) => mockElement.runtimeType != T);
+    _mocks.add(mock);
   }
 
   void clear() {
     _instance = null;
   }
-}
-
-ArgumentError _incompatibleMockError<T extends Object>(Object mock) {
-  return ArgumentError('${mock.runtimeType} is not a $T');
 }
 
 ArgumentError _setMockUsedWithRealClassError(Object mock) {
