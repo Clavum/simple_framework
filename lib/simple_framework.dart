@@ -19,6 +19,7 @@ export 'package:simple_framework/src/testing/test_groups/builder_test.dart';
 export 'package:simple_framework/src/testing/test_groups/screen_test_group.dart';
 export 'package:simple_framework/src/testing/general_helpers.dart';
 export 'package:simple_framework/src/testing/mock_class_provider.dart';
+export 'package:simple_framework/src/testing/mockable.dart';
 export 'package:simple_framework/src/testing/setup_common_fallback_values.dart';
 export 'package:simple_framework/src/testing/widget_tester_extensions.dart';
 
