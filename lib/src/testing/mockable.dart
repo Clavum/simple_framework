@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 /// Instead, it's:
 /// `mockable(() => SomeClass._());`
 T Function<T extends Object>(T Function() real) get mockable {
-  return <T extends Object>(T Function() real) => Mockable().getClass(real);
+  return Mockable().getClass;
 }
 
 /// See [Mockable.setMock] for more information.
@@ -18,7 +18,7 @@ T Function<T extends Object>(T Function() real) get mockable {
 /// Instead, it's:
 /// `setMock(SomeClassMock());`
 void Function<T extends Object>(T mock) get setMock {
-  return <T extends Object>(T mock) => Mockable().setMock(mock);
+  return Mockable().setMock;
 }
 
 /// See [Mockable.clear] for more information.
@@ -28,7 +28,7 @@ void Function<T extends Object>(T mock) get setMock {
 /// Instead, it's:
 /// `clearAllMocks();`
 void Function() get clearAllMocks {
-  return () => Mockable().clear();
+  return Mockable().clear;
 }
 
 class Mockable {
