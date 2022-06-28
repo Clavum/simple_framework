@@ -36,7 +36,7 @@ class Mockable {
 
   static Mockable? _instance;
 
-  final List<Object> _mocks = [];
+  final Map<Type, Object> _mocks = {};
 
   factory Mockable() {
     _instance ??= Mockable._();
@@ -59,7 +59,10 @@ class Mockable {
   /// This is to allow lazy initialization. If the class has been mocked, then
   /// we can spare resources by not creating the real class.
   T getClass<T extends Object>(T Function() real) {
-    return _mocks.firstWhere((mock) => mock is T, orElse: real) as T;
+    for (var mock in _mocks.values) {
+      if (mock is T) return mock;
+    }
+    return real();
   }
 
   /// Used to mock a class. It will only work if the class uses [mockable] in
@@ -70,8 +73,7 @@ class Mockable {
     if (mock is! Mock && mock is! Fake) {
       throw _setMockUsedWithRealClassError(mock);
     }
-    _mocks.retainWhere((mockElement) => mockElement.runtimeType != T);
-    _mocks.add(mock);
+    _mocks[T] = (mock);
   }
 
   void clear() {
