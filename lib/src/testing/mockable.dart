@@ -1,51 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:simple_framework/src/testing/common_test_methods.dart';
+import 'package:mocktail/mocktail.dart';
 
-/// A shortcut to:
-/// ```dart
-/// Mockable().getClass(SomeClass._());
-/// ```
-/// Instead, it's:
-/// ```dart
-/// mockable(SomeClass._());
-/// ```
-///
 /// See [Mockable.getClass] for more information.
+///
+/// A shortcut to:
+/// `Mockable().getClass(() => SomeClass._());`
+/// Instead, it's:
+/// `mockable(() => SomeClass._());`
 T Function<T extends Object>(T Function() real) get mockable {
-  return <T extends Object>(T Function() real) => Mockable().getClass(real);
+  return Mockable().getClass;
 }
 
-/// A shortcut to:
-/// ```dart
-/// Mockable().setMock<SomeClass>(SomeClassMock());
-/// ```
-/// Instead, it's:
-/// ```dart
-/// setMock<SomeClass>(SomeClassMock());
-/// ```
+/// See [Mockable.setMock] for more information.
 ///
-/// See [Mockable.getClass] for more information.
-void Function<T extends Object>(Object mock) get setMock {
-  return <T extends Object>(Object mock) => Mockable().setMock<T>(mock);
-}
-
 /// A shortcut to:
-/// ```dart
-/// Mockable().clear();
-/// ```
+/// `Mockable().setMock(SomeClassMock());`
 /// Instead, it's:
-/// ```dart
-/// clearAllMocks();
-/// ```
-/// See [Mockable.clear] for more information.
-void Function() get clearAllMocks {
-  return () => Mockable().clear();
+/// `setMock(SomeClassMock());`
+void Function<T extends Object>(T mock) get setMock {
+  return Mockable().setMock;
 }
 
-// MockClassProvider's getMockIfTest was too uncontrolled. It is not clear to other developers that
-// the class is automatically mocked. To get the same effect, just set up classes that need to be
-// mocked in a setUp method.
-// Additionally, mocks are often customized (such as setting a mock
+/// See [Mockable.clear] for more information.
+///
+/// A shortcut to:
+/// `Mockable().clear();`
+/// Instead, it's:
+/// `clearAllMocks();`
+void Function() get clearAllMocks {
+  return Mockable().clear;
+}
 
 class Mockable {
   Mockable._();
@@ -59,22 +43,49 @@ class Mockable {
     return _instance!;
   }
 
-  /// Returns a mock if one has been set, otherwise returns the real instance.
-  /// Consider using mockable(SomeClass()) instead of Mockable().getClass(SomeClass()).
+  /// Checks every mock which has been provided by [setMock] and returns the
+  /// first one which extends the [real] class. If no matching mocks are found,
+  /// the [real] instance is used.
+  ///
+  /// Consider using:
+  /// `mockable(() => SomeClass())`
+  /// as a shortcut to:
+  /// `Mockable().getClass(() => SomeClass())`
+  ///
+  /// Notice the usage is:
+  /// `mockable(() => SomeClass())`
+  /// instead of:
+  /// `mockable(SomeClass())`
+  /// This is to allow lazy initialization. If the class has been mocked, then
+  /// we can spare resources by not creating the real class.
   T getClass<T extends Object>(T Function() real) {
-    return (_mocks[T] ?? real()) as T;
+    for (var mock in _mocks.values) {
+      if (mock is T) return mock;
+    }
+    return real();
   }
 
-  /// Used to make a class mocked. It will only work if the class uses [mockable] in its
-  /// constructor.
+  /// Used to mock a class. It will only work if the class uses [mockable] in
+  /// a factory constructor. The target class to mock is inferred by which class
+  /// the mock implements.
   @visibleForTesting
-  void setMock<T extends Object>(Object mock) {
-    assert(T != Object, 'setMock must be provided a type parameter');
-    setupCommonMockStubs(mock);
-    _mocks[T] = mock;
+  void setMock<T extends Object>(T mock) {
+    if (mock is! Mock && mock is! Fake) {
+      throw _setMockUsedWithRealClassError(mock);
+    }
+    _mocks[T] = (mock);
   }
 
   void clear() {
     _instance = null;
   }
+}
+
+ArgumentError _setMockUsedWithRealClassError(Object mock) {
+  return ArgumentError(
+    '''
+${mock.runtimeType} is not a Mock or a Fake.
+You cannot use setMock with a real class.
+''',
+  );
 }
