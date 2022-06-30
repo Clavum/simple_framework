@@ -120,6 +120,10 @@ class MainClassGenerator {
     }
 
     final StringBuffer parameterOverridesBuffer = StringBuffer();
+    if (generator.visitor.parameters.isNotEmpty) {
+      parameterOverridesBuffer
+          .writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
+    }
     for (var parameter in generator.visitor.parameters) {
       parameterOverridesBuffer.writeln('@override');
       parameterOverridesBuffer.writeln('final ${parameter.type} ${parameter.name};');
@@ -160,15 +164,17 @@ class MainClassGenerator {
 
     String classDeclaration = 'class $className extends _${generator.visitor.className} {';
 
+    String maybeLeftBrace = generator.visitor.parameters.isNotEmpty ? '{' : '';
+    String maybeRightBrace = generator.visitor.parameters.isNotEmpty ? '}' : '';
+
     generator.buffer.writeln('''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 $classDeclaration
-  const $className({
+  const $className($maybeLeftBrace
     ${constructorParametersBuffer.toString()}
-  }) : super._();
+  $maybeRightBrace) : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   ${parameterOverridesBuffer.toString()}
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
@@ -205,12 +211,16 @@ class AbstractClassGenerator {
       parameterGettersBuffer.writeln();
     }
 
+    String maybeLeftBrace = generator.visitor.parameters.isNotEmpty ? '{' : '';
+    String maybeRightBrace = generator.visitor.parameters.isNotEmpty ? '}' : '';
+
     generator.buffer.writeln('''
+// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _${generator.visitor.className} extends ${generator.visitor.className} {
-  const factory _${generator.visitor.className}({
+  const factory _${generator.visitor.className}($maybeLeftBrace
     ${factoryParametersBuffer.toString()}
-  }) = _\$_${generator.visitor.className};
+  $maybeRightBrace) = _\$_${generator.visitor.className};
 
   const _${generator.visitor.className}._() : super._();
 
