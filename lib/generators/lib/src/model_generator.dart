@@ -17,12 +17,17 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
+    String annotationName = annotation.read('annotationName').stringValue;
     shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
     shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
+    String? mustExtend = annotation.read('mustExtend').stringValue;
 
-    visitor = Visitor();
+    visitor = Visitor(
+      annotationName: annotationName,
+      mustExtend: mustExtend,
+    );
     buffer = StringBuffer();
-    element.visitChildren(visitor);
+    visitor.visitElement(element);
 
     if (visitor.missingRequirements.isNotEmpty) {
       throwMissingSyntaxRequirementsException(visitor);

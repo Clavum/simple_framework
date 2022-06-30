@@ -7,11 +7,15 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 
 enum SyntaxRequirements {
+  extendsRequiredClass,
   hasPrivateConstructor,
   hasFactoryConstructor,
 }
 
 class Visitor extends SimpleElementVisitor<void> {
+  String annotationName;
+  String? mustExtend;
+
   late String className;
   late String camelCaseClassName;
 
@@ -19,6 +23,39 @@ class Visitor extends SimpleElementVisitor<void> {
 
   final List<SyntaxRequirements> missingRequirements =
       List.from(SyntaxRequirements.values);
+
+  Visitor({required this.annotationName, required this.mustExtend});
+
+  void visitElement(Element element) {
+    if (element is ClassElement) {
+      visitClassElement(element);
+    } else {
+      throw Exception(
+        '$annotationName was used on an object other than a class',
+      );
+    }
+  }
+
+  @override
+  void visitClassElement(ClassElement element) {
+    /// Check if the annotated class extends the required model.
+    if (mustExtend == null) {
+      missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
+    } else {
+      for (var type in element.allSupertypes) {
+        if (type.getDisplayString(withNullability: false) == mustExtend) {
+          missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
+        }
+      }
+    }
+
+    className = element.name;
+    String firstLetter = className.substring(0, 1);
+    camelCaseClassName =
+    '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
+
+    element.visitChildren(this);
+  }
 
   @override
   void visitConstructorElement(ConstructorElement element) {
