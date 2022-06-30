@@ -1,263 +1,233 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:generators/src/annotation.dart';
+import 'package:generators/src/model.dart';
+import 'package:generators/src/parameter.dart';
 import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
-  late bool shouldGenerateMerge;
-  late bool shouldGenerateGetter;
-
-  late Visitor visitor;
-  late StringBuffer buffer;
-
   @override
   String generateForAnnotatedElement(
-    Element element,
-    ConstantReader annotation,
-    BuildStep buildStep,
-  ) {
-    String annotationName = annotation.read('annotationName').stringValue;
-    shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
-    shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
-    String? mustExtend = annotation.read('mustExtend').stringValue;
+      Element element,
+      ConstantReader annotation,
+      BuildStep buildStep,
+      ) {
+    final String annotationName = annotation.read('annotationName').stringValue;
+    final bool shouldGenerateMerge =
+        annotation.read('shouldGenerateMerge').boolValue;
+    final bool addErrorsParameter =
+        annotation.read('addErrorsParameter').boolValue;
+    final bool shouldGenerateGetter =
+        annotation.read('shouldGenerateGetter').boolValue;
+    final String? mustExtend = annotation.read('mustExtend').stringValue;
 
-    visitor = Visitor(
+    final Visitor visitor = Visitor(
       annotationName: annotationName,
       mustExtend: mustExtend,
     );
-    buffer = StringBuffer();
-    visitor.visitElement(element);
+    final StringBuffer buffer = StringBuffer();
+    final Model visitedModel = visitor.getModelFromElement(element: element);
 
     if (visitor.missingRequirements.isNotEmpty) {
-      throwMissingSyntaxRequirementsException(visitor);
+      throwMissingSyntaxRequirementsException(
+        visitedModel,
+        visitor.missingRequirements,
+        mustExtend,
+      );
     }
 
-    generateHeaderInfo();
+    /// Add the errors parameter.
+    if (addErrorsParameter) {
+      visitedModel.parameters.insert(
+        0,
+        const Parameter(
+          name: 'errors',
+          defaultValue: 'const []',
+          type: 'List<EntityFailure>',
+          isRequired: false,
+        ),
+      );
+    }
 
-    MixinGenerator(this).generate();
+    buffer.writeln(fileHeaderInformation());
 
-    MainClassGenerator(this).generate();
+    String mixinString = MixinGenerator.generate(
+      visitedModel,
+      shouldGenerateMerge,
+    );
+    buffer.writeln(mixinString);
 
-    AbstractClassGenerator(this).generate();
+    String mainClassString = MainClassGenerator.generate(
+      visitedModel,
+      shouldGenerateMerge,
+    );
+    buffer.writeln(mainClassString);
+
+    String abstractClassString = AbstractClassGenerator.generate(visitedModel);
+    buffer.writeln(abstractClassString);
 
     if (shouldGenerateGetter) {
-      generateGetter();
+      generateGetter(visitedModel, buffer);
     }
 
     return buffer.toString();
   }
 
-  generateHeaderInfo() {
-    buffer.writeln('''
+  String fileHeaderInformation() {
+    return '''
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_element
 // coverage:ignore-file
 
 final _privateConstructorUsedError = UnsupportedError(
     'The Model\\'s factory constructor was bypassed by a private constructor.');
 
-    ''');
+''';
   }
 
-  generateGetter() {
-    buffer.write('${visitor.className} get ${visitor.camelCaseClassName} ');
-    buffer.writeln('=> Repository().get(const ${visitor.className}());');
+  void generateGetter(Model model, StringBuffer buffer) {
+    buffer.write('${model.className} get ${model.camelCaseName} ');
+    buffer.writeln('=> Repository().get(const ${model.className}());');
   }
 }
 
 class MixinGenerator {
-  final ModelGenerator generator;
-
-  MixinGenerator(this.generator);
-
-  void generate() {
-    final StringBuffer parameterGettersBuffer = StringBuffer();
-    for (var parameter in generator.visitor.parameters) {
-      parameterGettersBuffer.writeln(
-          '${parameter.type} get ${parameter.name} => throw _privateConstructorUsedError;');
-      parameterGettersBuffer.writeln();
-    }
-
-    final StringBuffer mergeParametersBuffer = StringBuffer();
-    for (var parameter in generator.visitor.parameters) {
-      mergeParametersBuffer.writeln('${parameter.type}? ${parameter.name},');
-    }
-
+  static String generate(Model model, bool shouldGenerateMerge) {
     final StringBuffer mergeBuffer = StringBuffer();
-    if (generator.shouldGenerateMerge) {
-      mergeBuffer.writeln('''
-${generator.visitor.className} merge({
-    ${mergeParametersBuffer.toString()}
+    if (shouldGenerateMerge) {
+      mergeBuffer.writeln(
+        '''
+${model.className} merge({
+    ${model.nullableParameterList()}
   }) {
     throw _privateConstructorUsedError;
   }
-      ''');
+''',
+      );
     }
 
-    generator.buffer.writeln('''
+    return '''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-mixin _\$${generator.visitor.className} {
-  ${parameterGettersBuffer.toString()}
+mixin ${model.mixinName} {
+  ${model.getterList('throw _privateConstructorUsedError')}
   ${mergeBuffer.toString()}
+
+  List<Object> get props => throw _privateConstructorUsedError;
 }
 
-    ''');
+''';
   }
 }
 
 class MainClassGenerator {
-  final ModelGenerator generator;
-
-  MainClassGenerator(this.generator);
-
-  void generate() {
-    final StringBuffer constructorParametersBuffer = StringBuffer();
-    for (var parameter in generator.visitor.parameters) {
-      if (parameter.isRequired) {
-        constructorParametersBuffer.writeln('required this.${parameter.name},');
-      } else {
-        constructorParametersBuffer.writeln('this.${parameter.name} = ${parameter.defaultValue},');
-      }
-    }
-
-    final StringBuffer parameterOverridesBuffer = StringBuffer();
-    if (generator.visitor.parameters.isNotEmpty) {
-      parameterOverridesBuffer
-          .writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
-    }
-    for (var parameter in generator.visitor.parameters) {
-      parameterOverridesBuffer.writeln('@override');
-      parameterOverridesBuffer.writeln('final ${parameter.type} ${parameter.name};');
-    }
-
-    final StringBuffer propsBuffer = StringBuffer();
-    for (var parameter in generator.visitor.parameters) {
-      propsBuffer.writeln('${parameter.name},');
-    }
-
-    final StringBuffer mergeParametersBuffer = StringBuffer();
-    for (var parameter in generator.visitor.parameters) {
-      mergeParametersBuffer.writeln('${parameter.type}? ${parameter.name},');
-    }
-
-    final StringBuffer mergeBodyBuffer = StringBuffer();
-    for (var parameter in generator.visitor.parameters) {
-      mergeBodyBuffer.writeln('${parameter.name}: ${parameter.name} ?? this.${parameter.name},');
+  static String generate(Model model, bool shouldGenerateMerge) {
+    String generatedWarning = '';
+    if (model.parameters.isNotEmpty) {
+      generatedWarning = '// GENERATED CODE - DO NOT MODIFY BY HAND';
     }
 
     final StringBuffer mergeBuffer = StringBuffer();
-    if (generator.shouldGenerateMerge) {
-      mergeBuffer.writeln('''
+    if (shouldGenerateMerge) {
+      mergeBuffer.writeln(
+        '''
 // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
-  _${generator.visitor.className} merge({
-    ${mergeParametersBuffer.toString()}
+  ${model.abstractClassName} merge({
+    ${model.nullableParameterList()}
   }) {
-    return _${generator.visitor.className}(
-      ${mergeBodyBuffer.toString()}
+    return ${model.abstractClassName}(
+      ${model.mergeFieldsList()}
     );
   }
 
-      ''');
+''',
+      );
     }
 
-    String className = '_\$_${generator.visitor.className}';
+    String maybeLeftBrace = model.parameters.isNotEmpty ? '{' : '';
+    String maybeRightBrace = model.parameters.isNotEmpty ? '}' : '';
 
-    String classDeclaration = 'class $className extends _${generator.visitor.className} {';
-
-    String maybeLeftBrace = generator.visitor.parameters.isNotEmpty ? '{' : '';
-    String maybeRightBrace = generator.visitor.parameters.isNotEmpty ? '}' : '';
-
-    generator.buffer.writeln('''
+    return '''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-$classDeclaration
-  const $className($maybeLeftBrace
-    ${constructorParametersBuffer.toString()}
+class ${model.mainClassName} extends ${model.abstractClassName} {
+  const ${model.mainClassName}($maybeLeftBrace
+    ${model.concreteParameterList()}
   $maybeRightBrace) : super._();
 
-  ${parameterOverridesBuffer.toString()}
+  $generatedWarning
+  ${model.parameterOverrides()}
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object> get props => [
-        ${propsBuffer.toString()}
+        ${model.parametersWithCommas()}
       ];
 
   ${mergeBuffer.toString()}
   @override
-  Type get runtimeType => ${generator.visitor.className};
+  Type get runtimeType => ${model.className};
 }
 
-    ''');
+''';
   }
 }
 
 class AbstractClassGenerator {
-  final ModelGenerator generator;
+  static String generate(Model model) {
+    String maybeLeftBrace = model.parameters.isNotEmpty ? '{' : '';
+    String maybeRightBrace = model.parameters.isNotEmpty ? '}' : '';
 
-  AbstractClassGenerator(this.generator);
-
-  void generate() {
-    StringBuffer factoryParametersBuffer = StringBuffer();
-    for (var parameter in generator.visitor.parameters) {
-      String required = (parameter.isRequired) ? 'required ' : '';
-      factoryParametersBuffer.writeln('$required${parameter.type} ${parameter.name},');
-    }
-
-    StringBuffer parameterGettersBuffer = StringBuffer();
-    for (var parameter in generator.visitor.parameters) {
-      parameterGettersBuffer.writeln('@override');
-      parameterGettersBuffer.writeln('${parameter.type} get ${parameter.name};');
-      parameterGettersBuffer.writeln();
-    }
-
-    String maybeLeftBrace = generator.visitor.parameters.isNotEmpty ? '{' : '';
-    String maybeRightBrace = generator.visitor.parameters.isNotEmpty ? '}' : '';
-
-    generator.buffer.writeln('''
+    return '''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-abstract class _${generator.visitor.className} extends ${generator.visitor.className} {
-  const factory _${generator.visitor.className}($maybeLeftBrace
-    ${factoryParametersBuffer.toString()}
-  $maybeRightBrace) = _\$_${generator.visitor.className};
+abstract class ${model.abstractClassName} extends ${model.className} {
+  const factory ${model.abstractClassName}($maybeLeftBrace
+    ${model.redirectedParameterList()}
+  $maybeRightBrace) = ${model.mainClassName};
 
-  const _${generator.visitor.className}._() : super._();
+  const ${model.abstractClassName}._() : super._();
 
-  ${parameterGettersBuffer.toString()}
+  ${model.getterList()}
 }
 
-    ''');
+''';
   }
 }
 
-void throwMissingSyntaxRequirementsException(Visitor visitor) {
+void throwMissingSyntaxRequirementsException(
+    Model model,
+    List<SyntaxRequirements> missingRequirements,
+    String? mustExtend,
+    ) {
   StringBuffer errorBuffer = StringBuffer();
 
-  errorBuffer
-      .writeln('Invalid syntax for generated model: ${visitor.className}');
+  errorBuffer.writeln('Invalid syntax for generated model: ${model.className}');
 
-  if (visitor.className.isEmpty) {
-    visitor.className = 'ClassName';
+  if (model.className.isEmpty) {
+    model.className = 'ClassName';
   }
 
-  if (visitor.missingRequirements
-      .contains(SyntaxRequirements.hasPrivateConstructor)) {
+  if (missingRequirements.contains(SyntaxRequirements.extendsRequiredClass)) {
+    errorBuffer.writeln();
+    errorBuffer.writeln('${model.className} must extend $mustExtend');
+  }
+  if (missingRequirements.contains(SyntaxRequirements.hasPrivateConstructor)) {
     errorBuffer.writeln();
     errorBuffer.writeln('Missing a const private constructor:');
-    errorBuffer.writeln('const ${visitor.className}_.();');
+    errorBuffer.writeln('const ${model.className}_.();');
   }
-  if (visitor.missingRequirements
-      .contains(SyntaxRequirements.hasFactoryConstructor)) {
+  if (missingRequirements.contains(SyntaxRequirements.hasFactoryConstructor)) {
     errorBuffer.writeln();
     errorBuffer.writeln('Missing a const factory constructor:');
-    errorBuffer.writeln('''
-const factory ${visitor.className}({
+    errorBuffer.writeln(
+      '''
+const factory ${model.className}({
   ...your fields
-}) = _${visitor.className};
-    ''');
+}) = _${model.className};
+''',
+    );
   }
 
   throw Exception(errorBuffer.toString());

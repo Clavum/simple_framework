@@ -1,6 +1,8 @@
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:generators/src/annotation.dart';
+import 'package:generators/src/model.dart';
+import 'package:generators/src/parameter.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -13,18 +15,22 @@ enum SyntaxRequirements {
 }
 
 class Visitor extends SimpleElementVisitor<void> {
-  String annotationName;
-  String? mustExtend;
+  final String annotationName;
+  final String? mustExtend;
 
-  late String className;
-  late String camelCaseClassName;
-
-  final List<Parameter> parameters = [];
+  Model visitedModel = Model();
 
   final List<SyntaxRequirements> missingRequirements =
       List.from(SyntaxRequirements.values);
 
   Visitor({required this.annotationName, required this.mustExtend});
+
+  Model getModelFromElement({
+    required Element element,
+  }) {
+    visitElement(element);
+    return visitedModel;
+  }
 
   void visitElement(Element element) {
     if (element is ClassElement) {
@@ -49,10 +55,7 @@ class Visitor extends SimpleElementVisitor<void> {
       }
     }
 
-    className = element.name;
-    String firstLetter = className.substring(0, 1);
-    camelCaseClassName =
-    '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
+    visitedModel.className = element.name;
 
     element.visitChildren(this);
   }
@@ -68,11 +71,6 @@ class Visitor extends SimpleElementVisitor<void> {
     if (element.isConst && element.isPublic && element.isFactory) {
       missingRequirements.remove(SyntaxRequirements.hasFactoryConstructor);
 
-      className = element.type.returnType.toString();
-      String firstLetter = className.substring(0, 1);
-      camelCaseClassName =
-      '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
-
       /// Must be called so that visitParameterElement is called.
       element.visitChildren(this);
     }
@@ -80,27 +78,13 @@ class Visitor extends SimpleElementVisitor<void> {
 
   @override
   void visitParameterElement(ParameterElement element) {
-    parameters.add(Parameter(
+    visitedModel.parameters.add(Parameter(
       defaultValue: element.defaultValue,
       type: parseTypeSource(element),
       name: element.name.toString(),
       isRequired: element.isRequired,
     ));
   }
-}
-
-class Parameter {
-  final String? defaultValue;
-  final String? type;
-  final String name;
-  final bool isRequired;
-
-  Parameter({
-    required this.defaultValue,
-    required this.type,
-    required this.name,
-    required this.isRequired,
-  });
 }
 
 /// This code is from the Freezed package: https://pub.dev/packages/freezed
