@@ -10,13 +10,11 @@ import 'package:source_gen/source_gen.dart';
 // because so much is different when you don't have any parameters, is to check if there's any
 // parameters right at the start, and there aren't any, build a special empty model.
 // Instead of having parametersRequired, can I just check if defaultValue is null?
-// Change modelName to modelExtends, and if null, don't extend.
 // Change shouldGenerateGetter to shouldGenerateRepoGetter.
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   late bool shouldGenerateMerge;
   late bool parametersRequired;
   late bool shouldGenerateGetter;
-  late String modelName;
 
   late Visitor visitor;
   late StringBuffer buffer;
@@ -30,7 +28,6 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
     parametersRequired = annotation.read('parametersRequired').boolValue;
     shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
-    modelName = annotation.read('modelName').stringValue;
 
     visitor = Visitor();
     buffer = StringBuffer();
