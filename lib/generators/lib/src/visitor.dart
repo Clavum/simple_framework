@@ -6,7 +6,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 
-class Visitor extends GeneralizingElementVisitor<void> {
+class Visitor extends SimpleElementVisitor<void> {
   late String className;
   late String camelCaseClassName;
 
@@ -19,7 +19,7 @@ class Visitor extends GeneralizingElementVisitor<void> {
     camelCaseClassName = '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
 
     /// Must be called so that visitParameterElement is called.
-    visitExecutableElement(element);
+    element.visitChildren(this);
   }
 
   @override
