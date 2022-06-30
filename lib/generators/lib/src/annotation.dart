@@ -1,30 +1,25 @@
 class GenerateModel {
   final bool shouldGenerateMerge;
-  final bool parametersRequired;
   final bool shouldGenerateGetter;
 
   const GenerateModel({
     required this.shouldGenerateMerge,
-    required this.parametersRequired,
     required this.shouldGenerateGetter,
   });
 }
 
 const generateEntity = GenerateModel(
   shouldGenerateMerge: true,
-  parametersRequired: false,
   shouldGenerateGetter: true,
 );
 
 const generateViewModel = GenerateModel(
   shouldGenerateMerge: false,
-  parametersRequired: true,
   shouldGenerateGetter: false,
 );
 
 const generateServiceModel = GenerateModel(
   shouldGenerateMerge: false,
-  parametersRequired: false,
   shouldGenerateGetter: false,
 );
 

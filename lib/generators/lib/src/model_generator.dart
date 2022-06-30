@@ -13,7 +13,6 @@ import 'package:source_gen/source_gen.dart';
 // Change shouldGenerateGetter to shouldGenerateRepoGetter.
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   late bool shouldGenerateMerge;
-  late bool parametersRequired;
   late bool shouldGenerateGetter;
 
   late Visitor visitor;
@@ -26,7 +25,6 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     BuildStep buildStep,
   ) {
     shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
-    parametersRequired = annotation.read('parametersRequired').boolValue;
     shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
 
     visitor = Visitor();
@@ -114,7 +112,7 @@ class MainClassGenerator {
   void generate() {
     final StringBuffer constructorParametersBuffer = StringBuffer();
     for (var parameter in generator.visitor.parameters) {
-      if (generator.parametersRequired) {
+      if (parameter.isRequired) {
         constructorParametersBuffer.writeln('required this.${parameter.name},');
       } else {
         constructorParametersBuffer.writeln('this.${parameter.name} = ${parameter.defaultValue},');
@@ -196,7 +194,7 @@ class AbstractClassGenerator {
   void generate() {
     StringBuffer factoryParametersBuffer = StringBuffer();
     for (var parameter in generator.visitor.parameters) {
-      String required = (generator.parametersRequired) ? 'required ' : '';
+      String required = (parameter.isRequired) ? 'required ' : '';
       factoryParametersBuffer.writeln('$required${parameter.type} ${parameter.name},');
     }
 

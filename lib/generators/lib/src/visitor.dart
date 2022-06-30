@@ -28,6 +28,7 @@ class Visitor extends SimpleElementVisitor<void> {
       defaultValue: element.defaultValue,
       type: parseTypeSource(element),
       name: element.name.toString(),
+      isRequired: element.isRequired,
     ));
   }
 }
@@ -36,11 +37,13 @@ class Parameter {
   final String? defaultValue;
   final String? type;
   final String name;
+  final bool isRequired;
 
   Parameter({
     required this.defaultValue,
     required this.type,
     required this.name,
+    required this.isRequired,
   });
 }
 
