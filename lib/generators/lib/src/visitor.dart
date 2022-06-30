@@ -6,20 +6,39 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 
+enum SyntaxRequirements {
+  hasPrivateConstructor,
+  hasFactoryConstructor,
+}
+
 class Visitor extends SimpleElementVisitor<void> {
   late String className;
   late String camelCaseClassName;
 
   final List<Parameter> parameters = [];
 
+  final List<SyntaxRequirements> missingRequirements =
+      List.from(SyntaxRequirements.values);
+
   @override
   void visitConstructorElement(ConstructorElement element) {
-    className = element.type.returnType.toString();
-    String firstLetter = className.substring(0, 1);
-    camelCaseClassName = '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
+    /// Private const constructor.
+    if (element.isConst && element.isPrivate && element.name == '_') {
+      missingRequirements.remove(SyntaxRequirements.hasPrivateConstructor);
+    }
 
-    /// Must be called so that visitParameterElement is called.
-    element.visitChildren(this);
+    /// Public factory constructor.
+    if (element.isConst && element.isPublic && element.isFactory) {
+      missingRequirements.remove(SyntaxRequirements.hasFactoryConstructor);
+
+      className = element.type.returnType.toString();
+      String firstLetter = className.substring(0, 1);
+      camelCaseClassName =
+      '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
+
+      /// Must be called so that visitParameterElement is called.
+      element.visitChildren(this);
+    }
   }
 
   @override
@@ -79,7 +98,8 @@ String? parseTypeSource(VariableElement element) {
   String? type = element.type.getDisplayString(withNullability: true);
 
   if (type.contains('dynamic') && element.nameOffset > 0) {
-    final source = element.source!.contents.data.substring(0, element.nameOffset);
+    final source =
+        element.source!.contents.data.substring(0, element.nameOffset);
     if (element.type.element != null &&
         element.type.isDynamic &&
         element.type.element!.isSynthetic) {

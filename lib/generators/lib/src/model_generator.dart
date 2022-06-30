@@ -4,13 +4,6 @@ import 'package:generators/src/annotation.dart';
 import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
-// TODO list:
-// Verify user's code syntax is correct for the model.
-// Fix generated model has errors when user makes model with no parameters - best way to do this,
-// because so much is different when you don't have any parameters, is to check if there's any
-// parameters right at the start, and there aren't any, build a special empty model.
-// Instead of having parametersRequired, can I just check if defaultValue is null?
-// Change shouldGenerateGetter to shouldGenerateRepoGetter.
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   late bool shouldGenerateMerge;
   late bool shouldGenerateGetter;
@@ -30,6 +23,10 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     visitor = Visitor();
     buffer = StringBuffer();
     element.visitChildren(visitor);
+
+    if (visitor.missingRequirements.isNotEmpty) {
+      throwMissingSyntaxRequirementsException(visitor);
+    }
 
     generateHeaderInfo();
 
@@ -229,4 +226,34 @@ abstract class _${generator.visitor.className} extends ${generator.visitor.class
 
     ''');
   }
+}
+
+void throwMissingSyntaxRequirementsException(Visitor visitor) {
+  StringBuffer errorBuffer = StringBuffer();
+
+  errorBuffer
+      .writeln('Invalid syntax for generated model: ${visitor.className}');
+
+  if (visitor.className.isEmpty) {
+    visitor.className = 'ClassName';
+  }
+
+  if (visitor.missingRequirements
+      .contains(SyntaxRequirements.hasPrivateConstructor)) {
+    errorBuffer.writeln();
+    errorBuffer.writeln('Missing a const private constructor:');
+    errorBuffer.writeln('const ${visitor.className}_.();');
+  }
+  if (visitor.missingRequirements
+      .contains(SyntaxRequirements.hasFactoryConstructor)) {
+    errorBuffer.writeln();
+    errorBuffer.writeln('Missing a const factory constructor:');
+    errorBuffer.writeln('''
+const factory ${visitor.className}({
+  ...your fields
+}) = _${visitor.className};
+    ''');
+  }
+
+  throw Exception(errorBuffer.toString());
 }
