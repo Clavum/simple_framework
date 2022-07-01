@@ -39,8 +39,8 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
       );
     }
 
-    if (visitedModel.nullValueParameters().isNotEmpty) {
-      _throwNullValueParameterException(visitedModel);
+    if (visitedModel.invalidParameters().isNotEmpty) {
+      _throwInvalidParameterException(visitedModel);
     }
 
       /// Add the errors parameter.
@@ -119,7 +119,7 @@ mixin ${model.mixinName} {
   ${model.getterList('throw $_constructorBypassedError')}
   ${mergeBuffer.toString()}
 
-  List<Object> get props => throw $_constructorBypassedError;
+  List<Object?> get props => throw $_constructorBypassedError;
 }
 
 ''';
@@ -167,7 +167,7 @@ class ${model.mainClassName} extends ${model.abstractClassName} {
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         ${model.parametersWithCommas()}
       ];
 
@@ -239,9 +239,9 @@ const factory ${model.className}({
   throw Exception(errorBuffer.toString());
 }
 
-void _throwNullValueParameterException(Model model) {
+void _throwInvalidParameterException(Model model) {
   StringBuffer invalidParametersBuffer = StringBuffer();
-  for (var parameter in model.nullValueParameters()) {
+  for (var parameter in model.invalidParameters()) {
     invalidParametersBuffer.writeln(parameter.name);
   }
 
@@ -249,8 +249,11 @@ void _throwNullValueParameterException(Model model) {
     '''
 Invalid syntax for generated model: ${model.className}
 
-Every parameter must either be marked as `required`, or be annotated with a
-`@Default` value, i.e. `@Default(value) Type parameterName`
+Every parameter's syntax must either be in one of these three forms:
+
+1. required Type parameterName
+2. @Default(defaultValue) Type parameterName
+3. Type? parameterName
 
 Parameters with invalid syntax:
 ${invalidParametersBuffer.toString()}

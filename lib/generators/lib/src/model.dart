@@ -16,14 +16,16 @@ class Model {
 
   String get mainClassName => '_\$_$className';
 
-  List<Parameter> nullValueParameters() {
-    List<Parameter> nullValueParameters = [];
+  List<Parameter> invalidParameters() {
+    List<Parameter> invalidParameters = [];
     for (var parameter in parameters) {
-      if (!parameter.isRequired && parameter.defaultValue == null) {
-        nullValueParameters.add(parameter);
+      if (!parameter.isRequired &&
+          !parameter.isNullable &&
+          parameter.defaultValue == null) {
+        invalidParameters.add(parameter);
       }
     }
-    return nullValueParameters;
+    return invalidParameters;
   }
 
   /// List value of [Parameter.getter] with spaces between.

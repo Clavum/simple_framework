@@ -1,6 +1,6 @@
 class Parameter {
   final String? defaultValue;
-  final String? type;
+  final String type;
   final String name;
   final bool isRequired;
 
@@ -10,6 +10,10 @@ class Parameter {
     required this.name,
     required this.isRequired,
   });
+
+  bool get isNullable {
+    return type.substring(type.length - 1) == '?';
+  }
 
   /// Format as a getter method which returns [returnValue].
   /// ```dart
@@ -52,7 +56,11 @@ class Parameter {
   /// this.exampleName = defaultValue,
   /// ```
   String defaultedParameter() {
-    return 'this.$name = $defaultValue,';
+    if (defaultValue == null) {
+      return 'this.$name,';
+    } else {
+      return 'this.$name = $defaultValue,';
+    }
   }
 
   /// Format as a final local variable:

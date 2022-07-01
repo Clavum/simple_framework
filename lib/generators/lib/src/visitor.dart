@@ -80,7 +80,7 @@ class Visitor extends SimpleElementVisitor<void> {
   void visitParameterElement(ParameterElement element) {
     visitedModel.parameters.add(Parameter(
       defaultValue: element.defaultValue,
-      type: parseTypeSource(element),
+      type: parseTypeSource(element) ?? '',
       name: element.name.toString(),
       isRequired: element.isRequired,
     ));
