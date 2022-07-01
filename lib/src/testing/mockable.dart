@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:simple_framework/simple_framework.dart';
 
 /// See [Mockable.getClass] for more information.
 ///
@@ -73,6 +74,7 @@ class Mockable {
     if (mock is! Mock && mock is! Fake) {
       throw _setMockUsedWithRealClassError(mock);
     }
+    setupCommonMockStubs(mock);
     _mocks[T] = (mock);
   }
 

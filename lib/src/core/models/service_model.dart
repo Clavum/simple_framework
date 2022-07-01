@@ -9,6 +9,8 @@ enum ServiceModelStatus {
 
 @immutable
 abstract class ServiceModel extends RepositoryModel {
+  const ServiceModel();
+
   ServiceModelSettings settings() => ServiceModelSettings();
 
   Future<ServiceModel> load();
