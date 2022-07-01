@@ -1,36 +1,36 @@
 class GenerateModel {
+  final String annotationName;
   final bool shouldGenerateMerge;
-  final bool parametersRequired;
   final bool shouldGenerateGetter;
-  final String modelName;
+  final String? mustExtend;
 
   const GenerateModel({
+    this.annotationName = '@GenerateModel',
     required this.shouldGenerateMerge,
-    required this.parametersRequired,
     required this.shouldGenerateGetter,
-    this.modelName = 'Model',
+    this.mustExtend,
   });
 }
 
 const generateEntity = GenerateModel(
+  annotationName: '@generateEntity',
   shouldGenerateMerge: true,
-  parametersRequired: false,
   shouldGenerateGetter: true,
-  modelName: 'Entity',
+  mustExtend: 'Entity',
 );
 
 const generateViewModel = GenerateModel(
+  annotationName: '@generateViewModel',
   shouldGenerateMerge: false,
-  parametersRequired: true,
   shouldGenerateGetter: false,
-  modelName: 'ViewModel',
+  mustExtend: 'ViewModel',
 );
 
 const generateServiceModel = GenerateModel(
+  annotationName: '@generateServiceModel',
   shouldGenerateMerge: false,
-  parametersRequired: false,
   shouldGenerateGetter: false,
-  modelName: 'ServiceModel',
+  mustExtend: 'ServiceModel',
 );
 
 /// Allows using `@Default('value')` on a parameter to provide a default value.

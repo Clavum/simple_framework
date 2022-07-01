@@ -1,47 +1,90 @@
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:generators/src/annotation.dart';
+import 'package:generators/src/model.dart';
+import 'package:generators/src/parameter.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 
-class Visitor extends GeneralizingElementVisitor<void> {
-  late String className;
-  late String camelCaseClassName;
+enum SyntaxRequirements {
+  extendsRequiredClass,
+  hasPrivateConstructor,
+  hasFactoryConstructor,
+}
 
-  final List<Parameter> parameters = [];
+class Visitor extends SimpleElementVisitor<void> {
+  final String annotationName;
+  final String? mustExtend;
+
+  Model visitedModel = Model();
+
+  final List<SyntaxRequirements> missingRequirements =
+      List.from(SyntaxRequirements.values);
+
+  Visitor({required this.annotationName, required this.mustExtend});
+
+  Model getModelFromElement({
+    required Element element,
+  }) {
+    visitElement(element);
+    return visitedModel;
+  }
+
+  void visitElement(Element element) {
+    if (element is ClassElement) {
+      visitClassElement(element);
+    } else {
+      throw Exception(
+        '$annotationName was used on an object other than a class',
+      );
+    }
+  }
+
+  @override
+  void visitClassElement(ClassElement element) {
+    /// Check if the annotated class extends the required model.
+    if (mustExtend == null) {
+      missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
+    } else {
+      for (var type in element.allSupertypes) {
+        if (type.getDisplayString(withNullability: false) == mustExtend) {
+          missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
+        }
+      }
+    }
+
+    visitedModel.className = element.name;
+
+    element.visitChildren(this);
+  }
 
   @override
   void visitConstructorElement(ConstructorElement element) {
-    className = element.type.returnType.toString();
-    String firstLetter = className.substring(0, 1);
-    camelCaseClassName = '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
+    /// Private const constructor.
+    if (element.isConst && element.isPrivate && element.name == '_') {
+      missingRequirements.remove(SyntaxRequirements.hasPrivateConstructor);
+    }
 
-    /// Must be called so that visitParameterElement is called.
-    visitExecutableElement(element);
+    /// Public factory constructor.
+    if (element.isConst && element.isPublic && element.isFactory) {
+      missingRequirements.remove(SyntaxRequirements.hasFactoryConstructor);
+
+      /// Must be called so that visitParameterElement is called.
+      element.visitChildren(this);
+    }
   }
 
   @override
   void visitParameterElement(ParameterElement element) {
-    parameters.add(Parameter(
+    visitedModel.parameters.add(Parameter(
       defaultValue: element.defaultValue,
-      type: parseTypeSource(element),
+      type: parseTypeSource(element) ?? '',
       name: element.name.toString(),
+      isRequired: element.isRequired,
     ));
   }
-}
-
-class Parameter {
-  final String? defaultValue;
-  final String? type;
-  final String name;
-
-  Parameter({
-    required this.defaultValue,
-    required this.type,
-    required this.name,
-  });
 }
 
 /// This code is from the Freezed package: https://pub.dev/packages/freezed
@@ -76,7 +119,8 @@ String? parseTypeSource(VariableElement element) {
   String? type = element.type.getDisplayString(withNullability: true);
 
   if (type.contains('dynamic') && element.nameOffset > 0) {
-    final source = element.source!.contents.data.substring(0, element.nameOffset);
+    final source =
+        element.source!.contents.data.substring(0, element.nameOffset);
     if (element.type.element != null &&
         element.type.isDynamic &&
         element.type.element!.isSynthetic) {
