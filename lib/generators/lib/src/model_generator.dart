@@ -6,6 +6,8 @@ import 'package:generators/src/parameter.dart';
 import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
+const String _constructorBypassedError = '_privateConstructorUsedError';
+
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   @override
   String generateForAnnotatedElement(
@@ -79,8 +81,8 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_element
 // coverage:ignore-file
 
-final _privateConstructorUsedError = UnsupportedError(
-    'The Model\\'s factory constructor was bypassed by a private constructor.');
+final $_constructorBypassedError = UnsupportedError(
+    'A generated model\\'s constructor was bypassed by a another constructor.');
 
 ''';
   }
@@ -100,7 +102,7 @@ class MixinGenerator {
 ${model.className} merge({
     ${model.nullableParameterList()}
   }) {
-    throw _privateConstructorUsedError;
+    throw $_constructorBypassedError;
   }
 ''',
       );
@@ -110,10 +112,10 @@ ${model.className} merge({
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin ${model.mixinName} {
-  ${model.getterList('throw _privateConstructorUsedError')}
+  ${model.getterList('throw $_constructorBypassedError')}
   ${mergeBuffer.toString()}
 
-  List<Object> get props => throw _privateConstructorUsedError;
+  List<Object> get props => throw $_constructorBypassedError;
 }
 
 ''';
@@ -197,10 +199,10 @@ abstract class ${model.abstractClassName} extends ${model.className} {
 }
 
 void throwMissingSyntaxRequirementsException(
-    Model model,
-    List<SyntaxRequirements> missingRequirements,
-    String? mustExtend,
-    ) {
+  Model model,
+  List<SyntaxRequirements> missingRequirements,
+  String? mustExtend,
+) {
   StringBuffer errorBuffer = StringBuffer();
 
   errorBuffer.writeln('Invalid syntax for generated model: ${model.className}');
