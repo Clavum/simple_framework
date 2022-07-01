@@ -32,7 +32,8 @@ class Parameter {
   /// ExampleType? exampleName,
   /// ```
   String nullableParameter() {
-    return '$type? $name,';
+    String addNullable = isNullable ? '' : '?';
+    return '$type$addNullable $name,';
   }
 
   /// Format as a parameter with nothing else added.
