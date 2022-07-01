@@ -39,7 +39,11 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
       );
     }
 
-    /// Add the errors parameter.
+    if (visitedModel.nullValueParameters().isNotEmpty) {
+      _throwNullValueParameterException(visitedModel);
+    }
+
+      /// Add the errors parameter.
     if (addErrorsParameter) {
       visitedModel.parameters.insert(
         0,
@@ -233,4 +237,23 @@ const factory ${model.className}({
   }
 
   throw Exception(errorBuffer.toString());
+}
+
+void _throwNullValueParameterException(Model model) {
+  StringBuffer invalidParametersBuffer = StringBuffer();
+  for (var parameter in model.nullValueParameters()) {
+    invalidParametersBuffer.writeln(parameter.name);
+  }
+
+  throw Exception(
+    '''
+Invalid syntax for generated model: ${model.className}
+
+Every parameter must either be marked as `required`, or be annotated with a
+`@Default` value, i.e. `@Default(value) Type parameterName`
+
+Parameters with invalid syntax:
+${invalidParametersBuffer.toString()}
+''',
+  );
 }

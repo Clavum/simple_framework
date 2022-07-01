@@ -16,6 +16,16 @@ class Model {
 
   String get mainClassName => '_\$_$className';
 
+  List<Parameter> nullValueParameters() {
+    List<Parameter> nullValueParameters = [];
+    for (var parameter in parameters) {
+      if (!parameter.isRequired && parameter.defaultValue == null) {
+        nullValueParameters.add(parameter);
+      }
+    }
+    return nullValueParameters;
+  }
+
   /// List value of [Parameter.getter] with spaces between.
   String getterList([String? returnValue]) {
     final StringBuffer buffer = StringBuffer();
