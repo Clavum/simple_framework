@@ -6,7 +6,7 @@ import 'package:generators/src/parameter.dart';
 import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
-const String _constructorBypassedError = '_privateConstructorUsedError';
+const String _constructorBypassedError = '_constructorBypassedError';
 
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   @override
