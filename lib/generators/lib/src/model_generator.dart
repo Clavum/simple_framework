@@ -93,7 +93,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   String fileHeaderInformation() {
     return '''
 final $_constructorBypassedError = UnsupportedError(
-    'A generated model\\'s constructor was bypassed by a another constructor.');
+    'A generated model\\'s constructor was bypassed by another constructor.');
 
 ''';
   }

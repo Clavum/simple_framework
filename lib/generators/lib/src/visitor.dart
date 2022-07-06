@@ -78,6 +78,12 @@ class Visitor extends SimpleElementVisitor<void> {
 
   @override
   void visitParameterElement(ParameterElement element) {
+    if (!element.isNamed) {
+      throw Exception(
+        'Generation for ${visitedModel.className} failed.\n'
+            'All parameters must be named parameters (with curly braces).',
+      );
+    }
     visitedModel.parameters.add(Parameter(
       defaultValue: element.defaultValue,
       type: parseTypeSource(element) ?? '',
