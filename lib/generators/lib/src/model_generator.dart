@@ -9,6 +9,12 @@ import 'package:source_gen/source_gen.dart';
 const String _constructorBypassedError = '_constructorBypassedError';
 
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
+  /// Oddly, neither the Generator nor Builder classes allow a convenient way
+  /// of defining a single object per file. This String keeps track of the file
+  /// path of the last file that generated the header content to avoid
+  /// outputting it more than once per file.
+  String generatedHeaderFor = '';
+
   @override
   String generateForAnnotatedElement(
       Element element,
@@ -56,7 +62,11 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
       );
     }
 
-    buffer.writeln(fileHeaderInformation());
+    /// Only build the header content if it hasn't been built for this file yet.
+    if (generatedHeaderFor != buildStep.inputId.path) {
+      generatedHeaderFor = buildStep.inputId.path;
+      buffer.writeln(fileHeaderInformation());
+    }
 
     String mixinString = MixinGenerator.generate(
       visitedModel,
@@ -82,9 +92,6 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
 
   String fileHeaderInformation() {
     return '''
-// ignore_for_file: prefer_const_constructors_in_immutables, unused_element
-// coverage:ignore-file
-
 final $_constructorBypassedError = UnsupportedError(
     'A generated model\\'s constructor was bypassed by a another constructor.');
 
