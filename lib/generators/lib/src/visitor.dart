@@ -63,7 +63,7 @@ class Visitor extends SimpleElementVisitor<void> {
   @override
   void visitConstructorElement(ConstructorElement element) {
     /// Private const constructor.
-    if (element.isConst && element.isPrivate && element.name == '_') {
+    if (element.isConst && element.isPrivate && element.name == '_' && element.parameters.isEmpty) {
       missingRequirements.remove(SyntaxRequirements.hasPrivateConstructor);
     }
 

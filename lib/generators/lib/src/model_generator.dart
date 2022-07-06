@@ -228,7 +228,8 @@ void throwMissingSyntaxRequirementsException(
   }
   if (missingRequirements.contains(SyntaxRequirements.hasPrivateConstructor)) {
     errorBuffer.writeln();
-    errorBuffer.writeln('Missing a const private constructor:');
+    errorBuffer
+        .writeln('Missing a valid const private constructor. You must have:');
     errorBuffer.writeln('const ${model.className}_.();');
   }
   if (missingRequirements.contains(SyntaxRequirements.hasFactoryConstructor)) {
