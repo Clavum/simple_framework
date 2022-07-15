@@ -77,7 +77,7 @@ void main() {
 
     test('getterList', () {
       expect(
-        testModel.getterList('throw Error()'),
+        testModel.getterList(returnValue: 'throw Error()'),
         '''
 int get default => throw Error();
 
