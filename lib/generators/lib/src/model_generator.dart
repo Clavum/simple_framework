@@ -2,7 +2,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:generators/src/annotation.dart';
 import 'package:generators/src/model.dart';
-import 'package:generators/src/parameter.dart';
 import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -24,8 +23,6 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     final String annotationName = annotation.read('annotationName').stringValue;
     final bool shouldGenerateMerge =
         annotation.read('shouldGenerateMerge').boolValue;
-    final bool addErrorsParameter =
-        annotation.read('addErrorsParameter').boolValue;
     final bool shouldGenerateGetter =
         annotation.read('shouldGenerateGetter').boolValue;
     final String? mustExtend = annotation.read('mustExtend').stringValue;
@@ -47,19 +44,6 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
 
     if (visitedModel.invalidParameters().isNotEmpty) {
       _throwInvalidParameterException(visitedModel);
-    }
-
-      /// Add the errors parameter.
-    if (addErrorsParameter) {
-      visitedModel.parameters.insert(
-        0,
-        const Parameter(
-          name: 'errors',
-          defaultValue: 'const []',
-          type: 'List<EntityFailure>',
-          isRequired: false,
-        ),
-      );
     }
 
     /// Only build the header content if it hasn't been built for this file yet.
@@ -123,7 +107,7 @@ ${model.className} merge({
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin ${model.mixinName} {
-  ${model.getterList('throw $_constructorBypassedError')}
+  ${model.getterList(returnValue: 'throw $_constructorBypassedError')}
   ${mergeBuffer.toString()}
 
   List<Object?> get props => throw $_constructorBypassedError;
@@ -202,7 +186,7 @@ abstract class ${model.abstractClassName} extends ${model.className} {
 
   const ${model.abstractClassName}._() : super._();
 
-  ${model.getterList()}
+  ${model.getterList(useOverride: true)}
 }
 
 ''';

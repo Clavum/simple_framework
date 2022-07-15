@@ -88,7 +88,7 @@ class Visitor extends SimpleElementVisitor<void> {
       defaultValue: element.defaultValue,
       type: parseTypeSource(element) ?? '',
       name: element.name.toString(),
-      isRequired: element.isRequired,
+      isRequired: element.isNotOptional,
     ));
   }
 }
