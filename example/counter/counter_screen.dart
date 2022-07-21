@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 import 'counter_bloc.dart';
-import 'counter_builder.dart';
 import 'models/counter_view_model.dart';
 
 class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
   final String title;
 
-  CounterScreen({required this.title}) : super(CounterBloc(), CounterBuilder());
+  CounterScreen({required this.title}) : super(CounterBloc());
 
   @override
   Widget build(context, bloc, viewModel) {
