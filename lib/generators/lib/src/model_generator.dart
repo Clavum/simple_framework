@@ -5,15 +5,7 @@ import 'package:generators/src/model.dart';
 import 'package:generators/src/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
-const String _constructorBypassedError = '_constructorBypassedError';
-
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
-  /// Oddly, neither the Generator nor Builder classes allow a convenient way
-  /// of defining a single object per file. This String keeps track of the file
-  /// path of the last file that generated the header content to avoid
-  /// outputting it more than once per file.
-  String generatedHeaderFor = '';
-
   @override
   String generateForAnnotatedElement(
       Element element,
@@ -35,22 +27,20 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     final Model visitedModel = visitor.getModelFromElement(element: element);
 
     if (visitor.missingRequirements.isNotEmpty) {
-      throwMissingSyntaxRequirementsException(
+      _throwMissingSyntaxRequirementsException(
         visitedModel,
         visitor.missingRequirements,
         mustExtend,
+        element,
+        annotationName,
       );
     }
 
     if (visitedModel.invalidParameters().isNotEmpty) {
-      _throwInvalidParameterException(visitedModel);
+      _throwInvalidParameterException(visitedModel, element);
     }
 
-    /// Only build the header content if it hasn't been built for this file yet.
-    if (generatedHeaderFor != buildStep.inputId.path) {
-      generatedHeaderFor = buildStep.inputId.path;
-      buffer.writeln(fileHeaderInformation());
-    }
+    buffer.writeln(bypassError(visitedModel));
 
     String mixinString = MixinGenerator.generate(
       visitedModel,
@@ -74,10 +64,11 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     return buffer.toString();
   }
 
-  String fileHeaderInformation() {
+  String bypassError(Model model) {
     return '''
-final $_constructorBypassedError = UnsupportedError(
-    'A generated model\\'s constructor was bypassed by another constructor.');
+final ${model.bypassError} = UnsupportedError(
+  '${model.className}\\'s constructor was bypassed by another constructor.',
+);
 
 ''';
   }
@@ -97,7 +88,7 @@ class MixinGenerator {
 ${model.className} merge({
     ${model.nullableParameterList()}
   }) {
-    throw $_constructorBypassedError;
+    throw ${model.bypassError};
   }
 ''',
       );
@@ -107,10 +98,10 @@ ${model.className} merge({
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin ${model.mixinName} {
-  ${model.getterList(returnValue: 'throw $_constructorBypassedError')}
+  ${model.getterList(returnValue: 'throw ${model.bypassError}')}
   ${mergeBuffer.toString()}
 
-  List<Object?> get props => throw $_constructorBypassedError;
+  List<Object?> get props => throw ${model.bypassError};
 }
 
 ''';
@@ -193,28 +184,26 @@ abstract class ${model.abstractClassName} extends ${model.className} {
   }
 }
 
-void throwMissingSyntaxRequirementsException(
+void _throwMissingSyntaxRequirementsException(
   Model model,
   List<SyntaxRequirements> missingRequirements,
   String? mustExtend,
+  Element element,
+  String annotationName,
 ) {
   StringBuffer errorBuffer = StringBuffer();
 
   errorBuffer.writeln('Invalid syntax for generated model: ${model.className}');
 
-  if (model.className.isEmpty) {
-    model.className = 'ClassName';
-  }
-
   if (missingRequirements.contains(SyntaxRequirements.extendsRequiredClass)) {
     errorBuffer.writeln();
-    errorBuffer.writeln('${model.className} must extend $mustExtend');
+    errorBuffer.write('${model.className} must extend $mustExtend');
+    errorBuffer.writeln(' if it is annotated with $annotationName.');
   }
   if (missingRequirements.contains(SyntaxRequirements.hasPrivateConstructor)) {
     errorBuffer.writeln();
-    errorBuffer
-        .writeln('Missing a valid const private constructor. You must have:');
-    errorBuffer.writeln('const ${model.className}_.();');
+    errorBuffer.writeln('Missing a valid const private constructor. You must have:');
+    errorBuffer.writeln('const ${model.className}._();');
   }
   if (missingRequirements.contains(SyntaxRequirements.hasFactoryConstructor)) {
     errorBuffer.writeln();
@@ -228,20 +217,23 @@ const factory ${model.className}({
     );
   }
 
-  throw Exception(errorBuffer.toString());
+  throw InvalidGenerationSourceError(
+    errorBuffer.toString(),
+    element: element,
+  );
 }
 
-void _throwInvalidParameterException(Model model) {
+void _throwInvalidParameterException(Model model, Element element) {
   StringBuffer invalidParametersBuffer = StringBuffer();
   for (var parameter in model.invalidParameters()) {
     invalidParametersBuffer.writeln(parameter.name);
   }
 
-  throw Exception(
+  throw InvalidGenerationSourceError(
     '''
 Invalid syntax for generated model: ${model.className}
 
-Every parameter's syntax must either be in one of these three forms:
+Every parameter's syntax must either be in one of these forms:
 
 1. required Type parameterName
 2. @Default(defaultValue) Type parameterName
@@ -250,5 +242,6 @@ Every parameter's syntax must either be in one of these three forms:
 Parameters with invalid syntax:
 ${invalidParametersBuffer.toString()}
 ''',
+    element: element,
   );
 }

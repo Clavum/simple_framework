@@ -16,12 +16,12 @@ class Model {
 
   String get mainClassName => '_\$_$className';
 
+  String get bypassError => '_${camelCaseName}BypassError';
+
   List<Parameter> invalidParameters() {
     List<Parameter> invalidParameters = [];
     for (var parameter in parameters) {
-      if (!parameter.isRequired &&
-          !parameter.isNullable &&
-          parameter.defaultValue == null) {
+      if (!parameter.isRequired && !parameter.isNullable && parameter.defaultValue == null) {
         invalidParameters.add(parameter);
       }
     }
