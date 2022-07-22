@@ -4,7 +4,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 import '../../simple_classes/test_bloc.dart';
-import '../../simple_classes/test_builder.dart';
 import '../../simple_classes/test_entity.dart';
 import '../../simple_classes/test_screen.dart';
 import '../../simple_classes/test_view_model.dart';
@@ -59,7 +58,6 @@ void main() {
 
     testWidgets('rebuilds on Entity updates', (tester) async {
       MockClassProvider().forceUseRealClass<TestBloc>();
-      MockClassProvider().forceUseRealClass<TestBuilder>();
       MockClassProvider().forceUseRealClass<Repository>();
 
       await pumpTestScreen(tester);
@@ -76,7 +74,6 @@ void main() {
 
     testWidgets('avoids rebuild when builder returns duplicate model', (tester) async {
       MockClassProvider().forceUseRealClass<TestBloc>();
-      MockClassProvider().forceUseRealClass<TestBuilder>();
       MockClassProvider().forceUseRealClass<Repository>();
 
       await pumpTestScreen(tester);

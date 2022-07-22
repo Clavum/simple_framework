@@ -14,9 +14,6 @@ void commonTearDown() {
 void setupCommonFallbackValues() {
   /// Flutter & Dart.
   registerFallbackValue(const TextSelection.collapsed(offset: 0));
-
-  /// Framework.
-  registerFallbackValue(ScreenRef(<T extends RepositoryModel>() {}));
 }
 
 /// Takes an object, and based on its type, sets up some common default method stubs to avoid

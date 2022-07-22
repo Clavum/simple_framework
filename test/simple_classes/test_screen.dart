@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 import 'test_bloc.dart';
-import 'test_builder.dart';
 import 'test_view_model.dart';
 
 class TestScreen extends Screen<TestBloc, TestViewModel> {
-  TestScreen() : super(TestBloc(), TestBuilder());
+  TestScreen() : super(TestBloc());
 
   @override
   Widget build(context, bloc, viewModel) {
