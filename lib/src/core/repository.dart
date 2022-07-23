@@ -5,6 +5,8 @@ import 'package:simple_framework/simple_framework.dart';
 import 'package:meta/meta.dart';
 
 class Repository {
+  static Repository? _instance;
+
   Repository._();
 
   final List<Model> _models = [];
@@ -16,11 +18,8 @@ class Repository {
   void Function<M extends RepositoryModel>()? _fetchCallback;
 
   factory Repository() {
-    //TODO: Use Mockable
-    return MockClassProvider().getMockIfTest(
-      real: () => Repository._(),
-      mock: () => RepositoryMock(),
-    );
+    _instance ??= Repository._();
+    return mockable(() => _instance!);
   }
 
   /// Get a [Model] from the [Repository]. A [model] is required because it is what will be used if
@@ -69,8 +68,9 @@ class Repository {
     _models.removeWhere((model) => model.runtimeType == M);
   }
 
-  Stream streamOf<M extends RepositoryModel>() {
-    return (_streams[M] = _streams.putIfAbsent(M, () => StreamController<M>.broadcast())).stream;
+  Stream<M> streamOf<M extends RepositoryModel>() {
+    _streams.putIfAbsent(M, () => StreamController<M>.broadcast(sync: true));
+    return _streams[M]!.stream as Stream<M>;
   }
 
   Future<M> getServiceModel<M extends ServiceModel>(M model) async {
@@ -122,11 +122,4 @@ class Repository {
   set onFetch(void Function<M extends RepositoryModel>()? callback) {
     _fetchCallback = callback;
   }
-
-  /// Because [Repository] uses Mock Factories, this method is needed to avoid needing to cast
-  /// as a [RepositoryMock]. Because 'Repository()' will always return a [RepositoryMock] in tests,
-  /// this method will never be called on a real [Repository]. See the [RepositoryMock] class for
-  /// the actual implementation, as well as usage information.
-  @visibleForTesting
-  void addMockModel<M extends RepositoryModel>(M model) {}
 }

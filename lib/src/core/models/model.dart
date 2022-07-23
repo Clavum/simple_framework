@@ -15,3 +15,8 @@ class Model extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+/// Used to ensure only certain Models are put in the Repository.
+class RepositoryModel extends Model {
+  const RepositoryModel();
+}

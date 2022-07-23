@@ -3,7 +3,6 @@ library simple_framework;
 export 'package:simple_framework/src/core/models/entity.dart';
 export 'package:simple_framework/src/core/models/model.dart';
 export 'package:simple_framework/src/core/models/service_model.dart';
-export 'package:simple_framework/src/core/models/repository_model.dart';
 export 'package:simple_framework/src/core/models/view_model.dart';
 export 'package:simple_framework/src/core/ui/screen.dart';
 export 'package:simple_framework/src/core/ui/stateless_screen.dart';

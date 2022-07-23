@@ -5,7 +5,7 @@ import 'test_service_model.dart';
 class BrokenServiceModel extends ServiceModel {
   final int value;
 
-  BrokenServiceModel({
+  const BrokenServiceModel({
     this.value = 0,
   });
 
@@ -21,6 +21,6 @@ class BrokenServiceModel extends ServiceModel {
   @override
   Future<ServiceModel> load() async {
     // Returns the wrong model type.
-    return TestServiceModel();
+    return const TestServiceModel();
   }
 }

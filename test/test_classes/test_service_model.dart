@@ -10,7 +10,7 @@ class TestServiceModel extends ServiceModel {
   final int value;
   final TestServiceModelState state;
 
-  TestServiceModel({
+  const TestServiceModel({
     this.value = 0,
     this.state = TestServiceModelState.defaultValue,
   });
@@ -29,7 +29,7 @@ class TestServiceModel extends ServiceModel {
   @override
   Future<TestServiceModel> load() async {
     await Future.delayed(const Duration(milliseconds: 100));
-    return TestServiceModel(
+    return const TestServiceModel(
       state: TestServiceModelState.fromLoad,
     );
   }
