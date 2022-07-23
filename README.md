@@ -3,56 +3,62 @@ A simple code organization and state management framework inspired by the
 
 ## Components
 
-There are just three components in the Simple Framework:
- - Entities (models which contain the app state, and are stored in the Repository for global use)
- - Screens (widgets that display information based on an Entity)
- - Blocs (classes which have methods triggered by the Screen and update the Entities as needed)
+To create a screen in the Simple Framework, you need just four components:
+ - Entity - holds app state
+ - ViewModel - define how a Screen is created
+ - Screen - a Widget that builds from a ViewModel
+ - Bloc - ties the previous three components together
 
 ## Entity
 
-Entities are immutable classes which hold state data. To update just one field, you must use the
-merge method to get a new instance.
+Entities are immutable classes which hold app state data. To update an Entity, you can use the
+`merge` method (commonly referred to as `copyWith`).
+
+Entities are created with code generation via `@generateEntity`.
 
 ```dart
-class ExampleEntity extends Entity {
-  final String example;
+@generateEntity
+class ExampleEntity extends Entity with _$ExampleEntity {
+  const ExampleEntity._();
 
-  const ExampleEntity({
-    List<EntityFailure> errors = const [],
-    this.example = 'default value',
-  }) : super(errors: errors);
+  const factory ExampleEntity({
+    @Default(0) int counter,
+  }) = _ExampleEntity;
+}
+```
 
-  @override
-  List<Object> get props => [errors, example];
+## ViewModel
 
-  @override
-  ExampleEntity merge({errors, String? example}) {
-    return ExampleEntity(
-      errors: errors ?? this.errors,
-      example: example ?? this.example,
-    );
-  }
+ViewModels are classes that define how a Screen is created. They are created by the Bloc based on
+one or more Entities. ViewModels also use code generation.
+
+```dart
+@generateViewModel
+class ExampleViewModel extends ViewModel with _$ExampleViewModel {
+  const ExampleViewModel._();
+
+  const factory ExampleViewModel({
+    required String counter,
+  }) = _ExampleViewModel;
 }
 ```
 
 ## Screen
 
-Each Screen has it's own Bloc, and defines which Entity it builds from. If that Entity is ever
-updated in the Repository, the build method will be called.
+Screens are simple Widgets that build from a ViewModel that is provided by the Bloc they are
+associated with. The Screen will continuously rebuild as the Bloc provides new ViewModels to
+display.
 
 ```dart
 class ExampleScreen extends Screen<ExampleBloc> {
   ExampleScreen() : super(ExampleBloc());
 
   @override
-  Widget build(context, bloc, ref) {
-    // Get an entity using "ref". If that Entity is updated, the Screen will rebuild and this line
-    // will be called again with the latest data.
-    ExampleEntity exampleEntity = ref.getEntity(ExampleEntity());
-
-    // Build something here using exampleEntity's data.
-    // Call bloc methods when user interacts with components.
-    return Container();
+  Widget build(context, bloc, viewModel) {
+    return ElevatedButton(
+      child: Text(viewModel.counter),
+      onPressed: () => bloc.incrementCounter(),
+    );
   }
 }
 ```
@@ -63,15 +69,21 @@ A Bloc is a simple class which updates Entities in the Repository as the Screen 
 thus rebuilding the Screen with the new Entity.
 
 ```dart
-class ExampleBloc extends Bloc<ExampleEntity> {
-  ExampleBloc() : super(const ExampleEntity());
+class ExampleBloc extends Bloc<ExampleViewModel> {
+  @override
+  ExampleViewModel buildViewModel() {
+    return ExampleViewModel(
+      example: exampleEntity.example, // "exampleEntity" is created from the code generation
+    );
+  }
 
-  void onTapExample() {
-    // Using the send() method on an Entity will update Screens that use it.
-    entity.merge(example: 'new value').send();
+  void incrementCounter() {
+    // Using the send() method on an Entity will cause a new ViewModel to be sent.
+    exampleEntity.merge(counter: exampleEntity.counter + 1).send();
   }
 }
 ```
 
-See the `example` folder for an example of using the Simple Framework to make the classic Counter
-app.
+And that's it!
+See the `example` folder for a full example of using the Simple Framework to make the classic
+Flutter Counter app.
