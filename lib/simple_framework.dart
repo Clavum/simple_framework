@@ -16,7 +16,6 @@ export 'package:simple_framework/src/testing/test_groups/screen_test_group.dart'
 export 'package:simple_framework/src/testing/test_groups/standard_test_group.dart';
 export 'package:simple_framework/src/testing/common_test_methods.dart';
 export 'package:simple_framework/src/testing/general_helpers.dart';
-export 'package:simple_framework/src/testing/mock_class_provider.dart';
 export 'package:simple_framework/src/testing/mockable.dart';
 export 'package:simple_framework/src/testing/widget_tester_extensions.dart';
 

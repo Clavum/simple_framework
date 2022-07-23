@@ -3,11 +3,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 void commonTearDown() {
-  if (Repository() is RepositoryMock) {
-    reset(Repository());
-  }
   resetMocktailState();
-  MockClassProvider().clear();
   clearAllMocks();
 }
 
@@ -20,6 +16,7 @@ void setupCommonFallbackValues() {
 /// errors. It is automatically used on mocks provided to the MockClassProvider, but can also be
 /// used by the developer for other mocks.
 void setupCommonMockStubs(Object object) {
+  //TODO: Won't this remove any existing stubs? Can I check first somehow?
   if (object is Bloc) {
     when(object.onCreate).thenAnswer((_) async {});
   }
