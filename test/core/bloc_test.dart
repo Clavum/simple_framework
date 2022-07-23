@@ -9,11 +9,7 @@ import '../test_classes/test_view_model.dart';
 
 class _SimpleBloc extends Bloc<TestViewModel> {
   @override
-  TestViewModel buildViewModel() {
-    return TestViewModel(
-      value: testEntity.value.toString(),
-    );
-  }
+  TestViewModel buildViewModel() => TestViewModel(value: testEntity.value.toString());
 
   @override
   void onCreate() {
@@ -28,24 +24,16 @@ class _ToggleBuildBloc extends Bloc<TestViewModel> {
   TestViewModel buildViewModel() {
     if (!_buildCalled) {
       _buildCalled = true;
-      return TestViewModel(
-        value: testEntity.value.toString(),
-      );
+      return TestViewModel(value: testEntity.value.toString());
     } else {
-      return TestViewModel(
-        value: secondEntity.value.toString(),
-      );
+      return TestViewModel(value: secondEntity.value.toString());
     }
   }
 }
 
 class _BuildUnderTenBloc extends Bloc<TestViewModel> {
   @override
-  TestViewModel buildViewModel() {
-    return TestViewModel(
-      value: testEntity.value.toString(),
-    );
-  }
+  TestViewModel buildViewModel() => TestViewModel(value: testEntity.value.toString());
 
   @override
   bool shouldSendNewModel(TestViewModel? oldViewModel, TestViewModel newViewModel) {
@@ -55,11 +43,7 @@ class _BuildUnderTenBloc extends Bloc<TestViewModel> {
 
 class _CreateDelayBloc extends Bloc<TestViewModel> {
   @override
-  TestViewModel buildViewModel() {
-    return TestViewModel(
-      value: testEntity.value.toString(),
-    );
-  }
+  TestViewModel buildViewModel() => TestViewModel(value: testEntity.value.toString());
 
   @override
   Future<void> onCreate() async {

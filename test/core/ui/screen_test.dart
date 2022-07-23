@@ -13,7 +13,6 @@ class _SimpleScreen extends Screen<TestBloc, TestViewModel> {
 
   @override
   Widget build(context, bloc, viewModel) {
-    bloc.buildCalled();
     return Column(
       children: [
         const Text('Loaded'),
@@ -31,8 +30,6 @@ class _SimpleScreen extends Screen<TestBloc, TestViewModel> {
 class TestBlocMock extends Mock implements TestBloc {
   TestBlocMock(Stream<TestViewModel> stream) {
     when(() => viewModelStream).thenAnswer((_) => stream);
-    // when(() => buildViewModel())
-    //     .thenAnswer((_) => Future.value(const TestViewModel(value: '5')));
   }
 }
 
