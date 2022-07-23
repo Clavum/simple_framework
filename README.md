@@ -73,7 +73,7 @@ class ExampleBloc extends Bloc<ExampleViewModel> {
   @override
   ExampleViewModel buildViewModel() {
     return ExampleViewModel(
-      example: exampleEntity.example, // "exampleEntity" is created from the code generation
+      example: exampleEntity.example, // "exampleEntity" is created from the code generator
     );
   }
 
