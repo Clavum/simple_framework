@@ -87,3 +87,12 @@ class ExampleBloc extends Bloc<ExampleViewModel> {
 And that's it!
 See the `example` folder for a full example of using the Simple Framework to make the classic
 Flutter Counter app.
+
+### Credits
+A huge amount credit goes to the Clean Framework package for being the basis which I tried to
+improve upon.
+[Clean Framework](https://pub.dev/packages/clean_framework/versions/0.4.2)
+
+I would've never managed to make a decent code generator if it weren't for the Freezed package
+being my reference.
+[Freezed](https://pub.dev/packages/freezed)
