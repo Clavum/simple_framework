@@ -1,0 +1,18 @@
+#https://github.com/dart-lang/build/blob/master/build_config/README.md
+#https://github.com/dart-lang/build/blob/master/docs/faq.md
+
+targets:
+  $default:
+    builders:
+      generators:generate_model_builder:
+        enabled: true
+        generate_for:
+          exclude:
+            - test/sources/failure.dart
+
+builders:
+  generators:generate_model_builder:
+    import: "package:model_generator/src/generate_model_builder.dart"
+    builder_factories: [ "generateModelBuilder" ]
+    build_extensions: { ".dart": [ ".model.dart" ] }
+    build_to: source

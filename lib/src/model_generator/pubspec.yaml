@@ -1,0 +1,26 @@
+name: model_generator
+description: Code generator for Entities and ViewModels
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  simple_framework:
+    path: ../../../../simple_framework
+  model_generator_annotation:
+    path: ../model_generator_annotation
+  source_gen: 1.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  source_gen_test: ^1.0.3
+  build_runner: ^2.1.11
+  build_test: ^2.1.5
+
+flutter:
