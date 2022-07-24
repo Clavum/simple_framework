@@ -1,9 +1,20 @@
+import 'package:analyzer/dart/element/element.dart';
 import 'package:model_generator/src/parameter.dart';
 
 class Model {
+  final Element element;
+  final String annotationName;
+  final String? mustExtend;
+
   String className = '';
 
   List<Parameter> parameters = [];
+
+  Model({
+    required this.element,
+    required this.annotationName,
+    required this.mustExtend,
+  });
 
   String get camelCaseName {
     String firstLetter = className.substring(0, 1);
@@ -26,6 +37,16 @@ class Model {
       }
     }
     return invalidParameters;
+  }
+
+  List<Parameter> requiredParameters() {
+    List<Parameter> requiredParameters = [];
+    for (var parameter in parameters) {
+      if (parameter.isRequired) {
+        requiredParameters.add(parameter);
+      }
+    }
+    return requiredParameters;
   }
 
   /// List value of [Parameter.getter] with spaces between.

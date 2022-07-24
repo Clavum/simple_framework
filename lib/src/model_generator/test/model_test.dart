@@ -1,9 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/parameter.dart';
 
 /// -------------------------- IMPORTANT ----------------------------
 /// Please read HOW_TO_RUN_TESTS.md for instructions on running tests.
+
+class ElementFake extends Fake implements ClassElement {}
 
 void main() {
   const Parameter defaultParameter = Parameter(
@@ -56,7 +59,11 @@ void main() {
   );
 
   group('Model', () {
-    Model testModel = Model();
+    Model testModel = Model(
+      element: ElementFake(),
+      mustExtend: 'Object',
+      annotationName: 'GenerateModel',
+    );
     testModel.className = 'ClassName';
     testModel.parameters.add(defaultParameter);
     testModel.parameters.add(customTypeParameter);
@@ -75,6 +82,10 @@ void main() {
 
     test('invalidParameters', () {
       expect(testModel.invalidParameters(), [invalidParameter]);
+    });
+
+    test('requiredParameters', () {
+      expect(testModel.requiredParameters(), [requiredParameter, requiredNullableParameter]);
     });
 
     test('getterList', () {

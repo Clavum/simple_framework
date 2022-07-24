@@ -17,12 +17,13 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     final bool shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
     final String? mustExtend = annotation.read('mustExtend').stringValue;
 
-    final ModelVisitor visitor = ModelVisitor(
+    final ModelVisitor visitor = ModelVisitor();
+    final StringBuffer buffer = StringBuffer();
+    final Model visitedModel = visitor.getModelFromElement(
+      element: element,
       annotationName: annotationName,
       mustExtend: mustExtend,
     );
-    final StringBuffer buffer = StringBuffer();
-    final Model visitedModel = visitor.getModelFromElement(element: element);
 
     if (visitor.missingRequirements.isNotEmpty) {
       _throwMissingSyntaxRequirementsException(
@@ -35,7 +36,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     }
 
     if (visitedModel.invalidParameters().isNotEmpty) {
-      _throwInvalidParameterException(visitedModel, element);
+      _throwInvalidParameterException(visitedModel);
     }
 
     buffer.writeln(bypassError(visitedModel));
@@ -72,6 +73,9 @@ final ${model.bypassError} = UnsupportedError(
   }
 
   void generateGetter(Model model, StringBuffer buffer) {
+    if (model.requiredParameters().isNotEmpty) {
+      _throwGetterWithRequiredParamsException(model);
+    }
     buffer.write('${model.className} get ${model.camelCaseName} ');
     buffer.writeln('=> Repository().get(const ${model.className}());');
   }
@@ -222,7 +226,7 @@ const factory ${model.className}({
   );
 }
 
-void _throwInvalidParameterException(Model model, Element element) {
+void _throwInvalidParameterException(Model model) {
   StringBuffer invalidParametersBuffer = StringBuffer();
   for (var parameter in model.invalidParameters()) {
     invalidParametersBuffer.writeln(parameter.name);
@@ -241,6 +245,17 @@ Every parameter's syntax must either be in one of these forms:
 Parameters with invalid syntax:
 ${invalidParametersBuffer.toString()}
 ''',
-    element: element,
+    element: model.element,
+  );
+}
+
+void _throwGetterWithRequiredParamsException(Model model) {
+  throw InvalidGenerationSourceError(
+    '''
+Invalid syntax for generated model: ${model.className}
+
+You cannot use a required parameter when using ${model.annotationName}.
+''',
+    element: model.element,
   );
 }

@@ -15,18 +15,21 @@ enum SyntaxRequirements {
 }
 
 class ModelVisitor extends SimpleElementVisitor<void> {
-  final String annotationName;
-  final String? mustExtend;
-
-  Model visitedModel = Model();
+  late Model visitedModel;
 
   final List<SyntaxRequirements> missingRequirements = List.from(SyntaxRequirements.values);
 
-  ModelVisitor({required this.annotationName, required this.mustExtend});
-
   Model getModelFromElement({
     required Element element,
+    required String annotationName,
+    required String? mustExtend,
   }) {
+    visitedModel = Model(
+      element: element,
+      mustExtend: mustExtend,
+      annotationName: annotationName,
+    );
+
     visitElement(element);
     return visitedModel;
   }
@@ -36,7 +39,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
       visitClassElement(element);
     } else {
       throw InvalidGenerationSourceError(
-        '$annotationName was used on an object other than a class',
+        '${visitedModel.annotationName} was used on an object other than a class',
         element: element,
       );
     }
@@ -45,11 +48,11 @@ class ModelVisitor extends SimpleElementVisitor<void> {
   @override
   void visitClassElement(ClassElement element) {
     /// Check if the annotated class extends the required model.
-    if (mustExtend == null) {
+    if (visitedModel.mustExtend == null) {
       missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
     } else {
       for (var type in element.allSupertypes) {
-        if (type.getDisplayString(withNullability: false) == mustExtend) {
+        if (type.getDisplayString(withNullability: false) == visitedModel.mustExtend) {
           missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
         }
       }
@@ -81,7 +84,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
     if (!element.isNamed) {
       throw InvalidGenerationSourceError(
         'Generation for ${visitedModel.className} failed.\n'
-            'All parameters must be named parameters (with curly braces).\n',
+        'All parameters must be named parameters (with curly braces).\n',
         element: element,
       );
     }
@@ -157,12 +160,13 @@ Element? _getElementForType(DartType type) {
 
 /// This code is from the Freezed package: https://pub.dev/packages/freezed
 /// Renders a type based on its string + potential import alias
-String resolveFullTypeStringFrom(LibraryElement originLibrary,
-    DartType type, {
-      required bool withNullability,
+String resolveFullTypeStringFrom(
+  LibraryElement originLibrary,
+  DartType type, {
+  required bool withNullability,
 }) {
   final owner = originLibrary.prefixes.firstWhereOrNull(
-        (e) {
+    (e) {
       final librariesForPrefix = e.library.getImportsWithPrefix(e);
 
       return librariesForPrefix.any((l) {
@@ -206,7 +210,9 @@ String resolveFullTypeStringFrom(LibraryElement originLibrary,
 
 /// This code is from the Freezed package: https://pub.dev/packages/freezed
 extension LibraryHasImport on LibraryElement {
-  LibraryElement? findTransitiveExportWhere(bool Function(LibraryElement library) visitor,) {
+  LibraryElement? findTransitiveExportWhere(
+    bool Function(LibraryElement library) visitor,
+  ) {
     if (visitor(this)) return this;
 
     final visitedLibraries = <LibraryElement>{};
@@ -231,7 +237,9 @@ extension LibraryHasImport on LibraryElement {
     return null;
   }
 
-  bool anyTransitiveExport(bool Function(LibraryElement library) visitor,) {
+  bool anyTransitiveExport(
+    bool Function(LibraryElement library) visitor,
+  ) {
     return findTransitiveExportWhere(visitor) != null;
   }
 }

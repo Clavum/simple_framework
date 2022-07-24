@@ -83,6 +83,26 @@ class _RequiredParameters implements RequiredParameters {
 
 @ShouldThrow(
   '''
+Invalid syntax for generated model: EntityWithRequiredNamedParameters
+
+You cannot use a required parameter when using @generateEntity.
+''',
+)
+@generateEntity
+class EntityWithRequiredNamedParameters extends Entity {
+  const EntityWithRequiredNamedParameters._();
+
+  const factory EntityWithRequiredNamedParameters({
+    required String value,
+  }) = _EntityWithRequiredNamedParameters;
+}
+
+class _EntityWithRequiredNamedParameters implements EntityWithRequiredNamedParameters {
+  const _EntityWithRequiredNamedParameters({required String value});
+}
+
+@ShouldThrow(
+  '''
 Invalid syntax for generated model: MissingFactory
 
 Missing a const factory constructor:
