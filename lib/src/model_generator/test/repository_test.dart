@@ -19,4 +19,18 @@ void main() {
     repositoryEntity.intValue = 123;
     expect(repositoryEntity.intValue, 123);
   });
+
+  test('can update lists', () {
+    repositoryEntity.listValue = [1, 2, 3];
+    expect(repositoryEntity.listValue, [1, 2, 3]);
+
+    repositoryEntity.listValue.add(4);
+    expect(repositoryEntity.listValue, [1, 2, 3, 4]);
+
+    repositoryEntity.listValue.clear();
+    expect(repositoryEntity.listValue, []);
+
+    repositoryEntity.listValue.addAll([1, 2, 3]);
+    expect(repositoryEntity.listValue, [1, 2, 3]);
+  });
 }
