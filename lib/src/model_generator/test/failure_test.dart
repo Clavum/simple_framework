@@ -4,7 +4,7 @@ import 'package:model_generator_annotation/model_generator_annotation.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 import 'package:test/test.dart';
 
-/// -------------------------- IMPORTANT ----------------------------
+/// -------------------------| IMPORTANT |---------------------------
 /// Please read HOW_TO_RUN_TESTS.md for instructions on running tests.
 
 Future<void> main() async {
