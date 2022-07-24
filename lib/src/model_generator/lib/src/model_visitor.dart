@@ -1,7 +1,7 @@
+import 'package:analyzer/dart/element/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:analyzer/dart/element/visitor.dart';
 import 'package:collection/collection.dart';
 import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/parameter.dart';
@@ -81,7 +81,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
     if (!element.isNamed) {
       throw InvalidGenerationSourceError(
         'Generation for ${visitedModel.className} failed.\n'
-        'All parameters must be named parameters (with curly braces).\n',
+            'All parameters must be named parameters (with curly braces).\n',
         element: element,
       );
     }
@@ -157,13 +157,12 @@ Element? _getElementForType(DartType type) {
 
 /// This code is from the Freezed package: https://pub.dev/packages/freezed
 /// Renders a type based on its string + potential import alias
-String resolveFullTypeStringFrom(
-  LibraryElement originLibrary,
-  DartType type, {
-  required bool withNullability,
+String resolveFullTypeStringFrom(LibraryElement originLibrary,
+    DartType type, {
+      required bool withNullability,
 }) {
   final owner = originLibrary.prefixes.firstWhereOrNull(
-    (e) {
+        (e) {
       final librariesForPrefix = e.library.getImportsWithPrefix(e);
 
       return librariesForPrefix.any((l) {
@@ -207,9 +206,7 @@ String resolveFullTypeStringFrom(
 
 /// This code is from the Freezed package: https://pub.dev/packages/freezed
 extension LibraryHasImport on LibraryElement {
-  LibraryElement? findTransitiveExportWhere(
-    bool Function(LibraryElement library) visitor,
-  ) {
+  LibraryElement? findTransitiveExportWhere(bool Function(LibraryElement library) visitor,) {
     if (visitor(this)) return this;
 
     final visitedLibraries = <LibraryElement>{};
@@ -234,9 +231,7 @@ extension LibraryHasImport on LibraryElement {
     return null;
   }
 
-  bool anyTransitiveExport(
-    bool Function(LibraryElement library) visitor,
-  ) {
+  bool anyTransitiveExport(bool Function(LibraryElement library) visitor,) {
     return findTransitiveExportWhere(visitor) != null;
   }
 }

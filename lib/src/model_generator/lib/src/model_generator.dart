@@ -2,7 +2,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/model_visitor.dart';
-import 'package:model_generator/src/parameter.dart';
 import 'package:model_generator_annotation/model_generator_annotation.dart' show GenerateModel;
 import 'package:source_gen/source_gen.dart';
 
@@ -15,7 +14,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   ) {
     final String annotationName = annotation.read('annotationName').stringValue;
     final bool shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
-    final bool addErrorsParameter = annotation.read('addErrorsParameter').boolValue;
+    final bool shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
     final String? mustExtend = annotation.read('mustExtend').stringValue;
 
     final ModelVisitor visitor = ModelVisitor(
@@ -56,6 +55,10 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     String abstractClassString = AbstractClassGenerator.generate(visitedModel);
     buffer.writeln(abstractClassString);
 
+    if (shouldGenerateGetter) {
+      generateGetter(visitedModel, buffer);
+    }
+
     return buffer.toString();
   }
 
@@ -67,17 +70,24 @@ final ${model.bypassError} = UnsupportedError(
 
 ''';
   }
+
+  void generateGetter(Model model, StringBuffer buffer) {
+    buffer.write('${model.className} get ${model.camelCaseName} ');
+    buffer.writeln('=> Repository().get(const ${model.className}());');
+  }
 }
 
 class MixinGenerator {
   static String generate(Model model, bool shouldGenerateMerge) {
     final StringBuffer mergeBuffer = StringBuffer();
+    final String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
+    final String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
     if (shouldGenerateMerge) {
       mergeBuffer.writeln(
         '''
-${model.className} merge({
+${model.className} merge($maybeLeftBrace
     ${model.nullableParameterList()}
-  }) {
+  $maybeRightBrace) {
     throw ${model.bypassError};
   }
 ''',
@@ -88,7 +98,7 @@ ${model.className} merge({
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin ${model.mixinName} {
-  ${model.getterList('throw ${model.bypassError}')}
+  ${model.getterList(returnValue: 'throw ${model.bypassError}')}
   ${mergeBuffer.toString()}
 
   List<Object?> get props => throw ${model.bypassError};
@@ -106,14 +116,16 @@ class MainClassGenerator {
     }
 
     final StringBuffer mergeBuffer = StringBuffer();
+    final String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
+    final String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
     if (shouldGenerateMerge) {
       mergeBuffer.writeln(
         '''
 // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
-  ${model.abstractClassName} merge({
+  ${model.abstractClassName} merge($maybeLeftBrace
     ${model.nullableParameterList()}
-  }) {
+  $maybeRightBrace) {
     return ${model.abstractClassName}(
       ${model.mergeFieldsList()}
     );
@@ -122,9 +134,6 @@ class MainClassGenerator {
 ''',
       );
     }
-
-    String maybeLeftBrace = model.parameters.isNotEmpty ? '{' : '';
-    String maybeRightBrace = model.parameters.isNotEmpty ? '}' : '';
 
     return '''
 // GENERATED CODE - DO NOT MODIFY BY HAND
@@ -167,7 +176,7 @@ abstract class ${model.abstractClassName} extends ${model.className} {
 
   const ${model.abstractClassName}._() : super._();
 
-  ${model.getterList()}
+  ${model.getterList(useOverride: true)}
 }
 
 ''';

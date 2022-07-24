@@ -14,8 +14,10 @@ dependencies:
   mocktail: ^0.3.0
   utilities:
     path: ../../packages/utilities
-  generators:
-    path: lib/generators/
+  model_generator:
+    path: lib/src/model_generator
+  model_generator_annotation:
+    path: lib/src/model_generator_annotation
 
   flutter:
     sdk: flutter

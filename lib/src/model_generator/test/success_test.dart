@@ -8,9 +8,8 @@ import 'sources/success.dart';
 void main() {
   group('generated models are functional', () {
     test('for Entity', () {
-      var entity = const EntitySuccess(requiredParameter: 10);
+      var entity = const EntitySuccess();
       expect(entity.defaultParameter, 'defaultValue');
-      expect(entity.requiredParameter, 10);
       expect(entity.nullableParameter, null);
       expect(entity.customClass.value, 'custom');
 
@@ -20,10 +19,8 @@ void main() {
       const newCustomClass = CustomClass('new');
       entity = entity.merge(
         nullableParameter: false,
-        requiredParameter: 5,
         customClass: newCustomClass,
       );
-      expect(entity.requiredParameter, 5);
       expect(entity.nullableParameter, false);
       expect(entity.customClass.value, 'new');
 
@@ -31,15 +28,14 @@ void main() {
         entity,
         const EntitySuccess(
           defaultParameter: 'newValue',
-          requiredParameter: 5,
           nullableParameter: false,
           customClass: newCustomClass,
         ),
       );
 
-      expect(entity.props, [[], 'newValue', 5, false, newCustomClass]);
+      expect(entity.props, ['newValue', false, newCustomClass]);
 
-      expect(entity.someMethod(10), 15);
+      expect(entity.someMethod(10), 'newValue10');
     });
 
     test('for View Model', () {
@@ -73,7 +69,7 @@ void main() {
 
     test('for an empty Entity', () {
       var entity = const EmptyEntity();
-      expect(entity.errors, isEmpty);
+      expect(entity.props, isEmpty);
 
       expect(entity, const EmptyEntity());
     });

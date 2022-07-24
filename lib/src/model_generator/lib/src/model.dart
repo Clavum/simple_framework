@@ -29,9 +29,12 @@ class Model {
   }
 
   /// List value of [Parameter.getter] with spaces between.
-  String getterList([String? returnValue]) {
+  String getterList({String? returnValue, bool useOverride = false}) {
     final StringBuffer buffer = StringBuffer();
     for (var parameter in parameters) {
+      if (useOverride) {
+        buffer.writeln('@override');
+      }
       buffer.writeln(parameter.getter(returnValue));
       buffer.writeln();
     }

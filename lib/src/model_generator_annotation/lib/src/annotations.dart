@@ -5,16 +5,16 @@ class GenerateModel {
   /// Whether to generate the merge method.
   final bool shouldGenerateMerge;
 
-  /// Whether to add List<EntityFailure> as a parameter.
-  final bool addErrorsParameter;
+  /// Whether to generate a global Entity getter
+  final bool shouldGenerateGetter;
 
-  /// The name of a class which the annotated class must extend.
+  /// The name of the class which the annotated Model must extend.
   final String? mustExtend;
 
   const GenerateModel({
     this.annotationName = '@GenerateModel',
     required this.shouldGenerateMerge,
-    required this.addErrorsParameter,
+    required this.shouldGenerateGetter,
     this.mustExtend,
   });
 }
@@ -22,15 +22,22 @@ class GenerateModel {
 const generateEntity = GenerateModel(
   annotationName: '@generateEntity',
   shouldGenerateMerge: true,
-  addErrorsParameter: true,
+  shouldGenerateGetter: true,
   mustExtend: 'Entity',
 );
 
 const generateViewModel = GenerateModel(
   annotationName: '@generateViewModel',
   shouldGenerateMerge: false,
-  addErrorsParameter: false,
+  shouldGenerateGetter: false,
   mustExtend: 'ViewModel',
+);
+
+const generateServiceModel = GenerateModel(
+  annotationName: '@generateServiceModel',
+  shouldGenerateMerge: false,
+  shouldGenerateGetter: false,
+  mustExtend: 'ServiceModel',
 );
 
 /// Allows using `@Default('value')` on a parameter to provide a default value.

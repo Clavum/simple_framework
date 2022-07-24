@@ -4,15 +4,21 @@
 targets:
   $default:
     builders:
-      generators:generate_model_builder:
+      model_generator:
         enabled: true
         generate_for:
           exclude:
             - test/sources/failure.dart
 
 builders:
-  generators:generate_model_builder:
+  model_generator:
     import: "package:model_generator/src/generate_model_builder.dart"
     builder_factories: [ "generateModelBuilder" ]
+    # Matches the partId from generateModelBuilder
     build_extensions: { ".dart": [ ".model.dart" ] }
+    # Applies this builder to any package that uses this package, including transitively. This is
+    # so that people using the framework have this builder configured automatically even though the
+    # generator is not a direct dependency.
+    auto_apply: all_packages
+    # Build to the source tree as apposed to the cache
     build_to: source

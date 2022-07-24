@@ -1,6 +1,6 @@
 import 'package:simple_framework/simple_framework.dart';
 
-part 'success.g.dart';
+part 'success.model.dart';
 
 class CustomClass {
   final String value;
@@ -14,13 +14,12 @@ class EntitySuccess extends Entity with _$EntitySuccess {
 
   const factory EntitySuccess({
     @Default('defaultValue') String defaultParameter,
-    required int requiredParameter,
     bool? nullableParameter,
     @Default(CustomClass('custom')) CustomClass customClass,
   }) = _EntitySuccess;
 
-  int someMethod(int input) {
-    return requiredParameter + input;
+  String someMethod(int input) {
+    return '$defaultParameter$input';
   }
 }
 

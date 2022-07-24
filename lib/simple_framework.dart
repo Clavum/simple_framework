@@ -19,4 +19,4 @@ export 'package:simple_framework/src/testing/general_helpers.dart';
 export 'package:simple_framework/src/testing/mockable.dart';
 export 'package:simple_framework/src/testing/widget_tester_extensions.dart';
 
-export 'package:generators/generators.dart';
+export 'package:model_generator_annotation/model_generator_annotation.dart';
