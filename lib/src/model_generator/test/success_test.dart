@@ -1,3 +1,4 @@
+import 'package:simple_framework/simple_framework.dart';
 import 'package:test/test.dart';
 
 import 'sources/success.dart';
@@ -36,6 +37,13 @@ void main() {
       expect(entity.props, ['newValue', false, newCustomClass]);
 
       expect(entity.someMethod(10), 'newValue10');
+    });
+
+    test('using Entities with Repository', () {
+      expect(entitySuccess.defaultParameter, 'defaultValue');
+
+      entitySuccess.defaultParameter = 'newValue';
+      expect(entitySuccess.defaultParameter, 'newValue');
     });
 
     test('for View Model', () {

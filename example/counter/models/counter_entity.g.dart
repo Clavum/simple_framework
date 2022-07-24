@@ -16,6 +16,8 @@ final _privateConstructorUsedError =
 mixin _$CounterEntity {
   int get counter => throw _privateConstructorUsedError;
 
+  set counter(int counter) => throw _privateConstructorUsedError;
+
   _CounterEntity merge({
     int? counter,
   }) {
@@ -33,6 +35,9 @@ class _$_CounterEntity extends _CounterEntity {
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final int counter;
+
+  @override
+  set counter(int counter) => Repository().set(merge(counter: counter));
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override

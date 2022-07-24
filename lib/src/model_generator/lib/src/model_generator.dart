@@ -15,6 +15,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     final String annotationName = annotation.read('annotationName').stringValue;
     final bool shouldGenerateMerge = annotation.read('shouldGenerateMerge').boolValue;
     final bool shouldGenerateGetter = annotation.read('shouldGenerateGetter').boolValue;
+    final bool shouldGenerateSetters = annotation.read('shouldGenerateSetters').boolValue;
     final String? mustExtend = annotation.read('mustExtend').stringValue;
 
     final ModelVisitor visitor = ModelVisitor();
@@ -29,9 +30,6 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
       _throwMissingSyntaxRequirementsException(
         visitedModel,
         visitor.missingRequirements,
-        mustExtend,
-        element,
-        annotationName,
       );
     }
 
@@ -44,12 +42,14 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     String mixinString = MixinGenerator.generate(
       visitedModel,
       shouldGenerateMerge,
+      shouldGenerateSetters,
     );
     buffer.writeln(mixinString);
 
     String mainClassString = MainClassGenerator.generate(
       visitedModel,
       shouldGenerateMerge,
+      shouldGenerateSetters,
     );
     buffer.writeln(mainClassString);
 
@@ -82,7 +82,7 @@ final ${model.bypassError} = UnsupportedError(
 }
 
 class MixinGenerator {
-  static String generate(Model model, bool shouldGenerateMerge) {
+  static String generate(Model model, bool shouldGenerateMerge, bool shouldGenerateSetters) {
     final StringBuffer mergeBuffer = StringBuffer();
     final String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
     final String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
@@ -103,6 +103,7 @@ ${model.className} merge($maybeLeftBrace
 /// @nodoc
 mixin ${model.mixinName} {
   ${model.getterList(returnValue: 'throw ${model.bypassError}')}
+  ${shouldGenerateSetters ? model.setterList(throwsError: true) : ''}
   ${mergeBuffer.toString()}
 
   List<Object?> get props => throw ${model.bypassError};
@@ -113,7 +114,7 @@ mixin ${model.mixinName} {
 }
 
 class MainClassGenerator {
-  static String generate(Model model, bool shouldGenerateMerge) {
+  static String generate(Model model, bool shouldGenerateMerge, bool shouldGenerateSetters) {
     String generatedWarning = '';
     if (model.parameters.isNotEmpty) {
       generatedWarning = '// GENERATED CODE - DO NOT MODIFY BY HAND';
@@ -149,6 +150,8 @@ class ${model.mainClassName} extends ${model.abstractClassName} {
 
   $generatedWarning
   ${model.parameterOverrides()}
+
+  ${shouldGenerateSetters ? model.setterList(useOverride: true) : ''}
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
@@ -190,9 +193,6 @@ abstract class ${model.abstractClassName} extends ${model.className} {
 void _throwMissingSyntaxRequirementsException(
   Model model,
   List<SyntaxRequirements> missingRequirements,
-  String? mustExtend,
-  Element element,
-  String annotationName,
 ) {
   StringBuffer errorBuffer = StringBuffer();
 
@@ -200,8 +200,8 @@ void _throwMissingSyntaxRequirementsException(
 
   if (missingRequirements.contains(SyntaxRequirements.extendsRequiredClass)) {
     errorBuffer.writeln();
-    errorBuffer.write('${model.className} must extend $mustExtend');
-    errorBuffer.writeln(' if it is annotated with $annotationName.');
+    errorBuffer.write('${model.className} must extend ${model.mustExtend}');
+    errorBuffer.writeln(' if it is annotated with ${model.annotationName}.');
   }
   if (missingRequirements.contains(SyntaxRequirements.hasPrivateConstructor)) {
     errorBuffer.writeln();
@@ -222,7 +222,7 @@ const factory ${model.className}({
 
   throw InvalidGenerationSourceError(
     errorBuffer.toString(),
-    element: element,
+    element: model.element,
   );
 }
 

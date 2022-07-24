@@ -62,6 +62,25 @@ class Model {
     return buffer.toString();
   }
 
+  /// List value of [Parameter.setter] with spaces between.
+  String setterList({bool throwsError = false, bool useOverride = false}) {
+    final StringBuffer buffer = StringBuffer();
+    for (var parameter in parameters) {
+      if (useOverride) {
+        buffer.writeln('@override');
+      }
+      if (throwsError) {
+        buffer.writeln(parameter.setter('throw $bypassError'));
+      } else {
+        buffer.writeln(
+          parameter.setter('Repository().set(merge(${parameter.name}: ${parameter.name}))'),
+        );
+      }
+      buffer.writeln();
+    }
+    return buffer.toString();
+  }
+
   /// List value of [Parameter.nullableParameter].
   String nullableParameterList() {
     final StringBuffer buffer = StringBuffer();

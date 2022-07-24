@@ -12,6 +12,7 @@ class CounterBloc extends Bloc<CounterViewModel> {
   }
 
   void incrementCounter() {
-    counterEntity.merge(counter: counterEntity.counter + 1).send();
+    counterEntity.counter++;
+    counterEntity.send();
   }
 }

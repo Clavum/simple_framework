@@ -110,6 +110,50 @@ int? get defaultNullable => throw Error();
       );
     });
 
+    test('setterList - throwsError: false', () {
+      expect(
+        testModel.setterList(throwsError: false),
+        '''
+set default(int default) => Repository().set(merge(default: default));
+
+set customType(Custom customType) => Repository().set(merge(customType: customType));
+
+set requiredField(int requiredField) => Repository().set(merge(requiredField: requiredField));
+
+set nullable(int? nullable) => Repository().set(merge(nullable: nullable));
+
+set invalid(int invalid) => Repository().set(merge(invalid: invalid));
+
+set requiredNullable(int? requiredNullable) => Repository().set(merge(requiredNullable: requiredNullable));
+
+set defaultNullable(int? defaultNullable) => Repository().set(merge(defaultNullable: defaultNullable));
+
+''',
+      );
+    });
+
+    test('setterList - throwsError: true', () {
+      expect(
+        testModel.setterList(throwsError: true),
+        '''
+set default(int default) => throw _classNameBypassError;
+
+set customType(Custom customType) => throw _classNameBypassError;
+
+set requiredField(int requiredField) => throw _classNameBypassError;
+
+set nullable(int? nullable) => throw _classNameBypassError;
+
+set invalid(int invalid) => throw _classNameBypassError;
+
+set requiredNullable(int? requiredNullable) => throw _classNameBypassError;
+
+set defaultNullable(int? defaultNullable) => throw _classNameBypassError;
+
+''',
+      );
+    });
+
     test('nullableParameterList', () {
       expect(
         testModel.nullableParameterList(),

@@ -27,6 +27,18 @@ class Parameter {
     }
   }
 
+  /// Format as a setter method which calls [returnValue].
+  /// ```dart
+  /// set exampleName(ExampleType exampleName) => [returnValue];
+  /// ```
+  String setter([String? returnValue]) {
+    if (returnValue != null) {
+      return 'set $name($type $name) => $returnValue;';
+    } else {
+      return 'set $name($type $name);';
+    }
+  }
+
   /// Format as a nullable parameter:
   /// ```dart
   /// ExampleType? exampleName,

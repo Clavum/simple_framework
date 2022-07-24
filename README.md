@@ -78,8 +78,9 @@ class ExampleBloc extends Bloc<ExampleViewModel> {
   }
 
   void incrementCounter() {
+    exampleEntity.counter++;
     // Using the send() method on an Entity will cause a new ViewModel to be sent.
-    exampleEntity.merge(counter: exampleEntity.counter + 1).send();
+    exampleEntity.send();
   }
 }
 ```
