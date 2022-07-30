@@ -20,12 +20,6 @@ mixin _$VariousParametersEntity {
 
   CustomClass get customClass => throw _variousParametersEntityBypassError;
 
-  set defaultParameter(String defaultParameter) => throw _variousParametersEntityBypassError;
-
-  set nullableParameter(bool? nullableParameter) => throw _variousParametersEntityBypassError;
-
-  set customClass(CustomClass customClass) => throw _variousParametersEntityBypassError;
-
   VariousParametersEntity merge({
     String? defaultParameter,
     bool? nullableParameter,
@@ -53,17 +47,6 @@ class _$_VariousParametersEntity extends _VariousParametersEntity {
   final bool? nullableParameter;
   @override
   final CustomClass customClass;
-
-  @override
-  set defaultParameter(String defaultParameter) =>
-      Repository().set(merge(defaultParameter: defaultParameter));
-
-  @override
-  set nullableParameter(bool? nullableParameter) =>
-      Repository().set(merge(nullableParameter: nullableParameter));
-
-  @override
-  set customClass(CustomClass customClass) => Repository().set(merge(customClass: customClass));
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
@@ -112,8 +95,34 @@ abstract class _VariousParametersEntity extends VariousParametersEntity {
   CustomClass get customClass;
 }
 
-VariousParametersEntity get variousParametersEntity =>
-    Repository().get(const VariousParametersEntity());
+_VariousParametersEntityModifier get variousParametersEntity => _VariousParametersEntityModifier();
+
+// GENERATED CODE - DO NOT MODIFY BY HAND
+/// @nodoc
+class _VariousParametersEntityModifier {
+  VariousParametersEntity get _model => Repository().get(const VariousParametersEntity());
+
+  void send() => Repository().sendModel(_model);
+
+  void set(VariousParametersEntity model) => Repository().set(model);
+
+  VariousParametersEntity get() => _model;
+
+  String get defaultParameter => _model.defaultParameter;
+
+  set defaultParameter(String defaultParameter) =>
+      Repository().set(_model.merge(defaultParameter: defaultParameter));
+
+  bool? get nullableParameter => _model.nullableParameter;
+
+  set nullableParameter(bool? nullableParameter) =>
+      Repository().set(_model.merge(nullableParameter: nullableParameter));
+
+  CustomClass get customClass => _model.customClass;
+
+  set customClass(CustomClass customClass) =>
+      Repository().set(_model.merge(customClass: customClass));
+}
 
 final _variousParametersViewModelBypassError = UnsupportedError(
   'VariousParametersViewModel\'s constructor was bypassed by another constructor.',

@@ -10,6 +10,11 @@ void main() {
     expect(entity.someMethod(10), 20);
   });
 
+  test('Using custom method with modifier', () {
+    customMethodsEntity.value = 10;
+    expect(customMethodsEntity.get().someMethod(10), 20);
+  });
+
   test('ViewModel with custom methods', () {
     var viewModel = const CustomMethodsViewModel(value: 10);
     expect(viewModel.someMethod(10), 20);

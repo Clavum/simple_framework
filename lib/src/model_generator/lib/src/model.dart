@@ -27,7 +27,13 @@ class Model {
 
   String get mainClassName => '_\$_$className';
 
+  String get modifierClassName => '_${className}Modifier';
+
   String get bypassError => '_${camelCaseName}BypassError';
+
+  bool get hasDartCoreCollection => parameters.any((Parameter parameter) {
+        return parameter.isDartCoreList || parameter.isDartCoreSet || parameter.isDartCoreMap;
+      });
 
   List<Parameter> invalidParameters() {
     List<Parameter> invalidParameters = [];
@@ -56,27 +62,9 @@ class Model {
       if (useOverride) {
         buffer.writeln('@override');
       }
-      buffer.writeln(parameter.getter(returnValue));
-      buffer.writeln();
-    }
-    return buffer.toString();
-  }
-
-  /// List value of [Parameter.setter] with spaces between.
-  String setterList({bool throwsError = false, bool useOverride = false}) {
-    final StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      if (useOverride) {
-        buffer.writeln('@override');
-      }
-      if (throwsError) {
-        buffer.writeln(parameter.setter('throw $bypassError'));
-      } else {
-        buffer.writeln(
-          parameter.setter('Repository().set(merge(${parameter.name}: ${parameter.name}))'),
-        );
-      }
-      buffer.writeln();
+      buffer
+        ..writeln(parameter.getter(returnValue))
+        ..writeln();
     }
     return buffer.toString();
   }
@@ -108,8 +96,9 @@ class Model {
   String parameterOverrides() {
     final StringBuffer buffer = StringBuffer();
     for (var parameter in parameters) {
-      buffer.writeln('@override');
-      buffer.writeln(parameter.finalVariable());
+      buffer
+        ..writeln('@override')
+        ..writeln(parameter.finalVariable());
     }
     return buffer.toString();
   }
@@ -140,6 +129,49 @@ class Model {
     for (var parameter in parameters) {
       String required = (parameter.isRequired) ? 'required ' : '';
       buffer.writeln('$required${parameter.simpleParameter()}');
+    }
+    return buffer.toString();
+  }
+
+  /// Lists parameters with getters and setters that depend on the Repository.
+  String modifierParameterList() {
+    StringBuffer buffer = StringBuffer();
+    for (var parameter in parameters) {
+      buffer
+        ..writeln(parameter.modifierGetter())
+        ..writeln()
+        ..writeln(parameter.modifierSetter())
+        ..writeln();
+    }
+    return buffer.toString();
+  }
+
+  String collectionDefaults() {
+    StringBuffer buffer = StringBuffer();
+    for (var parameter in parameters) {
+      if (parameter.isEligibleForModifier) {
+        buffer.writeln(parameter.collectionDefault());
+      }
+    }
+    return buffer.toString();
+  }
+
+  /// Makes any necessary conversions when the modifier getter is called.
+  String processParameterConversions() {
+    StringBuffer buffer = StringBuffer();
+    for (var parameter in parameters) {
+      if (parameter.isEligibleForModifier) {
+        String collectionName = parameter.isDartCoreList
+            ? 'List'
+            : parameter.isDartCoreSet
+                ? 'Set'
+                : 'Map';
+        buffer
+          ..writeln('if (object == ${mainClassName}.${parameter.defaultValueName}) {')
+          ..write('return (${parameter.name} = ')
+          ..writeln('$collectionName.from(${mainClassName}.${parameter.defaultValueName})) as E;')
+          ..writeln('}');
+      }
     }
     return buffer.toString();
   }

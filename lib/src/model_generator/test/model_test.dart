@@ -14,6 +14,9 @@ void main() {
     defaultValue: '10',
     isRequired: false,
     type: 'int',
+    isDartCoreList: false,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
   );
 
   const Parameter customTypeParameter = Parameter(
@@ -21,6 +24,9 @@ void main() {
     defaultValue: 'Custom()',
     isRequired: false,
     type: 'Custom',
+    isDartCoreList: false,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
   );
 
   const Parameter requiredParameter = Parameter(
@@ -28,6 +34,9 @@ void main() {
     defaultValue: null,
     isRequired: true,
     type: 'int',
+    isDartCoreList: false,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
   );
 
   const Parameter nullableParameter = Parameter(
@@ -35,6 +44,9 @@ void main() {
     defaultValue: null,
     isRequired: false,
     type: 'int?',
+    isDartCoreList: false,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
   );
 
   const Parameter invalidParameter = Parameter(
@@ -42,6 +54,9 @@ void main() {
     defaultValue: null,
     isRequired: false,
     type: 'int',
+    isDartCoreList: false,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
   );
 
   const Parameter requiredNullableParameter = Parameter(
@@ -49,6 +64,9 @@ void main() {
     defaultValue: null,
     isRequired: true,
     type: 'int?',
+    isDartCoreList: false,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
   );
 
   const Parameter defaultNullableParameter = Parameter(
@@ -56,6 +74,49 @@ void main() {
     defaultValue: '10',
     isRequired: false,
     type: 'int?',
+    isDartCoreList: false,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
+  );
+
+  const Parameter listParameter = Parameter(
+    name: 'list',
+    defaultValue: '[]',
+    isRequired: false,
+    type: 'List<int>',
+    isDartCoreList: true,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
+  );
+
+  const Parameter requiredList = Parameter(
+    name: 'requiredList',
+    defaultValue: null,
+    isRequired: true,
+    type: 'List<int>',
+    isDartCoreList: true,
+    isDartCoreMap: false,
+    isDartCoreSet: false,
+  );
+
+  const Parameter mapParameter = Parameter(
+    name: 'map',
+    defaultValue: '{}',
+    isRequired: false,
+    type: 'Map<String, int>',
+    isDartCoreList: false,
+    isDartCoreMap: true,
+    isDartCoreSet: false,
+  );
+
+  const Parameter setParameter = Parameter(
+    name: 'set',
+    defaultValue: '{}',
+    isRequired: false,
+    type: 'Set<int>',
+    isDartCoreList: false,
+    isDartCoreMap: false,
+    isDartCoreSet: true,
   );
 
   group('Model', () {
@@ -72,12 +133,17 @@ void main() {
     testModel.parameters.add(invalidParameter);
     testModel.parameters.add(requiredNullableParameter);
     testModel.parameters.add(defaultNullableParameter);
+    testModel.parameters.add(listParameter);
+    testModel.parameters.add(requiredList);
+    testModel.parameters.add(mapParameter);
+    testModel.parameters.add(setParameter);
 
     test('Class names', () {
       expect(testModel.camelCaseName, 'className');
       expect(testModel.mixinName, '_\$ClassName');
       expect(testModel.abstractClassName, '_ClassName');
       expect(testModel.mainClassName, '_\$_ClassName');
+      expect(testModel.modifierClassName, '_ClassNameModifier');
     });
 
     test('invalidParameters', () {
@@ -85,7 +151,8 @@ void main() {
     });
 
     test('requiredParameters', () {
-      expect(testModel.requiredParameters(), [requiredParameter, requiredNullableParameter]);
+      expect(testModel.requiredParameters(),
+          [requiredParameter, requiredNullableParameter, requiredList]);
     });
 
     test('getterList', () {
@@ -106,49 +173,13 @@ int? get requiredNullable => throw Error();
 
 int? get defaultNullable => throw Error();
 
-''',
-      );
-    });
+List<int> get list => throw Error();
 
-    test('setterList - throwsError: false', () {
-      expect(
-        testModel.setterList(throwsError: false),
-        '''
-set default(int default) => Repository().set(merge(default: default));
+List<int> get requiredList => throw Error();
 
-set customType(Custom customType) => Repository().set(merge(customType: customType));
+Map<String, int> get map => throw Error();
 
-set requiredField(int requiredField) => Repository().set(merge(requiredField: requiredField));
-
-set nullable(int? nullable) => Repository().set(merge(nullable: nullable));
-
-set invalid(int invalid) => Repository().set(merge(invalid: invalid));
-
-set requiredNullable(int? requiredNullable) => Repository().set(merge(requiredNullable: requiredNullable));
-
-set defaultNullable(int? defaultNullable) => Repository().set(merge(defaultNullable: defaultNullable));
-
-''',
-      );
-    });
-
-    test('setterList - throwsError: true', () {
-      expect(
-        testModel.setterList(throwsError: true),
-        '''
-set default(int default) => throw _classNameBypassError;
-
-set customType(Custom customType) => throw _classNameBypassError;
-
-set requiredField(int requiredField) => throw _classNameBypassError;
-
-set nullable(int? nullable) => throw _classNameBypassError;
-
-set invalid(int invalid) => throw _classNameBypassError;
-
-set requiredNullable(int? requiredNullable) => throw _classNameBypassError;
-
-set defaultNullable(int? defaultNullable) => throw _classNameBypassError;
+Set<int> get set => throw Error();
 
 ''',
       );
@@ -165,6 +196,10 @@ int? nullable,
 int? invalid,
 int? requiredNullable,
 int? defaultNullable,
+List<int>? list,
+List<int>? requiredList,
+Map<String, int>? map,
+Set<int>? set,
 ''',
       );
     });
@@ -180,6 +215,10 @@ this.nullable,
 this.invalid,
 required this.requiredNullable,
 this.defaultNullable = 10,
+this.list = \$listDefaultValue,
+required this.requiredList,
+this.map = \$mapDefaultValue,
+this.set = \$setDefaultValue,
 ''',
       );
     });
@@ -202,6 +241,14 @@ final int invalid;
 final int? requiredNullable;
 @override
 final int? defaultNullable;
+@override
+final List<int> list;
+@override
+final List<int> requiredList;
+@override
+final Map<String, int> map;
+@override
+final Set<int> set;
 ''',
       );
     });
@@ -217,6 +264,10 @@ nullable,
 invalid,
 requiredNullable,
 defaultNullable,
+list,
+requiredList,
+map,
+set,
 ''',
       );
     });
@@ -232,6 +283,10 @@ nullable: nullable ?? this.nullable,
 invalid: invalid ?? this.invalid,
 requiredNullable: requiredNullable ?? this.requiredNullable,
 defaultNullable: defaultNullable ?? this.defaultNullable,
+list: list ?? this.list,
+requiredList: requiredList ?? this.requiredList,
+map: map ?? this.map,
+set: set ?? this.set,
 ''',
       );
     });
@@ -247,6 +302,90 @@ int? nullable,
 int invalid,
 required int? requiredNullable,
 int? defaultNullable,
+List<int> list,
+required List<int> requiredList,
+Map<String, int> map,
+Set<int> set,
+''',
+      );
+    });
+
+    test('modifierParameterList', () {
+      expect(
+        testModel.modifierParameterList(),
+        '''
+int get default => _model.default;
+
+set default(int default) => Repository().set(_model.merge(default: default));
+
+Custom get customType => _model.customType;
+
+set customType(Custom customType) => Repository().set(_model.merge(customType: customType));
+
+int get requiredField => _model.requiredField;
+
+set requiredField(int requiredField) => Repository().set(_model.merge(requiredField: requiredField));
+
+int? get nullable => _model.nullable;
+
+set nullable(int? nullable) => Repository().set(_model.merge(nullable: nullable));
+
+int get invalid => _model.invalid;
+
+set invalid(int invalid) => Repository().set(_model.merge(invalid: invalid));
+
+int? get requiredNullable => _model.requiredNullable;
+
+set requiredNullable(int? requiredNullable) => Repository().set(_model.merge(requiredNullable: requiredNullable));
+
+int? get defaultNullable => _model.defaultNullable;
+
+set defaultNullable(int? defaultNullable) => Repository().set(_model.merge(defaultNullable: defaultNullable));
+
+List<int> get list => _process(_model.list);
+
+set list(List<int> list) => Repository().set(_model.merge(list: list));
+
+List<int> get requiredList => _model.requiredList;
+
+set requiredList(List<int> requiredList) => Repository().set(_model.merge(requiredList: requiredList));
+
+Map<String, int> get map => _process(_model.map);
+
+set map(Map<String, int> map) => Repository().set(_model.merge(map: map));
+
+Set<int> get set => _process(_model.set);
+
+set set(Set<int> set) => Repository().set(_model.merge(set: set));
+
+''',
+      );
+    });
+
+    test('collectionDefaults', () {
+      expect(
+        testModel.collectionDefaults(),
+        '''
+static const List<int> \$listDefaultValue = [];
+static const Map<String, int> \$mapDefaultValue = {};
+static const Set<int> \$setDefaultValue = {};
+''',
+      );
+    });
+
+    test('processParameterConversions', () {
+      expect(
+        testModel.processParameterConversions(),
+        '''
+if (object == _\$_ClassName.\$listDefaultValue) {
+return (list = List.from(_\$_ClassName.\$listDefaultValue)) as E;
+}
+if (object == _\$_ClassName.\$mapDefaultValue) {
+return (map = Map.from(_\$_ClassName.\$mapDefaultValue)) as E;
+}
+if (object == _\$_ClassName.\$setDefaultValue) {
+return (set = Set.from(_\$_ClassName.\$setDefaultValue)) as E;
+}
 ''',
       );
     });

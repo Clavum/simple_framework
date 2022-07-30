@@ -16,8 +16,6 @@ final _basicEntityBypassError = UnsupportedError(
 mixin _$BasicEntity {
   int get value => throw _basicEntityBypassError;
 
-  set value(int value) => throw _basicEntityBypassError;
-
   BasicEntity merge({
     int? value,
   }) {
@@ -37,9 +35,6 @@ class _$_BasicEntity extends _BasicEntity {
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final int value;
-
-  @override
-  set value(int value) => Repository().set(merge(value: value));
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
@@ -74,7 +69,23 @@ abstract class _BasicEntity extends BasicEntity {
   int get value;
 }
 
-BasicEntity get basicEntity => Repository().get(const BasicEntity());
+_BasicEntityModifier get basicEntity => _BasicEntityModifier();
+
+// GENERATED CODE - DO NOT MODIFY BY HAND
+/// @nodoc
+class _BasicEntityModifier {
+  BasicEntity get _model => Repository().get(const BasicEntity());
+
+  void send() => Repository().sendModel(_model);
+
+  void set(BasicEntity model) => Repository().set(model);
+
+  BasicEntity get() => _model;
+
+  int get value => _model.value;
+
+  set value(int value) => Repository().set(_model.merge(value: value));
+}
 
 final _basicViewModelBypassError = UnsupportedError(
   'BasicViewModel\'s constructor was bypassed by another constructor.',

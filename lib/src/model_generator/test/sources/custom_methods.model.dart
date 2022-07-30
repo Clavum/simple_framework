@@ -16,8 +16,6 @@ final _customMethodsEntityBypassError = UnsupportedError(
 mixin _$CustomMethodsEntity {
   int get value => throw _customMethodsEntityBypassError;
 
-  set value(int value) => throw _customMethodsEntityBypassError;
-
   CustomMethodsEntity merge({
     int? value,
   }) {
@@ -37,9 +35,6 @@ class _$_CustomMethodsEntity extends _CustomMethodsEntity {
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final int value;
-
-  @override
-  set value(int value) => Repository().set(merge(value: value));
 
   // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
@@ -74,7 +69,23 @@ abstract class _CustomMethodsEntity extends CustomMethodsEntity {
   int get value;
 }
 
-CustomMethodsEntity get customMethodsEntity => Repository().get(const CustomMethodsEntity());
+_CustomMethodsEntityModifier get customMethodsEntity => _CustomMethodsEntityModifier();
+
+// GENERATED CODE - DO NOT MODIFY BY HAND
+/// @nodoc
+class _CustomMethodsEntityModifier {
+  CustomMethodsEntity get _model => Repository().get(const CustomMethodsEntity());
+
+  void send() => Repository().sendModel(_model);
+
+  void set(CustomMethodsEntity model) => Repository().set(model);
+
+  CustomMethodsEntity get() => _model;
+
+  int get value => _model.value;
+
+  set value(int value) => Repository().set(_model.merge(value: value));
+}
 
 final _customMethodsViewModelBypassError = UnsupportedError(
   'CustomMethodsViewModel\'s constructor was bypassed by another constructor.',

@@ -94,6 +94,9 @@ class ModelVisitor extends SimpleElementVisitor<void> {
         type: parseTypeSource(element) ?? '',
         name: element.name.toString(),
         isRequired: element.isNotOptional,
+        isDartCoreList: element.type.isDartCoreList,
+        isDartCoreMap: element.type.isDartCoreMap,
+        isDartCoreSet: element.type.isDartCoreSet,
       ),
     );
   }

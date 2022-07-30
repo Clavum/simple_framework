@@ -3,17 +3,29 @@ class Parameter {
   final String type;
   final String name;
   final bool isRequired;
+  final bool isDartCoreList;
+  final bool isDartCoreMap;
+  final bool isDartCoreSet;
 
   const Parameter({
     required this.defaultValue,
     required this.type,
     required this.name,
     required this.isRequired,
+    required this.isDartCoreList,
+    required this.isDartCoreMap,
+    required this.isDartCoreSet,
   });
 
   bool get isNullable {
     return type.substring(type.length - 1) == '?';
   }
+
+  bool get isEligibleForModifier {
+    return (isDartCoreList || isDartCoreMap || isDartCoreSet) && !isRequired;
+  }
+
+  String get defaultValueName => '\$${name}DefaultValue';
 
   /// Format as a getter method which returns [returnValue].
   /// ```dart
@@ -71,6 +83,8 @@ class Parameter {
   String defaultedParameter() {
     if (defaultValue == null) {
       return 'this.$name,';
+    } else if (isEligibleForModifier) {
+      return 'this.$name = $defaultValueName,';
     } else {
       return 'this.$name = $defaultValue,';
     }
@@ -90,5 +104,23 @@ class Parameter {
   /// ```
   String mergeField() {
     return '$name: $name ?? this.$name,';
+  }
+
+  /// Format as a getter which returns the current value from the [Repository].
+  String modifierGetter() {
+    if (isEligibleForModifier) {
+      return '${getter('_process(_model.$name)')}';
+    } else {
+      return '${getter('_model.$name')}';
+    }
+  }
+
+  /// Format as a setter which updates the value in the [Repository].
+  String modifierSetter() {
+    return '${setter('Repository().set(_model.merge($name: $name))')}';
+  }
+
+  String collectionDefault() {
+    return 'static const $type $defaultValueName = $defaultValue;';
   }
 }

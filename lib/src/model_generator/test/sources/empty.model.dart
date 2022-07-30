@@ -48,7 +48,19 @@ abstract class _EmptyEntity extends EmptyEntity {
   const _EmptyEntity._() : super._();
 }
 
-EmptyEntity get emptyEntity => Repository().get(const EmptyEntity());
+_EmptyEntityModifier get emptyEntity => _EmptyEntityModifier();
+
+// GENERATED CODE - DO NOT MODIFY BY HAND
+/// @nodoc
+class _EmptyEntityModifier {
+  EmptyEntity get _model => Repository().get(const EmptyEntity());
+
+  void send() => Repository().sendModel(_model);
+
+  void set(EmptyEntity model) => Repository().set(model);
+
+  EmptyEntity get() => _model;
+}
 
 final _emptyViewModelBypassError = UnsupportedError(
   'EmptyViewModel\'s constructor was bypassed by another constructor.',
