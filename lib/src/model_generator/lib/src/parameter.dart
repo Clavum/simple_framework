@@ -17,6 +17,8 @@ class Parameter {
     required this.isDartCoreSet,
   });
 
+  bool get isValid => isRequired || isNullable || defaultValue != null;
+
   bool get isNullable {
     return type.substring(type.length - 1) == '?';
   }
@@ -26,6 +28,18 @@ class Parameter {
   }
 
   String get defaultValueName => '\$${name}DefaultValue';
+
+  String get collectionName {
+    if (isDartCoreList) {
+      return 'List';
+    } else if (isDartCoreSet) {
+      return 'Set';
+    } else if (isDartCoreMap) {
+      return 'Map';
+    } else {
+      throw FallThroughError();
+    }
+  }
 
   /// Format as a getter method which returns [returnValue].
   /// ```dart

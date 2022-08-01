@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:model_generator/src/parameter.dart';
+import 'package:simple_framework/simple_framework.dart';
 
 class Model {
   final Element element;
@@ -36,143 +37,103 @@ class Model {
       });
 
   List<Parameter> invalidParameters() {
-    List<Parameter> invalidParameters = [];
-    for (var parameter in parameters) {
-      if (!parameter.isRequired && !parameter.isNullable && parameter.defaultValue == null) {
-        invalidParameters.add(parameter);
-      }
-    }
-    return invalidParameters;
+    return parameters.where((parameter) => !parameter.isValid).toList();
   }
 
   List<Parameter> requiredParameters() {
-    List<Parameter> requiredParameters = [];
-    for (var parameter in parameters) {
-      if (parameter.isRequired) {
-        requiredParameters.add(parameter);
-      }
-    }
-    return requiredParameters;
+    return parameters.where((parameter) => parameter.isRequired).toList();
   }
 
-  /// List value of [Parameter.getter] with spaces between.
+  /// --- Example format ---
+  /// @override
+  /// String get fieldName => [returnValue];
   String getterList({String? returnValue, bool useOverride = false}) {
-    final StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      if (useOverride) {
-        buffer.writeln('@override');
-      }
-      buffer
-        ..writeln(parameter.getter(returnValue))
-        ..writeln();
-    }
-    return buffer.toString();
+    return parameters
+        .expand((parameter) => [if (useOverride) '@override', parameter.getter(returnValue)])
+        .join('\n\n');
   }
 
-  /// List value of [Parameter.nullableParameter].
+  /// --- Example format ---
+  /// String? fieldName,
   String nullableParameterList() {
-    final StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      buffer.writeln(parameter.nullableParameter());
-    }
-    return buffer.toString();
+    return parameters.map((parameter) => parameter.nullableParameter()).join('\n');
   }
 
-  /// For each parameter, lists [Parameter.requiredParameter] if it is required
-  /// or [Parameter.defaultedParameter] otherwise.
+  /// --- Example format ---
+  /// required this.fieldName,            <-- for required parameters
+  /// this.fieldName = [defaultValue],    <-- for default parameters
   String concreteParameterList() {
-    final StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      if (parameter.isRequired) {
-        buffer.writeln(parameter.requiredParameter());
-      } else {
-        buffer.writeln(parameter.defaultedParameter());
-      }
-    }
-    return buffer.toString();
+    return parameters.map((parameter) {
+      return parameter.isRequired ? parameter.requiredParameter() : parameter.defaultedParameter();
+    }).join('\n');
   }
 
-  /// Lists every parameter as an instance field annotated with @override.
+  /// --- Example format ---
+  /// @override
+  /// final String fieldName;
   String parameterOverrides() {
-    final StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      buffer
-        ..writeln('@override')
-        ..writeln(parameter.finalVariable());
-    }
-    return buffer.toString();
+    return parameters.expand((parameter) => ['@override', parameter.finalVariable()]).join('\n');
   }
 
-  /// Lists every parameter name with a comma after it.
+  /// --- Example format ---
+  /// fieldName,
   String parametersWithCommas() {
-    final StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      buffer.writeln('${parameter.name},');
-    }
-    return buffer.toString();
+    return parameters.map((parameter) => '${parameter.name},').join('\n');
   }
 
-  /// Lists every parameter like the following, which is used for merging.
-  /// `someField: someField ?? this.someField`
+  /// Used for the merge method's body.
+  /// --- Example format ---
+  /// fieldName: fieldName ?? this.fieldName,
   String mergeFieldsList() {
-    final StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      buffer.writeln(parameter.mergeField());
-    }
-    return buffer.toString();
+    return parameters.map((parameter) => parameter.mergeField()).join('\n');
   }
 
   /// Lists every parameter in a format such that they can be redirected to
   /// another constructor, i.e. default value is not used.
+  /// --- Example format ---
+  /// required String fieldName,     <-- for required parameters
+  /// String fieldName,              <-- for default parameters
   String redirectedParameterList() {
-    StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      String required = (parameter.isRequired) ? 'required ' : '';
-      buffer.writeln('$required${parameter.simpleParameter()}');
-    }
-    return buffer.toString();
+    return parameters.map((parameter) {
+      return '${(parameter.isRequired) ? 'required ' : ''}${parameter.simpleParameter()}';
+    }).join('\n');
   }
 
-  /// Lists parameters with getters and setters that depend on the Repository.
+  /// Used by the modifier class to get and set fields using the [Repository].
+  /// --- Example format ---
+  /// String get fieldName => _model.fieldName;
+  ///
+  /// set fieldName(String fieldName) => Repository().set(_model.merge(fieldName: fieldName));
   String modifierParameterList() {
-    StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      buffer
-        ..writeln(parameter.modifierGetter())
-        ..writeln()
-        ..writeln(parameter.modifierSetter())
-        ..writeln();
-    }
-    return buffer.toString();
+    return parameters.expand((parameter) {
+      return [parameter.modifierGetter(), parameter.modifierSetter()];
+    }).join('\n\n');
   }
 
+  /// --- Example format ---
+  /// static const List<int> $fieldNameDefaultValue = [defaultValue];
   String collectionDefaults() {
-    StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      if (parameter.isEligibleForModifier) {
-        buffer.writeln(parameter.collectionDefault());
-      }
-    }
-    return buffer.toString();
+    return parameters.expand((parameter) {
+      return parameter.isEligibleForModifier ? [parameter.collectionDefault()] : [];
+    }).join('\n');
   }
 
   /// Makes any necessary conversions when the modifier getter is called.
+  /// --- Example format ---
+  /// if (object == _$_ClassName.$fieldNameDefaultValue) {
+  /// return (fieldName = List.from(_$_ClassName.$fieldNameDefaultValue)) as E;
+  /// }
   String processParameterConversions() {
-    StringBuffer buffer = StringBuffer();
-    for (var parameter in parameters) {
-      if (parameter.isEligibleForModifier) {
-        String collectionName = parameter.isDartCoreList
-            ? 'List'
-            : parameter.isDartCoreSet
-                ? 'Set'
-                : 'Map';
-        buffer
-          ..writeln('if (object == ${mainClassName}.${parameter.defaultValueName}) {')
-          ..write('return (${parameter.name} = ')
-          ..writeln('$collectionName.from(${mainClassName}.${parameter.defaultValueName})) as E;')
-          ..writeln('}');
+    return parameters.expand((parameter) {
+      if (!parameter.isEligibleForModifier) {
+        return [];
       }
-    }
-    return buffer.toString();
+      return [
+        'if (object == ${mainClassName}.${parameter.defaultValueName}) {',
+        'return (${parameter.name} = ${parameter.collectionName}' +
+            '.from(${mainClassName}.${parameter.defaultValueName})) as E;',
+        '}',
+      ];
+    }).join('\n');
   }
 }

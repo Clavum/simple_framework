@@ -151,8 +151,10 @@ void main() {
     });
 
     test('requiredParameters', () {
-      expect(testModel.requiredParameters(),
-          [requiredParameter, requiredNullableParameter, requiredList]);
+      expect(
+        testModel.requiredParameters(),
+        [requiredParameter, requiredNullableParameter, requiredList],
+      );
     });
 
     test('getterList', () {
@@ -179,9 +181,7 @@ List<int> get requiredList => throw Error();
 
 Map<String, int> get map => throw Error();
 
-Set<int> get set => throw Error();
-
-''',
+Set<int> get set => throw Error();''',
       );
     });
 
@@ -199,8 +199,7 @@ int? defaultNullable,
 List<int>? list,
 List<int>? requiredList,
 Map<String, int>? map,
-Set<int>? set,
-''',
+Set<int>? set,''',
       );
     });
 
@@ -218,8 +217,7 @@ this.defaultNullable = 10,
 this.list = \$listDefaultValue,
 required this.requiredList,
 this.map = \$mapDefaultValue,
-this.set = \$setDefaultValue,
-''',
+this.set = \$setDefaultValue,''',
       );
     });
 
@@ -248,8 +246,7 @@ final List<int> requiredList;
 @override
 final Map<String, int> map;
 @override
-final Set<int> set;
-''',
+final Set<int> set;''',
       );
     });
 
@@ -267,8 +264,7 @@ defaultNullable,
 list,
 requiredList,
 map,
-set,
-''',
+set,''',
       );
     });
 
@@ -286,8 +282,7 @@ defaultNullable: defaultNullable ?? this.defaultNullable,
 list: list ?? this.list,
 requiredList: requiredList ?? this.requiredList,
 map: map ?? this.map,
-set: set ?? this.set,
-''',
+set: set ?? this.set,''',
       );
     });
 
@@ -305,8 +300,7 @@ int? defaultNullable,
 List<int> list,
 required List<int> requiredList,
 Map<String, int> map,
-Set<int> set,
-''',
+Set<int> set,''',
       );
     });
 
@@ -356,9 +350,7 @@ set map(Map<String, int> map) => Repository().set(_model.merge(map: map));
 
 Set<int> get set => _process(_model.set);
 
-set set(Set<int> set) => Repository().set(_model.merge(set: set));
-
-''',
+set set(Set<int> set) => Repository().set(_model.merge(set: set));''',
       );
     });
 
@@ -368,8 +360,7 @@ set set(Set<int> set) => Repository().set(_model.merge(set: set));
         '''
 static const List<int> \$listDefaultValue = [];
 static const Map<String, int> \$mapDefaultValue = {};
-static const Set<int> \$setDefaultValue = {};
-''',
+static const Set<int> \$setDefaultValue = {};''',
       );
     });
 
@@ -385,8 +376,7 @@ return (map = Map.from(_\$_ClassName.\$mapDefaultValue)) as E;
 }
 if (object == _\$_ClassName.\$setDefaultValue) {
 return (set = Set.from(_\$_ClassName.\$setDefaultValue)) as E;
-}
-''',
+}''',
       );
     });
   });
