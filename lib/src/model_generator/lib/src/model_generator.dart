@@ -255,7 +255,7 @@ const factory ${model.className}({
 
   throw InvalidGenerationSourceError(
     errorBuffer.toString(),
-    element: model.element,
+    element: model.annotatedElement,
   );
 }
 
@@ -278,7 +278,7 @@ Every parameter's syntax must either be in one of these forms:
 Parameters with invalid syntax:
 ${invalidParametersBuffer.toString()}
 ''',
-    element: model.element,
+    element: model.annotatedElement,
   );
 }
 
@@ -289,6 +289,6 @@ Invalid syntax for generated model: ${model.className}
 
 You cannot use a required parameter when using ${model.annotationName}.
 ''',
-    element: model.element,
+    element: model.annotatedElement,
   );
 }

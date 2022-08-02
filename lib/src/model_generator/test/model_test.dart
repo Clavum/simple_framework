@@ -132,7 +132,7 @@ void main() {
 
   group('Model', () {
     Model testModel = Model(
-      element: ElementFake(),
+      annotatedElement: ElementFake(),
       mustExtend: 'Object',
       annotationName: 'GenerateModel',
     );

@@ -3,7 +3,7 @@ import 'package:model_generator/src/parameter.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 class Model {
-  final Element element;
+  final Element annotatedElement;
   final String annotationName;
   final String? mustExtend;
 
@@ -12,7 +12,7 @@ class Model {
   List<Parameter> parameters = [];
 
   Model({
-    required this.element,
+    required this.annotatedElement,
     required this.annotationName,
     required this.mustExtend,
   });

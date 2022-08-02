@@ -25,7 +25,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
     required String? mustExtend,
   }) {
     visitedModel = Model(
-      element: element,
+      annotatedElement: element,
       mustExtend: mustExtend,
       annotationName: annotationName,
     );
