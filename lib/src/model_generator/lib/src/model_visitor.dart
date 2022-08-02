@@ -97,6 +97,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
         isDartCoreList: element.type.isDartCoreList,
         isDartCoreMap: element.type.isDartCoreMap,
         isDartCoreSet: element.type.isDartCoreSet,
+        isNullable: element.type.nullabilitySuffix == NullabilitySuffix.question,
       ),
     );
   }

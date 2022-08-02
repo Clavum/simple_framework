@@ -6,6 +6,7 @@ class Parameter {
   final bool isDartCoreList;
   final bool isDartCoreMap;
   final bool isDartCoreSet;
+  final bool isNullable;
 
   const Parameter({
     required this.defaultValue,
@@ -15,13 +16,10 @@ class Parameter {
     required this.isDartCoreList,
     required this.isDartCoreMap,
     required this.isDartCoreSet,
+    required this.isNullable,
   });
 
   bool get isValid => isRequired || isNullable || defaultValue != null;
-
-  bool get isNullable {
-    return type.substring(type.length - 1) == '?';
-  }
 
   bool get isEligibleForModifier {
     return (isDartCoreList || isDartCoreMap || isDartCoreSet) && !isRequired;

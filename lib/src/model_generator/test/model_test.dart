@@ -17,6 +17,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: false,
   );
 
   const Parameter customTypeParameter = Parameter(
@@ -27,6 +28,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: false,
   );
 
   const Parameter requiredParameter = Parameter(
@@ -37,6 +39,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: false,
   );
 
   const Parameter nullableParameter = Parameter(
@@ -47,6 +50,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: true,
   );
 
   const Parameter invalidParameter = Parameter(
@@ -57,6 +61,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: false,
   );
 
   const Parameter requiredNullableParameter = Parameter(
@@ -67,6 +72,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: true,
   );
 
   const Parameter defaultNullableParameter = Parameter(
@@ -77,6 +83,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: true,
   );
 
   const Parameter listParameter = Parameter(
@@ -87,6 +94,7 @@ void main() {
     isDartCoreList: true,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: false,
   );
 
   const Parameter requiredList = Parameter(
@@ -97,6 +105,7 @@ void main() {
     isDartCoreList: true,
     isDartCoreMap: false,
     isDartCoreSet: false,
+    isNullable: false,
   );
 
   const Parameter mapParameter = Parameter(
@@ -107,6 +116,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: true,
     isDartCoreSet: false,
+    isNullable: false,
   );
 
   const Parameter setParameter = Parameter(
@@ -117,6 +127,7 @@ void main() {
     isDartCoreList: false,
     isDartCoreMap: false,
     isDartCoreSet: true,
+    isNullable: false,
   );
 
   group('Model', () {
