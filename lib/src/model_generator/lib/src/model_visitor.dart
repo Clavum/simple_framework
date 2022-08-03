@@ -5,6 +5,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
 import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/parameter.dart';
+import 'package:model_generator/src/options.dart';
 import 'package:model_generator_annotation/model_generator_annotation.dart' show Default;
 import 'package:source_gen/source_gen.dart';
 
@@ -21,13 +22,11 @@ class ModelVisitor extends SimpleElementVisitor<void> {
 
   Model getModelFromElement({
     required Element element,
-    required String annotationName,
-    required String? mustExtend,
+    required Options options,
   }) {
     visitedModel = Model(
       annotatedElement: element,
-      mustExtend: mustExtend,
-      annotationName: annotationName,
+      options: options,
     );
 
     visitElement(element);
@@ -39,7 +38,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
       visitClassElement(element);
     } else {
       throw InvalidGenerationSourceError(
-        '${visitedModel.annotationName} was used on an object other than a class',
+        '${visitedModel.options.annotationName} was used on an object other than a class',
         element: element,
       );
     }
@@ -48,11 +47,11 @@ class ModelVisitor extends SimpleElementVisitor<void> {
   @override
   void visitClassElement(ClassElement element) {
     /// Check if the annotated class extends the required model.
-    if (visitedModel.mustExtend == null) {
+    if (visitedModel.options.mustExtend == null) {
       missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
     } else {
       for (var type in element.allSupertypes) {
-        if (type.getDisplayString(withNullability: false) == visitedModel.mustExtend) {
+        if (type.getDisplayString(withNullability: false) == visitedModel.options.mustExtend) {
           missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
         }
       }
