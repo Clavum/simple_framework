@@ -2,6 +2,7 @@ import 'package:test/test.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/parameter.dart';
+import 'package:model_generator/src/options.dart';
 
 /// -------------------------| IMPORTANT |---------------------------
 /// Please read HOW_TO_RUN_TESTS.md for instructions on running tests.
@@ -9,7 +10,7 @@ import 'package:model_generator/src/parameter.dart';
 class ElementFake implements ClassElement {
   @override
   void noSuchMethod(Invocation invocation) {
-    throw 'Unexpected invocation: ${invocation.memberName}';
+    throw UnsupportedError('$invocation');
   }
 }
 
@@ -138,8 +139,13 @@ void main() {
   group('Model', () {
     Model testModel = Model(
       annotatedElement: ElementFake(),
-      mustExtend: 'Object',
-      annotationName: 'GenerateModel',
+      options: Options(
+        'GenerateModel',
+        true,
+        true,
+        true,
+        'Object',
+      ),
     );
     testModel.className = 'ClassName';
     testModel.parameters.add(defaultParameter);

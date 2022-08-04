@@ -1,0 +1,38 @@
+import 'package:model_generator/src/model.dart';
+
+class MixinTemplate {
+  final Model model;
+
+  MixinTemplate(this.model);
+
+  @override
+  String toString() {
+    final StringBuffer mergeBuffer = StringBuffer();
+    final String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
+    final String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
+    if (model.options.shouldGenerateMerge) {
+      mergeBuffer.writeln(
+        '''
+${model.className} merge($maybeLeftBrace
+    ${model.nullableParameterList()}
+  $maybeRightBrace) {
+    throw ${model.bypassError};
+  }
+''',
+      );
+    }
+
+    return '''
+// GENERATED CODE - DO NOT MODIFY BY HAND
+/// @nodoc
+mixin ${model.mixinName} {
+  ${model.getterList(returnValue: 'throw ${model.bypassError}')}
+
+  ${mergeBuffer.toString()}
+
+  List<Object?> get props => throw ${model.bypassError};
+}
+
+''';
+  }
+}

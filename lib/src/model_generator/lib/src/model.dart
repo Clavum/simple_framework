@@ -1,10 +1,10 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:model_generator/src/parameter.dart';
+import 'package:model_generator/src/options.dart';
 
 class Model {
   final Element annotatedElement;
-  final String annotationName;
-  final String? mustExtend;
+  final Options options;
 
   String className = '';
 
@@ -12,8 +12,7 @@ class Model {
 
   Model({
     required this.annotatedElement,
-    required this.annotationName,
-    required this.mustExtend,
+    required this.options,
   });
 
   String get camelCaseName {
