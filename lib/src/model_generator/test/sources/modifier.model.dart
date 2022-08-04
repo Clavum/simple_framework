@@ -169,7 +169,6 @@ class _ModifierEntityModifier {
     if (object == _$_ModifierEntity.$setValueDefaultValue) {
       return (setValue = Set.from(_$_ModifierEntity.$setValueDefaultValue)) as E;
     }
-
     return object;
   }
 }

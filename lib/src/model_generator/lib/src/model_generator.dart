@@ -21,7 +21,13 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
     final StringBuffer buffer = StringBuffer();
     final Model visitedModel = visitor.getModelFromElement(
       element: element,
-      options: Options.fromAnnotation(annotation),
+      options: Options(
+        annotation.read('annotationName').stringValue,
+        annotation.read('shouldGenerateMerge').boolValue,
+        annotation.read('shouldGenerateGetter').boolValue,
+        annotation.read('shouldGenerateSetters').boolValue,
+        annotation.read('mustExtend').stringValue,
+      ),
     );
 
     if (visitor.missingRequirements.isNotEmpty) {

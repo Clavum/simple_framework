@@ -27,6 +27,7 @@ ${model.className} merge($maybeLeftBrace
 /// @nodoc
 mixin ${model.mixinName} {
   ${model.getterList(returnValue: 'throw ${model.bypassError}')}
+
   ${mergeBuffer.toString()}
 
   List<Object?> get props => throw ${model.bypassError};
