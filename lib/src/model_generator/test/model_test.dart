@@ -228,7 +228,7 @@ Set<int>? set,''',
     test('concreteParameterList', () {
       expect(
         testModel.concreteParameterList(),
-        '''
+        r'''
 this.default = 10,
 this.customType = Custom(),
 required this.requiredField,
@@ -236,10 +236,10 @@ this.nullable,
 this.invalid,
 required this.requiredNullable,
 this.defaultNullable = 10,
-this.list = \$listDefaultValue,
+this.list = $listDefaultValue,
 required this.requiredList,
-this.map = \$mapDefaultValue,
-this.set = \$setDefaultValue,''',
+this.map = $mapDefaultValue,
+this.set = $setDefaultValue,''',
       );
     });
 
@@ -379,25 +379,25 @@ set set(Set<int> set) => Repository().set(_model.merge(set: set));''',
     test('collectionDefaults', () {
       expect(
         testModel.collectionDefaults(),
-        '''
-static const List<int> \$listDefaultValue = [];
-static const Map<String, int> \$mapDefaultValue = {};
-static const Set<int> \$setDefaultValue = {};''',
+        r'''
+static const List<int> $listDefaultValue = [];
+static const Map<String, int> $mapDefaultValue = {};
+static const Set<int> $setDefaultValue = {};''',
       );
     });
 
     test('processParameterConversions', () {
       expect(
         testModel.processParameterConversions(),
-        '''
-if (object == _\$_ClassName.\$listDefaultValue) {
-return (list = List.from(_\$_ClassName.\$listDefaultValue)) as E;
+        r'''
+if (object == _$_ClassName.$listDefaultValue) {
+return (list = List.from(_$_ClassName.$listDefaultValue)) as E;
 }
-if (object == _\$_ClassName.\$mapDefaultValue) {
-return (map = Map.from(_\$_ClassName.\$mapDefaultValue)) as E;
+if (object == _$_ClassName.$mapDefaultValue) {
+return (map = Map.from(_$_ClassName.$mapDefaultValue)) as E;
 }
-if (object == _\$_ClassName.\$setDefaultValue) {
-return (set = Set.from(_\$_ClassName.\$setDefaultValue)) as E;
+if (object == _$_ClassName.$setDefaultValue) {
+return (set = Set.from(_$_ClassName.$setDefaultValue)) as E;
 }''',
       );
     });
