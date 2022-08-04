@@ -1,7 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:model_generator/src/parameter.dart';
 import 'package:model_generator/src/options.dart';
-import 'package:simple_framework/simple_framework.dart';
 
 class Model {
   final Element annotatedElement;
