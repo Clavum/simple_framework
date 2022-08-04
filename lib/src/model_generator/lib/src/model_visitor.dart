@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/parameter.dart';
 import 'package:model_generator/src/options.dart';
+import 'package:model_generator/src/validator.dart';
 import 'package:model_generator_annotation/model_generator_annotation.dart' show Default;
 import 'package:source_gen/source_gen.dart';
 
@@ -29,19 +30,9 @@ class ModelVisitor extends SimpleElementVisitor<void> {
       options: options,
     );
 
-    visitElement(element);
+    Validator().assertValidAnnotatedElement(element, visitedModel);
+    visitClassElement(element as ClassElement);
     return visitedModel;
-  }
-
-  void visitElement(Element element) {
-    if (element is ClassElement) {
-      visitClassElement(element);
-    } else {
-      throw InvalidGenerationSourceError(
-        '${visitedModel.options.annotationName} was used on an object other than a class',
-        element: element,
-      );
-    }
   }
 
   @override
@@ -80,13 +71,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
 
   @override
   void visitParameterElement(ParameterElement element) {
-    if (!element.isNamed) {
-      throw InvalidGenerationSourceError(
-        'Generation for ${visitedModel.className} failed.\n'
-        'All parameters must be named parameters (with curly braces).\n',
-        element: element,
-      );
-    }
+    Validator().assertValidParameter(element, visitedModel);
     visitedModel.parameters.add(
       Parameter(
         defaultValue: element.defaultValue,
