@@ -7,7 +7,7 @@ Builder generateModelBuilder(BuilderOptions options) {
     [ModelGenerator()],
     '.model.dart',
     header: '''
-// ignore_for_file: prefer_const_constructors_in_immutables, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element
 // coverage:ignore-file
 ''',
   );
