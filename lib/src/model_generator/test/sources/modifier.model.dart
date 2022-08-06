@@ -125,11 +125,11 @@ abstract class _ModifierEntity extends ModifierEntity {
   BasicEntity get basicEntity;
 }
 
-_ModifierEntityModifier get modifierEntity => _ModifierEntityModifier();
+$ModifierEntityModifier get modifierEntity => $ModifierEntityModifier();
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class _ModifierEntityModifier {
+class $ModifierEntityModifier {
   ModifierEntity get _model => Repository().get(const ModifierEntity());
 
   void send() => Repository().sendModel(_model);

@@ -48,11 +48,11 @@ abstract class _EmptyEntity extends EmptyEntity {
   const _EmptyEntity._() : super._();
 }
 
-_EmptyEntityModifier get emptyEntity => _EmptyEntityModifier();
+$EmptyEntityModifier get emptyEntity => $EmptyEntityModifier();
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class _EmptyEntityModifier {
+class $EmptyEntityModifier {
   EmptyEntity get _model => Repository().get(const EmptyEntity());
 
   void send() => Repository().sendModel(_model);

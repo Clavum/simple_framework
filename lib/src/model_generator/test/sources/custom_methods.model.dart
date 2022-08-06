@@ -69,11 +69,11 @@ abstract class _CustomMethodsEntity extends CustomMethodsEntity {
   int get value;
 }
 
-_CustomMethodsEntityModifier get customMethodsEntity => _CustomMethodsEntityModifier();
+$CustomMethodsEntityModifier get customMethodsEntity => $CustomMethodsEntityModifier();
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class _CustomMethodsEntityModifier {
+class $CustomMethodsEntityModifier {
   CustomMethodsEntity get _model => Repository().get(const CustomMethodsEntity());
 
   void send() => Repository().sendModel(_model);

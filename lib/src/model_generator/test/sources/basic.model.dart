@@ -69,11 +69,11 @@ abstract class _BasicEntity extends BasicEntity {
   int get value;
 }
 
-_BasicEntityModifier get basicEntity => _BasicEntityModifier();
+$BasicEntityModifier get basicEntity => $BasicEntityModifier();
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class _BasicEntityModifier {
+class $BasicEntityModifier {
   BasicEntity get _model => Repository().get(const BasicEntity());
 
   void send() => Repository().sendModel(_model);

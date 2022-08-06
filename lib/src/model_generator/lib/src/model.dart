@@ -26,7 +26,7 @@ class Model {
 
   String get mainClassName => '_\$_$className';
 
-  String get modifierClassName => '_${className}Modifier';
+  String get modifierClassName => '\$${className}Modifier';
 
   String get bypassError => '_${camelCaseName}BypassError';
 

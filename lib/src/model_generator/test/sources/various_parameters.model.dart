@@ -95,11 +95,11 @@ abstract class _VariousParametersEntity extends VariousParametersEntity {
   CustomClass get customClass;
 }
 
-_VariousParametersEntityModifier get variousParametersEntity => _VariousParametersEntityModifier();
+$VariousParametersEntityModifier get variousParametersEntity => $VariousParametersEntityModifier();
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class _VariousParametersEntityModifier {
+class $VariousParametersEntityModifier {
   VariousParametersEntity get _model => Repository().get(const VariousParametersEntity());
 
   void send() => Repository().sendModel(_model);
