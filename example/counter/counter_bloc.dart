@@ -6,9 +6,7 @@ import 'models/counter_view_model.dart';
 class CounterBloc extends Bloc<CounterViewModel> {
   @override
   CounterViewModel buildViewModel() {
-    return CounterViewModel(
-      counter: '${counterEntity.counter}',
-    );
+    return CounterViewModel(counter: counterEntity.counter.toString());
   }
 
   void incrementCounter() {
