@@ -7,7 +7,8 @@ import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/parameter.dart';
 import 'package:model_generator/src/options.dart';
 import 'package:model_generator/src/validator.dart';
-import 'package:model_generator_annotation/model_generator_annotation.dart' show Default;
+import 'package:model_generator_annotation/model_generator_annotation.dart'
+    show Default, GenerateModel;
 import 'package:source_gen/source_gen.dart';
 
 enum SyntaxRequirements {
@@ -82,13 +83,20 @@ class ModelVisitor extends SimpleElementVisitor<void> {
         isDartCoreMap: element.type.isDartCoreMap,
         isDartCoreSet: element.type.isDartCoreSet,
         isNullable: element.type.nullabilitySuffix == NullabilitySuffix.question,
+        isGeneratedModel: element.isGeneratedModel,
       ),
     );
   }
 }
 
-/// This code is from the Freezed package: https://pub.dev/packages/freezed
 extension DefaultValue on ParameterElement {
+  bool get isGeneratedModel {
+    return (type.element != null &&
+        type.element is ClassElement &&
+        const TypeChecker.fromRuntime(GenerateModel).hasAnnotationOf(type.element!));
+  }
+
+  /// This code is from the Freezed package: https://pub.dev/packages/freezed
   /// Returns the sources of the default value associated with a `@Default`,
   /// or `null` if no `@Default` are specified.
   String? get defaultValue {

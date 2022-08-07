@@ -159,7 +159,11 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
 
   set setValue(Set<int> setValue) => _set(_get.merge(setValue: setValue));
 
-  BasicEntity get basicEntity => _get.basicEntity;
+  $BasicEntityModifier get basicEntity => $BasicEntityModifier(
+        () => _get.basicEntity,
+        (BasicEntity basicEntity) => this.basicEntity = basicEntity,
+        () => send(),
+      );
 
   set basicEntity(BasicEntity basicEntity) => _set(_get.merge(basicEntity: basicEntity));
 

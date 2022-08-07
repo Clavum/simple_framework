@@ -108,6 +108,16 @@ class Model {
     }).join('\n\n');
   }
 
+  String modifierGetter(Parameter parameter) {
+    return '''
+$className get ${parameter.name} => $modifierClassName(
+  () => _get.${parameter.name},
+  (${className} ) => this.basicEntity = basicEntity,
+  () => send(),
+);
+    ''';
+  }
+
   /// --- Example format ---
   /// static const List<int> $fieldNameDefaultValue = [defaultValue];
   String collectionDefaults() {

@@ -7,6 +7,7 @@ class Parameter {
   final bool isDartCoreMap;
   final bool isDartCoreSet;
   final bool isNullable;
+  final bool isGeneratedModel;
 
   const Parameter({
     required this.defaultValue,
@@ -17,6 +18,7 @@ class Parameter {
     required this.isDartCoreMap,
     required this.isDartCoreSet,
     required this.isNullable,
+    required this.isGeneratedModel,
   });
 
   bool get isValid => isRequired || isNullable || defaultValue != null;
@@ -122,6 +124,13 @@ class Parameter {
   String modifierGetter() {
     if (isEligibleForModifier) {
       return '${getter('_process(_get.$name)')}';
+    } else if (isGeneratedModel) {
+      return '''
+\$${type}Modifier get $name => \$${type}Modifier(
+        () => _get.${name},
+        ($type $name) => this.$name = $name,
+        () => send(),
+      );''';
     } else {
       return '${getter('_get.$name')}';
     }
