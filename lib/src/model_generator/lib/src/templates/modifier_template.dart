@@ -18,7 +18,6 @@ ${model.modifierClassName} get ${model.camelCaseName} => ${model.modifierClassNa
 
 set ${model.camelCaseName}(${model.className} model) => Repository().set(model);
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class ${model.modifierClassName} extends ${model.mainClassName} {
   ${model.className} get _model => Repository().get(const ${model.className}());

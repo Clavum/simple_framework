@@ -11,7 +11,6 @@ final _modifierEntityBypassError = UnsupportedError(
   'ModifierEntity\'s constructor was bypassed by another constructor.',
 );
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _$ModifierEntity {
   int get intValue => throw _modifierEntityBypassError;
@@ -37,7 +36,6 @@ mixin _$ModifierEntity {
   List<Object?> get props => throw _modifierEntityBypassError;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class _$_ModifierEntity extends _ModifierEntity {
   static const List<int> $listValueDefaultValue = const [];
@@ -52,7 +50,6 @@ class _$_ModifierEntity extends _ModifierEntity {
     this.basicEntity = const BasicEntity(),
   }) : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final int intValue;
   @override
@@ -64,7 +61,6 @@ class _$_ModifierEntity extends _ModifierEntity {
   @override
   final BasicEntity basicEntity;
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object?> get props => [
         intValue,
@@ -74,7 +70,6 @@ class _$_ModifierEntity extends _ModifierEntity {
         basicEntity,
       ];
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   _ModifierEntity merge({
     int? intValue,
@@ -96,7 +91,6 @@ class _$_ModifierEntity extends _ModifierEntity {
   Type get runtimeType => ModifierEntity;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _ModifierEntity extends ModifierEntity {
   const factory _ModifierEntity({
@@ -129,7 +123,6 @@ $ModifierEntityModifier get modifierEntity => $ModifierEntityModifier();
 
 set modifierEntity(ModifierEntity model) => Repository().set(model);
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class $ModifierEntityModifier extends _$_ModifierEntity {
   ModifierEntity get _model => Repository().get(const ModifierEntity());
@@ -175,7 +168,6 @@ final _modifierViewModelBypassError = UnsupportedError(
   'ModifierViewModel\'s constructor was bypassed by another constructor.',
 );
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _$ModifierViewModel {
   List<int> get listValue => throw _modifierViewModelBypassError;
@@ -183,18 +175,15 @@ mixin _$ModifierViewModel {
   List<Object?> get props => throw _modifierViewModelBypassError;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class _$_ModifierViewModel extends _ModifierViewModel {
   const _$_ModifierViewModel({
     required this.listValue,
   }) : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final List<int> listValue;
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object?> get props => [
         listValue,
@@ -204,7 +193,6 @@ class _$_ModifierViewModel extends _ModifierViewModel {
   Type get runtimeType => ModifierViewModel;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _ModifierViewModel extends ModifierViewModel {
   const factory _ModifierViewModel({

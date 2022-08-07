@@ -23,7 +23,6 @@ ${model.className} merge($maybeLeftBrace
     }
 
     return '''
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin ${model.mixinName} {
   ${model.getterList(returnValue: 'throw ${model.bypassError}')}

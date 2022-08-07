@@ -11,7 +11,6 @@ final _emptyEntityBypassError = UnsupportedError(
   'EmptyEntity\'s constructor was bypassed by another constructor.',
 );
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _$EmptyEntity {
   EmptyEntity merge() {
@@ -21,16 +20,13 @@ mixin _$EmptyEntity {
   List<Object?> get props => throw _emptyEntityBypassError;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class _$_EmptyEntity extends _EmptyEntity {
   const _$_EmptyEntity() : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object?> get props => [];
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   _EmptyEntity merge() {
     return _EmptyEntity();
@@ -40,7 +36,6 @@ class _$_EmptyEntity extends _EmptyEntity {
   Type get runtimeType => EmptyEntity;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _EmptyEntity extends EmptyEntity {
   const factory _EmptyEntity() = _$_EmptyEntity;
@@ -52,7 +47,6 @@ $EmptyEntityModifier get emptyEntity => $EmptyEntityModifier();
 
 set emptyEntity(EmptyEntity model) => Repository().set(model);
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class $EmptyEntityModifier extends _$_EmptyEntity {
   EmptyEntity get _model => Repository().get(const EmptyEntity());
@@ -64,18 +58,15 @@ final _emptyViewModelBypassError = UnsupportedError(
   'EmptyViewModel\'s constructor was bypassed by another constructor.',
 );
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _$EmptyViewModel {
   List<Object?> get props => throw _emptyViewModelBypassError;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class _$_EmptyViewModel extends _EmptyViewModel {
   const _$_EmptyViewModel() : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object?> get props => [];
 
@@ -83,7 +74,6 @@ class _$_EmptyViewModel extends _EmptyViewModel {
   Type get runtimeType => EmptyViewModel;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _EmptyViewModel extends EmptyViewModel {
   const factory _EmptyViewModel() = _$_EmptyViewModel;

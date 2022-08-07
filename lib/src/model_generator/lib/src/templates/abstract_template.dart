@@ -11,7 +11,6 @@ class AbstractTemplate {
     String maybeRightBrace = model.parameters.isNotEmpty ? '}' : '';
 
     return '''
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class ${model.abstractClassName} extends ${model.className} {
   const factory ${model.abstractClassName}($maybeLeftBrace

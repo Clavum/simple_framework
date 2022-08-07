@@ -11,7 +11,6 @@ final _customMethodsEntityBypassError = UnsupportedError(
   'CustomMethodsEntity\'s constructor was bypassed by another constructor.',
 );
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _$CustomMethodsEntity {
   int get value => throw _customMethodsEntityBypassError;
@@ -25,24 +24,20 @@ mixin _$CustomMethodsEntity {
   List<Object?> get props => throw _customMethodsEntityBypassError;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class _$_CustomMethodsEntity extends _CustomMethodsEntity {
   const _$_CustomMethodsEntity({
     this.value = 0,
   }) : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final int value;
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object?> get props => [
         value,
       ];
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   _CustomMethodsEntity merge({
     int? value,
@@ -56,7 +51,6 @@ class _$_CustomMethodsEntity extends _CustomMethodsEntity {
   Type get runtimeType => CustomMethodsEntity;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _CustomMethodsEntity extends CustomMethodsEntity {
   const factory _CustomMethodsEntity({
@@ -73,7 +67,6 @@ $CustomMethodsEntityModifier get customMethodsEntity => $CustomMethodsEntityModi
 
 set customMethodsEntity(CustomMethodsEntity model) => Repository().set(model);
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class $CustomMethodsEntityModifier extends _$_CustomMethodsEntity {
   CustomMethodsEntity get _model => Repository().get(const CustomMethodsEntity());
@@ -89,7 +82,6 @@ final _customMethodsViewModelBypassError = UnsupportedError(
   'CustomMethodsViewModel\'s constructor was bypassed by another constructor.',
 );
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _$CustomMethodsViewModel {
   int get value => throw _customMethodsViewModelBypassError;
@@ -97,18 +89,15 @@ mixin _$CustomMethodsViewModel {
   List<Object?> get props => throw _customMethodsViewModelBypassError;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class _$_CustomMethodsViewModel extends _CustomMethodsViewModel {
   const _$_CustomMethodsViewModel({
     this.value = 0,
   }) : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final int value;
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object?> get props => [
         value,
@@ -118,7 +107,6 @@ class _$_CustomMethodsViewModel extends _CustomMethodsViewModel {
   Type get runtimeType => CustomMethodsViewModel;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _CustomMethodsViewModel extends CustomMethodsViewModel {
   const factory _CustomMethodsViewModel({
