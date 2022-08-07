@@ -95,24 +95,38 @@ set variousParametersEntity(VariousParametersEntity model) => Repository().set(m
 
 /// @nodoc
 class $VariousParametersEntityModifier extends _$_VariousParametersEntity {
-  VariousParametersEntity get _model => Repository().get(const VariousParametersEntity());
+  final VariousParametersEntity Function()? _getOverride;
+  final void Function(VariousParametersEntity)? _setOverride;
+  final void Function()? _sendOverride;
 
-  void send() => Repository().sendModel(_model);
+  const $VariousParametersEntityModifier([
+    this._getOverride,
+    this._setOverride,
+    this._sendOverride,
+  ]);
 
-  String get defaultParameter => _model.defaultParameter;
+  VariousParametersEntity get _get => (_getOverride != null)
+      ? _getOverride!.call()
+      : Repository().get(const VariousParametersEntity());
+
+  void _set(VariousParametersEntity model) =>
+      (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
+
+  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+
+  String get defaultParameter => _get.defaultParameter;
 
   set defaultParameter(String defaultParameter) =>
-      Repository().set(_model.merge(defaultParameter: defaultParameter));
+      _set(_get.merge(defaultParameter: defaultParameter));
 
-  bool? get nullableParameter => _model.nullableParameter;
+  bool? get nullableParameter => _get.nullableParameter;
 
   set nullableParameter(bool? nullableParameter) =>
-      Repository().set(_model.merge(nullableParameter: nullableParameter));
+      _set(_get.merge(nullableParameter: nullableParameter));
 
-  CustomClass get customClass => _model.customClass;
+  CustomClass get customClass => _get.customClass;
 
-  set customClass(CustomClass customClass) =>
-      Repository().set(_model.merge(customClass: customClass));
+  set customClass(CustomClass customClass) => _set(_get.merge(customClass: customClass));
 
   @override
   _VariousParametersEntity merge({

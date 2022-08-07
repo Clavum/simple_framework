@@ -69,13 +69,27 @@ set customMethodsEntity(CustomMethodsEntity model) => Repository().set(model);
 
 /// @nodoc
 class $CustomMethodsEntityModifier extends _$_CustomMethodsEntity {
-  CustomMethodsEntity get _model => Repository().get(const CustomMethodsEntity());
+  final CustomMethodsEntity Function()? _getOverride;
+  final void Function(CustomMethodsEntity)? _setOverride;
+  final void Function()? _sendOverride;
 
-  void send() => Repository().sendModel(_model);
+  const $CustomMethodsEntityModifier([
+    this._getOverride,
+    this._setOverride,
+    this._sendOverride,
+  ]);
 
-  int get value => _model.value;
+  CustomMethodsEntity get _get =>
+      (_getOverride != null) ? _getOverride!.call() : Repository().get(const CustomMethodsEntity());
 
-  set value(int value) => Repository().set(_model.merge(value: value));
+  void _set(CustomMethodsEntity model) =>
+      (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
+
+  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+
+  int get value => _get.value;
+
+  set value(int value) => _set(_get.merge(value: value));
 
   @override
   _CustomMethodsEntity merge({

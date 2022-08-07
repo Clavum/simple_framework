@@ -49,9 +49,23 @@ set emptyEntity(EmptyEntity model) => Repository().set(model);
 
 /// @nodoc
 class $EmptyEntityModifier extends _$_EmptyEntity {
-  EmptyEntity get _model => Repository().get(const EmptyEntity());
+  final EmptyEntity Function()? _getOverride;
+  final void Function(EmptyEntity)? _setOverride;
+  final void Function()? _sendOverride;
 
-  void send() => Repository().sendModel(_model);
+  const $EmptyEntityModifier([
+    this._getOverride,
+    this._setOverride,
+    this._sendOverride,
+  ]);
+
+  EmptyEntity get _get =>
+      (_getOverride != null) ? _getOverride!.call() : Repository().get(const EmptyEntity());
+
+  void _set(EmptyEntity model) =>
+      (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
+
+  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
   @override
   _EmptyEntity merge() {

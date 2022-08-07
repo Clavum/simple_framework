@@ -69,13 +69,27 @@ set basicEntity(BasicEntity model) => Repository().set(model);
 
 /// @nodoc
 class $BasicEntityModifier extends _$_BasicEntity {
-  BasicEntity get _model => Repository().get(const BasicEntity());
+  final BasicEntity Function()? _getOverride;
+  final void Function(BasicEntity)? _setOverride;
+  final void Function()? _sendOverride;
 
-  void send() => Repository().sendModel(_model);
+  const $BasicEntityModifier([
+    this._getOverride,
+    this._setOverride,
+    this._sendOverride,
+  ]);
 
-  int get value => _model.value;
+  BasicEntity get _get =>
+      (_getOverride != null) ? _getOverride!.call() : Repository().get(const BasicEntity());
 
-  set value(int value) => Repository().set(_model.merge(value: value));
+  void _set(BasicEntity model) =>
+      (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
+
+  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+
+  int get value => _get.value;
+
+  set value(int value) => _set(_get.merge(value: value));
 
   @override
   _BasicEntity merge({

@@ -20,11 +20,26 @@ set ${model.camelCaseName}(${model.className} model) => Repository().set(model);
 
 /// @nodoc
 class ${model.modifierClassName} extends ${model.mainClassName} {
-  ${model.className} get _model => Repository().get(const ${model.className}());
+   final ${model.className} Function()? _getOverride;
+   final void Function(${model.className})? _setOverride;
+   final void Function()? _sendOverride;
 
-  void send() => Repository().sendModel(_model);
+   const ${model.modifierClassName}([
+     this._getOverride,
+     this._setOverride,
+     this._sendOverride,
+   ]);
+
+   ${model.className} get _get =>
+       (_getOverride != null) ? _getOverride!.call() : Repository().get(const ${model.className}());
+
+   void _set(${model.className} model) =>
+       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
+
+   void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
   ${model.modifierParameterList()}
+
   ${model.hasDartCoreCollection ? processMethod : ''}
   $modifierMerge
 }

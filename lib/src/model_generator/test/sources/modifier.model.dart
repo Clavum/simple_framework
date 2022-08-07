@@ -125,30 +125,43 @@ set modifierEntity(ModifierEntity model) => Repository().set(model);
 
 /// @nodoc
 class $ModifierEntityModifier extends _$_ModifierEntity {
-  ModifierEntity get _model => Repository().get(const ModifierEntity());
+  final ModifierEntity Function()? _getOverride;
+  final void Function(ModifierEntity)? _setOverride;
+  final void Function()? _sendOverride;
 
-  void send() => Repository().sendModel(_model);
+  const $ModifierEntityModifier([
+    this._getOverride,
+    this._setOverride,
+    this._sendOverride,
+  ]);
 
-  int get intValue => _model.intValue;
+  ModifierEntity get _get =>
+      (_getOverride != null) ? _getOverride!.call() : Repository().get(const ModifierEntity());
 
-  set intValue(int intValue) => Repository().set(_model.merge(intValue: intValue));
+  void _set(ModifierEntity model) =>
+      (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
-  List<int> get listValue => _process(_model.listValue);
+  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
-  set listValue(List<int> listValue) => Repository().set(_model.merge(listValue: listValue));
+  int get intValue => _get.intValue;
 
-  Map<String, int> get mapValue => _process(_model.mapValue);
+  set intValue(int intValue) => _set(_get.merge(intValue: intValue));
 
-  set mapValue(Map<String, int> mapValue) => Repository().set(_model.merge(mapValue: mapValue));
+  List<int> get listValue => _process(_get.listValue);
 
-  Set<int> get setValue => _process(_model.setValue);
+  set listValue(List<int> listValue) => _set(_get.merge(listValue: listValue));
 
-  set setValue(Set<int> setValue) => Repository().set(_model.merge(setValue: setValue));
+  Map<String, int> get mapValue => _process(_get.mapValue);
 
-  BasicEntity get basicEntity => _model.basicEntity;
+  set mapValue(Map<String, int> mapValue) => _set(_get.merge(mapValue: mapValue));
 
-  set basicEntity(BasicEntity basicEntity) =>
-      Repository().set(_model.merge(basicEntity: basicEntity));
+  Set<int> get setValue => _process(_get.setValue);
+
+  set setValue(Set<int> setValue) => _set(_get.merge(setValue: setValue));
+
+  BasicEntity get basicEntity => _get.basicEntity;
+
+  set basicEntity(BasicEntity basicEntity) => _set(_get.merge(basicEntity: basicEntity));
 
   E _process<E extends Object>(E object) {
     if (object == _$_ModifierEntity.$listValueDefaultValue) {

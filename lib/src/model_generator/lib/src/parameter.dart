@@ -121,15 +121,15 @@ class Parameter {
   /// Format as a getter which returns the current value from the [Repository].
   String modifierGetter() {
     if (isEligibleForModifier) {
-      return '${getter('_process(_model.$name)')}';
+      return '${getter('_process(_get.$name)')}';
     } else {
-      return '${getter('_model.$name')}';
+      return '${getter('_get.$name')}';
     }
   }
 
   /// Format as a setter which updates the value in the [Repository].
   String modifierSetter() {
-    return '${setter('Repository().set(_model.merge($name: $name))')}';
+    return '${setter('_set(_get.merge($name: $name))')}';
   }
 
   String collectionDefault() {
