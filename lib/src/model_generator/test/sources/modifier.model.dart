@@ -162,6 +162,32 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
     }
     return object;
   }
+
+  @override
+  _ModifierEntity merge({
+    int? intValue,
+    List<int>? listValue,
+    Map<String, int>? mapValue,
+    Set<int>? setValue,
+    BasicEntity? basicEntity,
+  }) {
+    if (intValue != null) {
+      this.intValue = intValue;
+    }
+    if (listValue != null) {
+      this.listValue = listValue;
+    }
+    if (mapValue != null) {
+      this.mapValue = mapValue;
+    }
+    if (setValue != null) {
+      this.setValue = setValue;
+    }
+    if (basicEntity != null) {
+      this.basicEntity = basicEntity;
+    }
+    return this;
+  }
 }
 
 final _modifierViewModelBypassError = UnsupportedError(

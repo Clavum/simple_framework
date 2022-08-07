@@ -26,6 +26,7 @@ class ${model.modifierClassName} extends ${model.mainClassName} {
 
   ${model.modifierParameterList()}
   ${model.hasDartCoreCollection ? processMethod : ''}
+  $modifierMerge
 }
     ''';
   }
@@ -35,6 +36,21 @@ class ${model.modifierClassName} extends ${model.mainClassName} {
 E _process<E extends Object>(E object) {
   ${model.processParameterConversions()}
   return object;
+}
+    ''';
+  }
+
+  String get modifierMerge {
+    String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
+    String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
+
+    return '''
+@override
+${model.abstractClassName} merge($maybeLeftBrace
+  ${model.nullableParameterList()}
+$maybeRightBrace) {
+  ${model.modifierMergeSetters()}
+  return this;
 }
     ''';
   }

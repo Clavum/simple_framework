@@ -76,6 +76,16 @@ class $BasicEntityModifier extends _$_BasicEntity {
   int get value => _model.value;
 
   set value(int value) => Repository().set(_model.merge(value: value));
+
+  @override
+  _BasicEntity merge({
+    int? value,
+  }) {
+    if (value != null) {
+      this.value = value;
+    }
+    return this;
+  }
 }
 
 final _basicViewModelBypassError = UnsupportedError(

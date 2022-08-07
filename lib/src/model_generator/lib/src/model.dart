@@ -134,4 +134,19 @@ class Model {
       ];
     }).join('\n');
   }
+
+  /// Used for the merge method of the modifier class.
+  /// --- Example format ---
+  /// if (fieldName != null) {
+  /// this.fieldName = fieldName;
+  /// }
+  String modifierMergeSetters() {
+    return parameters.expand((parameter) {
+      return [
+        'if (${parameter.name} != null) {',
+        'this.${parameter.name} = ${parameter.name};',
+        '}',
+      ];
+    }).join('\n');
+  }
 }

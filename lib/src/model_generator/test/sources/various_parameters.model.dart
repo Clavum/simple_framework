@@ -113,6 +113,24 @@ class $VariousParametersEntityModifier extends _$_VariousParametersEntity {
 
   set customClass(CustomClass customClass) =>
       Repository().set(_model.merge(customClass: customClass));
+
+  @override
+  _VariousParametersEntity merge({
+    String? defaultParameter,
+    bool? nullableParameter,
+    CustomClass? customClass,
+  }) {
+    if (defaultParameter != null) {
+      this.defaultParameter = defaultParameter;
+    }
+    if (nullableParameter != null) {
+      this.nullableParameter = nullableParameter;
+    }
+    if (customClass != null) {
+      this.customClass = customClass;
+    }
+    return this;
+  }
 }
 
 final _variousParametersViewModelBypassError = UnsupportedError(

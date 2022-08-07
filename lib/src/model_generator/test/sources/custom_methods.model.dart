@@ -76,6 +76,16 @@ class $CustomMethodsEntityModifier extends _$_CustomMethodsEntity {
   int get value => _model.value;
 
   set value(int value) => Repository().set(_model.merge(value: value));
+
+  @override
+  _CustomMethodsEntity merge({
+    int? value,
+  }) {
+    if (value != null) {
+      this.value = value;
+    }
+    return this;
+  }
 }
 
 final _customMethodsViewModelBypassError = UnsupportedError(

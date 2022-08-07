@@ -52,6 +52,11 @@ class $EmptyEntityModifier extends _$_EmptyEntity {
   EmptyEntity get _model => Repository().get(const EmptyEntity());
 
   void send() => Repository().sendModel(_model);
+
+  @override
+  _EmptyEntity merge() {
+    return this;
+  }
 }
 
 final _emptyViewModelBypassError = UnsupportedError(
