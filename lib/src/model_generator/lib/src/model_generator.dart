@@ -11,12 +11,6 @@ import 'package:model_generator/src/templates/modifier_template.dart';
 import 'package:model_generator_annotation/model_generator_annotation.dart' show GenerateModel;
 import 'package:source_gen/source_gen.dart';
 
-//TODO: Have model parameters use:
-// $BasicEntityModifier get basicEntity => $BasicEntityModifier(
-//         () => _model.basicEntity,
-//         (BasicEntity basicEntity) => Repository().set(_model.merge(basicEntity: basicEntity)),
-//         () => send(),
-//       );
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   @override
   String generateForAnnotatedElement(
