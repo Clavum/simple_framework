@@ -11,6 +11,65 @@ import 'package:model_generator/src/templates/modifier_template.dart';
 import 'package:model_generator_annotation/model_generator_annotation.dart' show GenerateModel;
 import 'package:source_gen/source_gen.dart';
 
+//TODO: Make Modifier class extend the concrete class, then add a global setter, such as:
+// set modifierEntity(ModifierEntity entity) => Repository().set(entity);
+// Then get rid of the set() method, and probably get() too since you'll always deal with the
+// Modifier.
+//
+//TODO: Override the merge method, such as:
+// @override
+//   _ModifierEntity merge({
+//     int? intValue,
+//     List<int>? listValue,
+//     Map<String, int>? mapValue,
+//     Set<int>? setValue,
+//     BasicEntity? basicEntity,
+//   }) {
+//     if (intValue != null) {
+//       this.intValue = intValue;
+//     }
+//     if (listValue != null) {
+//       this.listValue = listValue;
+//     }
+//     if (mapValue != null) {
+//       this.mapValue = mapValue;
+//     }
+//     if (setValue != null) {
+//       this.setValue = setValue;
+//     }
+//     if (basicEntity != null) {
+//       this.basicEntity = basicEntity;
+//     }
+//     return this;
+//   }
+//
+//TODO: Rename _model getter in Modifier class to _get.
+//TODO: Have model parameters use:
+// $BasicEntityModifier get basicEntity => $BasicEntityModifier(
+//         () => _model.basicEntity,
+//         (BasicEntity basicEntity) => Repository().set(_model.merge(basicEntity: basicEntity)),
+//         () => send(),
+//       );
+//TODO: Modifier should instead be:
+// class $BasicEntityModifier extends _$_BasicEntity {
+//   final BasicEntity Function()? _getOverride;
+//   final void Function(BasicEntity)? _setOverride;
+//   final void Function()? _sendOverride;
+//
+//   const $BasicEntityModifier([this._getOverride, this._setOverride, this._sendOverride]);
+//
+//   BasicEntity get _get =>
+//       (_getOverride != null) ? _getOverride!.call() : Repository().get(const BasicEntity());
+//
+//   void _set(BasicEntity value) =>
+//       (_setOverride != null) ? _setOverride!.call(value) : Repository().set(value);
+//
+//   void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+//
+//   int get value => _get.value;
+//
+//   set value(int value) => _set(_get.merge(value: value));
+// }
 class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   @override
   String generateForAnnotatedElement(

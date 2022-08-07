@@ -71,16 +71,14 @@ abstract class _CustomMethodsEntity extends CustomMethodsEntity {
 
 $CustomMethodsEntityModifier get customMethodsEntity => $CustomMethodsEntityModifier();
 
+set customMethodsEntity(CustomMethodsEntity model) => Repository().set(model);
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class $CustomMethodsEntityModifier {
+class $CustomMethodsEntityModifier extends _$_CustomMethodsEntity {
   CustomMethodsEntity get _model => Repository().get(const CustomMethodsEntity());
 
   void send() => Repository().sendModel(_model);
-
-  void set(CustomMethodsEntity model) => Repository().set(model);
-
-  CustomMethodsEntity get() => _model;
 
   int get value => _model.value;
 

@@ -127,16 +127,14 @@ abstract class _ModifierEntity extends ModifierEntity {
 
 $ModifierEntityModifier get modifierEntity => $ModifierEntityModifier();
 
+set modifierEntity(ModifierEntity model) => Repository().set(model);
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class $ModifierEntityModifier {
+class $ModifierEntityModifier extends _$_ModifierEntity {
   ModifierEntity get _model => Repository().get(const ModifierEntity());
 
   void send() => Repository().sendModel(_model);
-
-  void set(ModifierEntity model) => Repository().set(model);
-
-  ModifierEntity get() => _model;
 
   int get intValue => _model.intValue;
 

@@ -122,4 +122,6 @@ class Repository {
   set onFetch(void Function<M extends RepositoryModel>()? callback) {
     _fetchCallback = callback;
   }
+
+  void reset() => _instance = null;
 }

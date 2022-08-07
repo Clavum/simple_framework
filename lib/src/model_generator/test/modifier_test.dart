@@ -4,11 +4,16 @@ import 'package:simple_framework/simple_framework.dart';
 import 'package:test/test.dart';
 
 import 'sources/modifier.dart';
+import 'sources/basic.dart';
 
 /// -------------------------| IMPORTANT |---------------------------
 /// Please read HOW_TO_RUN_TESTS.md for instructions on running tests.
 
 void main() {
+  setUp(() {
+    Repository().reset();
+  });
+
   test('fetches latest values', () {
     expect(modifierEntity.intValue, 0);
     Repository().set(const ModifierEntity(intValue: 10));
@@ -21,7 +26,6 @@ void main() {
   });
 
   test('can send to Repository', () {
-    // Can send the model.
     late StreamSubscription subscription;
     subscription = Repository().streamOf<ModifierEntity>().listen(
       expectAsync1((entity) {
@@ -29,12 +33,13 @@ void main() {
         subscription.cancel();
       }),
     );
+    modifierEntity.intValue = 10;
     modifierEntity.send();
   });
 
   test('can set the entire model', () {
     modifierEntity.intValue = 987;
-    modifierEntity.set(const ModifierEntity(intValue: 10));
+    modifierEntity = const ModifierEntity(intValue: 10);
     expect(modifierEntity.intValue, 10);
   });
 
@@ -81,5 +86,36 @@ void main() {
     Repository().removeModel<ModifierEntity>();
     modifierEntity.setValue.addAll({1, 2, 3});
     expect(modifierEntity.setValue, {1, 2, 3});
+  });
+
+  test('can modify nested models', () {
+    modifierEntity.basicEntity.value = 10;
+    expect(modifierEntity.basicEntity.value, 10);
+
+    // Setting a nested value should NOT influence the global value.
+    expect(basicEntity.value, 0);
+  });
+
+  test('sending a nested model sends the root model', () {
+    late StreamSubscription subscription;
+    subscription = Repository().streamOf<ModifierEntity>().listen(
+      expectAsync1((entity) {
+        expect(entity.basicEntity.value, 10);
+        subscription.cancel();
+      }),
+    );
+    modifierEntity.basicEntity.value = 10;
+    modifierEntity.basicEntity.send();
+  });
+
+  test('can compare modifier with a model', () {
+    modifierEntity.intValue = 10;
+    expect(modifierEntity, const ModifierEntity(intValue: 10));
+  });
+
+  test('can use merge to set multiple values at once', () {
+    modifierEntity.merge(intValue: 10, listValue: [1, 2, 3]);
+    expect(modifierEntity.intValue, 10);
+    expect(modifierEntity.listValue, [1, 2, 3]);
   });
 }

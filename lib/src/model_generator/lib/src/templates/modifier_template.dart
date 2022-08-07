@@ -16,16 +16,14 @@ class ModifierTemplate {
     return '''
 ${model.modifierClassName} get ${model.camelCaseName} => ${model.modifierClassName}();
 
+set ${model.camelCaseName}(${model.className} model) => Repository().set(model);
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class ${model.modifierClassName} {
+class ${model.modifierClassName} extends ${model.mainClassName} {
   ${model.className} get _model => Repository().get(const ${model.className}());
 
   void send() => Repository().sendModel(_model);
-
-  void set(${model.className} model) => Repository().set(model);
-
-  ${model.className} get() => _model;
 
   ${model.modifierParameterList()}
   ${model.hasDartCoreCollection ? processMethod : ''}

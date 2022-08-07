@@ -71,16 +71,14 @@ abstract class _BasicEntity extends BasicEntity {
 
 $BasicEntityModifier get basicEntity => $BasicEntityModifier();
 
+set basicEntity(BasicEntity model) => Repository().set(model);
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class $BasicEntityModifier {
+class $BasicEntityModifier extends _$_BasicEntity {
   BasicEntity get _model => Repository().get(const BasicEntity());
 
   void send() => Repository().sendModel(_model);
-
-  void set(BasicEntity model) => Repository().set(model);
-
-  BasicEntity get() => _model;
 
   int get value => _model.value;
 

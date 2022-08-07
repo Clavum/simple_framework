@@ -97,16 +97,14 @@ abstract class _VariousParametersEntity extends VariousParametersEntity {
 
 $VariousParametersEntityModifier get variousParametersEntity => $VariousParametersEntityModifier();
 
+set variousParametersEntity(VariousParametersEntity model) => Repository().set(model);
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class $VariousParametersEntityModifier {
+class $VariousParametersEntityModifier extends _$_VariousParametersEntity {
   VariousParametersEntity get _model => Repository().get(const VariousParametersEntity());
 
   void send() => Repository().sendModel(_model);
-
-  void set(VariousParametersEntity model) => Repository().set(model);
-
-  VariousParametersEntity get() => _model;
 
   String get defaultParameter => _model.defaultParameter;
 

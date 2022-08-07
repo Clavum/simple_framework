@@ -50,16 +50,14 @@ abstract class _EmptyEntity extends EmptyEntity {
 
 $EmptyEntityModifier get emptyEntity => $EmptyEntityModifier();
 
+set emptyEntity(EmptyEntity model) => Repository().set(model);
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
-class $EmptyEntityModifier {
+class $EmptyEntityModifier extends _$_EmptyEntity {
   EmptyEntity get _model => Repository().get(const EmptyEntity());
 
   void send() => Repository().sendModel(_model);
-
-  void set(EmptyEntity model) => Repository().set(model);
-
-  EmptyEntity get() => _model;
 }
 
 final _emptyViewModelBypassError = UnsupportedError(
