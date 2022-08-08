@@ -169,7 +169,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
         () => _get.basicEntity,
         (BasicEntity basicEntity) => this.basicEntity = basicEntity,
         () => send(),
-  );
+      );
 
   set basicEntity(BasicEntity basicEntity) => _set(_get.merge(basicEntity: basicEntity));
 
