@@ -11,7 +11,6 @@ final _counterViewModelBypassError = UnsupportedError(
   'CounterViewModel\'s constructor was bypassed by another constructor.',
 );
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _$CounterViewModel {
   String get counter => throw _counterViewModelBypassError;
@@ -19,18 +18,15 @@ mixin _$CounterViewModel {
   List<Object?> get props => throw _counterViewModelBypassError;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class _$_CounterViewModel extends _CounterViewModel {
   const _$_CounterViewModel({
     required this.counter,
   }) : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final String counter;
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object?> get props => [
         counter,
@@ -40,7 +36,6 @@ class _$_CounterViewModel extends _CounterViewModel {
   Type get runtimeType => CounterViewModel;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _CounterViewModel extends CounterViewModel {
   const factory _CounterViewModel({

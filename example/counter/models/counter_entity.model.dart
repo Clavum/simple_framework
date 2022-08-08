@@ -11,7 +11,6 @@ final _counterEntityBypassError = UnsupportedError(
   'CounterEntity\'s constructor was bypassed by another constructor.',
 );
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 mixin _$CounterEntity {
   int get counter => throw _counterEntityBypassError;
@@ -25,24 +24,20 @@ mixin _$CounterEntity {
   List<Object?> get props => throw _counterEntityBypassError;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 class _$_CounterEntity extends _CounterEntity {
   const _$_CounterEntity({
     this.counter = 0,
   }) : super._();
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   final int counter;
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   List<Object?> get props => [
         counter,
       ];
 
-  // GENERATED CODE - DO NOT MODIFY BY HAND
   @override
   _CounterEntity merge({
     int? counter,
@@ -56,7 +51,6 @@ class _$_CounterEntity extends _CounterEntity {
   Type get runtimeType => CounterEntity;
 }
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /// @nodoc
 abstract class _CounterEntity extends CounterEntity {
   const factory _CounterEntity({
@@ -69,20 +63,43 @@ abstract class _CounterEntity extends CounterEntity {
   int get counter;
 }
 
-_CounterEntityModifier get counterEntity => _CounterEntityModifier();
+$CounterEntityModifier get counterEntity => $CounterEntityModifier();
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
+set counterEntity(CounterEntity model) => Repository().set(model);
+
 /// @nodoc
-class _CounterEntityModifier {
-  CounterEntity get _model => Repository().get(const CounterEntity());
+class $CounterEntityModifier extends _$_CounterEntity {
+  final CounterEntity Function()? _getOverride;
+  final void Function(CounterEntity)? _setOverride;
+  final void Function()? _sendOverride;
 
-  void send() => Repository().sendModel(_model);
+  const $CounterEntityModifier([
+    this._getOverride,
+    this._setOverride,
+    this._sendOverride,
+  ]);
 
-  void set(CounterEntity model) => Repository().set(model);
+  CounterEntity get _get =>
+      (_getOverride != null) ? _getOverride!.call() : Repository().get(const CounterEntity());
 
-  CounterEntity get() => _model;
+  void _set(CounterEntity model) =>
+      (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
-  int get counter => _model.counter;
+  @override
+  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
-  set counter(int counter) => Repository().set(_model.merge(counter: counter));
+  @override
+  int get counter => _get.counter;
+
+  set counter(int counter) => _set(_get.merge(counter: counter));
+
+  @override
+  _CounterEntity merge({
+    int? counter,
+  }) {
+    if (counter != null) {
+      this.counter = counter;
+    }
+    return this;
+  }
 }
