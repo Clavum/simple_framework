@@ -123,16 +123,17 @@ class Parameter {
   /// Format as a getter which returns the current value from the [Repository].
   String modifierGetter() {
     if (isEligibleForModifier) {
-      return '${getter('_process(_get.$name)')}';
+      return '@override\n${getter('_process(_get.$name)')}';
     } else if (isGeneratedModel) {
       return '''
+@override
 \$${type}Modifier get $name => \$${type}Modifier(
         () => _get.${name},
         ($type $name) => this.$name = $name,
         () => send(),
       );''';
     } else {
-      return '${getter('_get.$name')}';
+      return '@override\n${getter('_get.$name')}';
     }
   }
 

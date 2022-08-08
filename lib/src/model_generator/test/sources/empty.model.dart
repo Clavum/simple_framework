@@ -65,6 +65,7 @@ class $EmptyEntityModifier extends _$_EmptyEntity {
   void _set(EmptyEntity model) =>
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
+  @override
   void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
   @override

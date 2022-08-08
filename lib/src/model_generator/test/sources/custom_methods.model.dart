@@ -85,8 +85,10 @@ class $CustomMethodsEntityModifier extends _$_CustomMethodsEntity {
   void _set(CustomMethodsEntity model) =>
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
+  @override
   void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
+  @override
   int get value => _get.value;
 
   set value(int value) => _set(_get.merge(value: value));

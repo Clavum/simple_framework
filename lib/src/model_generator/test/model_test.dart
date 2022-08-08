@@ -363,50 +363,62 @@ ExampleModel nestedModel,''',
       expect(
         testModel.modifierParameterList(),
         r'''
+@override
 int get default => _get.default;
 
 set default(int default) => _set(_get.merge(default: default));
 
+@override
 Custom get customType => _get.customType;
 
 set customType(Custom customType) => _set(_get.merge(customType: customType));
 
+@override
 int get requiredField => _get.requiredField;
 
 set requiredField(int requiredField) => _set(_get.merge(requiredField: requiredField));
 
+@override
 int? get nullable => _get.nullable;
 
 set nullable(int? nullable) => _set(_get.merge(nullable: nullable));
 
+@override
 int get invalid => _get.invalid;
 
 set invalid(int invalid) => _set(_get.merge(invalid: invalid));
 
+@override
 int? get requiredNullable => _get.requiredNullable;
 
 set requiredNullable(int? requiredNullable) => _set(_get.merge(requiredNullable: requiredNullable));
 
+@override
 int? get defaultNullable => _get.defaultNullable;
 
 set defaultNullable(int? defaultNullable) => _set(_get.merge(defaultNullable: defaultNullable));
 
+@override
 List<int> get list => _process(_get.list);
 
 set list(List<int> list) => _set(_get.merge(list: list));
 
+@override
 List<int> get requiredList => _get.requiredList;
 
 set requiredList(List<int> requiredList) => _set(_get.merge(requiredList: requiredList));
 
+@override
 Map<String, int> get map => _process(_get.map);
 
 set map(Map<String, int> map) => _set(_get.merge(map: map));
 
+@override
 Set<int> get set => _process(_get.set);
 
 set set(Set<int> set) => _set(_get.merge(set: set));
 
+@override
 $ExampleModelModifier get nestedModel => $ExampleModelModifier(
         () => _get.nestedModel,
         (ExampleModel nestedModel) => this.nestedModel = nestedModel,

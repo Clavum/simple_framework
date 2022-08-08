@@ -112,18 +112,22 @@ class $VariousParametersEntityModifier extends _$_VariousParametersEntity {
   void _set(VariousParametersEntity model) =>
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
+  @override
   void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
+  @override
   String get defaultParameter => _get.defaultParameter;
 
   set defaultParameter(String defaultParameter) =>
       _set(_get.merge(defaultParameter: defaultParameter));
 
+  @override
   bool? get nullableParameter => _get.nullableParameter;
 
   set nullableParameter(bool? nullableParameter) =>
       _set(_get.merge(nullableParameter: nullableParameter));
 
+  @override
   CustomClass get customClass => _get.customClass;
 
   set customClass(CustomClass customClass) => _set(_get.merge(customClass: customClass));

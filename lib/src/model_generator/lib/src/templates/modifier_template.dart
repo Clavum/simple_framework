@@ -30,6 +30,7 @@ class ${model.modifierClassName} extends ${model.mainClassName} {
    void _set(${model.className} model) =>
        (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
+   @override
    void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
   ${model.modifierParameterList()}

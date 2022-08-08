@@ -141,29 +141,35 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
   void _set(ModifierEntity model) =>
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
+  @override
   void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
 
+  @override
   int get intValue => _get.intValue;
 
   set intValue(int intValue) => _set(_get.merge(intValue: intValue));
 
+  @override
   List<int> get listValue => _process(_get.listValue);
 
   set listValue(List<int> listValue) => _set(_get.merge(listValue: listValue));
 
+  @override
   Map<String, int> get mapValue => _process(_get.mapValue);
 
   set mapValue(Map<String, int> mapValue) => _set(_get.merge(mapValue: mapValue));
 
+  @override
   Set<int> get setValue => _process(_get.setValue);
 
   set setValue(Set<int> setValue) => _set(_get.merge(setValue: setValue));
 
+  @override
   $BasicEntityModifier get basicEntity => $BasicEntityModifier(
         () => _get.basicEntity,
         (BasicEntity basicEntity) => this.basicEntity = basicEntity,
         () => send(),
-      );
+  );
 
   set basicEntity(BasicEntity basicEntity) => _set(_get.merge(basicEntity: basicEntity));
 
