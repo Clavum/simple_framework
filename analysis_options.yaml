@@ -3,6 +3,9 @@ include: package:flutter_lints/flutter.yaml
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
 
+analyzer:
+  exclude: [ build/**, lib/**.model.dart, lib/**.g.dart ]
+
 linter:
   rules:
     use_key_in_widget_constructors: false
