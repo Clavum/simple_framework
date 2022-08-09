@@ -1,8 +1,8 @@
-import 'package:test/test.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:model_generator/src/model.dart';
-import 'package:model_generator/src/parameter.dart';
 import 'package:model_generator/src/options.dart';
+import 'package:model_generator/src/parameter.dart';
+import 'package:test/test.dart';
 
 /// -------------------------| IMPORTANT |---------------------------
 /// Please read HOW_TO_RUN_TESTS.md for instructions on running tests.

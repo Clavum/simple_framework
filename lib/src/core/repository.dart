@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:simple_framework/simple_framework.dart';
 import 'package:meta/meta.dart';
+import 'package:simple_framework/simple_framework.dart';
 
 class Repository {
   static Repository? _instance;

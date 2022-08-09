@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:simple_framework/simple_framework.dart';
 import 'package:test/test.dart';
 
-import 'sources/modifier.dart';
 import 'sources/basic.dart';
+import 'sources/modifier.dart';
 
 /// -------------------------| IMPORTANT |---------------------------
 /// Please read HOW_TO_RUN_TESTS.md for instructions on running tests.

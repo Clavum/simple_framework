@@ -1,5 +1,5 @@
-import 'package:meta/meta.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meta/meta.dart';
 import 'package:simple_framework/src/testing/common_test_methods.dart';
 import 'package:utilities/utilities.dart';
 

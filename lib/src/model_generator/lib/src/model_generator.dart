@@ -2,12 +2,12 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/model_visitor.dart';
-import 'package:model_generator/src/validator.dart';
 import 'package:model_generator/src/options.dart';
-import 'package:model_generator/src/templates/mixin_template.dart';
-import 'package:model_generator/src/templates/concrete_template.dart';
 import 'package:model_generator/src/templates/abstract_template.dart';
+import 'package:model_generator/src/templates/concrete_template.dart';
+import 'package:model_generator/src/templates/mixin_template.dart';
 import 'package:model_generator/src/templates/modifier_template.dart';
+import 'package:model_generator/src/validator.dart';
 import 'package:model_generator_annotation/model_generator_annotation.dart' show GenerateModel;
 import 'package:source_gen/source_gen.dart';
 

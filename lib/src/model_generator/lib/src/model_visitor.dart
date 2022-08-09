@@ -1,11 +1,11 @@
-import 'package:analyzer/dart/element/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/visitor.dart';
 import 'package:collection/collection.dart';
 import 'package:model_generator/src/model.dart';
-import 'package:model_generator/src/parameter.dart';
 import 'package:model_generator/src/options.dart';
+import 'package:model_generator/src/parameter.dart';
 import 'package:model_generator/src/validator.dart';
 import 'package:model_generator_annotation/model_generator_annotation.dart'
     show Default, GenerateModel;

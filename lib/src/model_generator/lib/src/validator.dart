@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:source_gen/source_gen.dart';
 import 'package:model_generator/src/model.dart';
 import 'package:model_generator/src/model_visitor.dart';
+import 'package:source_gen/source_gen.dart';
 
 class Validator {
   void assertValidAnnotatedElement(Element element, Model model) {
