@@ -23,14 +23,14 @@ class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
               'You have pushed the button this many times:',
             ),
             Text(
-              viewModel.counter, // Display the "counter" field of the CounterViewModel
+              viewModel.counter,
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => bloc.incrementCounter(), // Call bloc method
+        onPressed: bloc.incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

@@ -16,23 +16,23 @@ There are four components to the Simple Framework:
 
 ```dart
 @generateEntity
-class ExampleEntity extends Entity with _$ExampleEntity {
-  const ExampleEntity._();
+class CounterEntity extends Entity with _$CounterEntity {
+  const CounterEntity._();
 
-  const factory ExampleEntity({
+  const factory CounterEntity({
     @Default(0) int counter,
-  }) = _ExampleEntity;
+  }) = _CounterEntity;
 }
 ```
 
 The code generator will create a "modifier" named the same as the **Entity**, but in lower camel
-case. For the `ExampleEntity` above, it would generate a modifier named `exampleEntity`. You
+case. For the `CounterEntity` above, it would generate a modifier named `counterEntity`. You
 can use this modifier to quickly access and modify the values in the **Entity**. For example:
 
 ```
-print(exampleEntity.counter); //0
-exampleEntity.counter++;
-print(exampleEntity.counter); //1
+print(counterEntity.counter); //0
+counterEntity.counter++;
+print(counterEntity.counter); //1
 ```
 
 More on this later!
@@ -44,12 +44,12 @@ More on this later!
 
 ```dart
 @generateViewModel
-class ExampleViewModel extends ViewModel with _$ExampleViewModel {
-  const ExampleViewModel._();
+class CounterViewModel extends ViewModel with _$CounterViewModel {
+  const CounterViewModel._();
 
-  const factory ExampleViewModel({
+  const factory CounterViewModel({
     required String counter,
-  }) = _ExampleViewModel;
+  }) = _CounterViewModel;
 }
 ```
 
@@ -59,8 +59,8 @@ class ExampleViewModel extends ViewModel with _$ExampleViewModel {
 provide the **ViewModels**.
 
 ```dart
-class ExampleScreen extends Screen<ExampleBloc> {
-  ExampleScreen() : super(ExampleBloc());
+class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
+  CounterScreen() : super(CounterBloc());
 
   @override
   Widget build(context, bloc, viewModel) {
@@ -77,22 +77,22 @@ class ExampleScreen extends Screen<ExampleBloc> {
 A **Bloc** is a class which updates **Entities** based on user interaction.
 
 The `buildViewModel` method isn't as simple as it seems...some magic goes on in the background
-to recognize (in this example) that the `buildViewModel` method uses the `ExampleEntity`. Then
-when `send()` is called on the `ExampleEntity`, the `buildViewModel` method will be called again
+to recognize (in this example) that the `buildViewModel` method uses the `CounterEntity`. Then
+when `send()` is called on the `CounterEntity`, the `buildViewModel` method will be called again
 and the **Screen** is rebuilt with the new result.
 
 ```dart
-class ExampleBloc extends Bloc<ExampleViewModel> {
+class CounterBloc extends Bloc<CounterViewModel> {
   @override
-  ExampleViewModel buildViewModel() {
-    return ExampleViewModel(
-      example: exampleEntity.counter,
+  CounterViewModel buildViewModel() {
+    return CounterViewModel(
+      example: counterEntity.counter.toString(),
     );
   }
 
   void incrementCounter() {
-    exampleEntity.counter++;
-    exampleEntity.send();
+    counterEntity.counter++;
+    counterEntity.send();
   }
 }
 ```
