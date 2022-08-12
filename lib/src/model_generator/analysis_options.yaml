@@ -2,6 +2,7 @@ analyzer:
   errors:
     missing_required_param: error
     import_of_legacy_library_into_null_safe: ignore
+  exclude: [ build/**, lib/**.model.dart, lib/**.g.dart, test/**.model.dart, test/**.g.dart ]
 
 linter:
   rules:
