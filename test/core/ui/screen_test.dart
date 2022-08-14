@@ -47,13 +47,6 @@ void main() {
       await tester.pumpWidget(MaterialApp(home: _SimpleScreen(testBlocMock)));
     }
 
-    testWidgets('calls onCreate', (tester) async {
-      await pumpTestScreen(tester);
-      await tester.pumpAndSettle();
-
-      verify(() => testBlocMock.onCreate()).called(1);
-    });
-
     testWidgets('basic test', (tester) async {
       await pumpTestScreen(tester);
       await tester.pumpAndSettle();
