@@ -7,7 +7,10 @@ import 'models/counter_view_model.dart';
 class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
   final String title;
 
-  CounterScreen({required this.title}) : super(CounterBloc());
+  const CounterScreen({required this.title});
+
+  @override
+  CounterBloc createBloc() => CounterBloc();
 
   @override
   Widget build(context, bloc, viewModel) {

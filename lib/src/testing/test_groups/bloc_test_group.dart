@@ -18,7 +18,7 @@ void blocTestGroup<B extends Bloc>(B Function() blocCreator, void Function(B Fun
     });
 
     tearDown(() {
-      bloc.dispose();
+      bloc.onDispose();
       commonTearDown();
     });
 

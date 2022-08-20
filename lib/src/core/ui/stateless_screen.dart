@@ -29,6 +29,6 @@ class _ScreenState<B extends Bloc> extends State<StatelessScreen<B>> {
   @override
   void dispose() {
     super.dispose();
-    widget._bloc.dispose();
+    widget._bloc.onDispose();
   }
 }

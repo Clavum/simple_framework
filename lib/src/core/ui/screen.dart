@@ -1,11 +1,12 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:simple_framework/simple_framework.dart';
+part of simple_framework;
+
+enum _ScreenStateLifecycle {
+  created,
+  active,
+}
 
 abstract class Screen<B extends Bloc<V>, V extends ViewModel> extends StatefulWidget {
-  final B _bloc;
-
-  const Screen(this._bloc, {Key? key}) : super(key: key);
+  const Screen({Key? key}) : super(key: key);
 
   Widget build(BuildContext context, B bloc, V viewModel);
 
@@ -13,33 +14,69 @@ abstract class Screen<B extends Bloc<V>, V extends ViewModel> extends StatefulWi
     return const SizedBox.shrink(key: Key('waitingForStream'));
   }
 
-  @visibleForTesting
-  @nonVirtual
-  B get debugGetBloc => _bloc;
+  B createBloc();
 
   @override
   @nonVirtual
-  _ScreenState<B, V> createState() => _ScreenState<B, V>();
+  ScreenState<B, V> createState() => ScreenState<B, V>();
 }
 
-class _ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B, V>> {
+class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B, V>> {
+  late final B bloc;
+
+  V? _currentViewModel;
+
+  final StreamController<V> _viewModelStreamController = StreamController<V>(sync: true);
+
+  final Map<Type, StreamSubscription<void>> _entityStreams = {};
+
+  _ScreenStateLifecycle _state = _ScreenStateLifecycle.created;
+
   @override
   void initState() {
     super.initState();
 
-    widget._bloc.setBuildContextGetter = () => context;
-    widget._bloc.onInitState();
+    bloc = widget.createBloc().._screenState = this;
+
+    _viewModelStreamController.onListen = () {
+      if (_state == _ScreenStateLifecycle.active) _sendModel();
+    };
+
+    _createAndSend();
   }
+
+  void _createAndSend() async {
+    await bloc.onCreate();
+    _sendModel();
+    _state = _ScreenStateLifecycle.active;
+  }
+
+  void _sendModel() async {
+    Repository().onFetch = _onModelRequested;
+    final V nextViewModel = await bloc.buildViewModel();
+    Repository().onFetch = null;
+
+    if (bloc.shouldSendNewModel(_currentViewModel, nextViewModel)) {
+      _currentViewModel = nextViewModel;
+      _viewModelStreamController.add(nextViewModel);
+    }
+  }
+
+  void _onModelRequested<M extends RepositoryModel>() {
+    _entityStreams[M] ??= Repository().streamOf<M>().listen(_onEntityUpdated);
+  }
+
+  void _onEntityUpdated(_) => _sendModel();
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<V>(
-      stream: widget._bloc.viewModelStream,
+      stream: _viewModelStreamController.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return widget.buildLoadingScreen(context, widget._bloc);
+          return widget.buildLoadingScreen(context, bloc);
         } else if (snapshot.hasData) {
-          return widget.build(context, widget._bloc, snapshot.data!);
+          return widget.build(context, bloc, snapshot.data!);
         }
         return const SizedBox.shrink(key: Key('errorFromStream'));
       },
@@ -48,7 +85,10 @@ class _ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<
 
   @override
   void dispose() {
-    widget._bloc.dispose();
+    for (final subscription in _entityStreams.values) {
+      subscription.cancel();
+    }
+    bloc.onDispose();
     super.dispose();
   }
 }

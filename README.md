@@ -60,7 +60,8 @@ provide the **ViewModels**.
 
 ```dart
 class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
-  CounterScreen() : super(CounterBloc());
+  @override
+  CounterBloc createBloc() => CounterBloc();
 
   @override
   Widget build(context, bloc, viewModel) {
