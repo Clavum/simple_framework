@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:simple_framework/src/core/models/model.dart';
 import 'package:simple_framework/src/core/models/view_model.dart';
 import 'package:simple_framework/src/core/repository.dart';
+import 'package:simple_framework/src/core/ui/screen.dart';
+import 'package:meta/meta.dart';
 
-//TODO: Add a test when the buildViewModel uses different entities each request, make sure it
-//adds listeners.
 abstract class Bloc<V extends ViewModel> {
   bool hasBeenCreated = false;
 
@@ -15,17 +16,28 @@ abstract class Bloc<V extends ViewModel> {
 
   final Map<Type, StreamSubscription<void>> _entityStreams = {};
 
+  late final BuildContext Function() _buildContextGetter;
+
   Bloc() {
-    _viewModelStreamController.onListen = () async {
-      if (!hasBeenCreated) {
-        hasBeenCreated = true;
-        await onCreate();
-      }
-      _sendModel();
+    _viewModelStreamController.onListen = () {
+      if (hasBeenCreated) _sendModel();
     };
   }
 
+  void onInitState() async {
+    if (!hasBeenCreated) {
+      hasBeenCreated = true;
+      await onCreate();
+    }
+    _sendModel();
+  }
+
   Stream<V> get viewModelStream => _viewModelStreamController.stream;
+
+  @internal
+  set setBuildContextGetter(BuildContext Function() getter) => _buildContextGetter = getter;
+
+  BuildContext get context => _buildContextGetter();
 
   void _sendModel() async {
     Repository().onFetch = _onModelRequested;
@@ -55,5 +67,10 @@ abstract class Bloc<V extends ViewModel> {
   bool shouldSendNewModel(V? currentViewModel, V newViewModel) => currentViewModel != newViewModel;
 
   /// Optional method to override, to trigger events when the Screen (and Bloc) are disposed.
-  void dispose() {}
+  @mustCallSuper
+  void dispose() {
+    for (final subscription in _entityStreams.values) {
+      subscription.cancel();
+    }
+  }
 }

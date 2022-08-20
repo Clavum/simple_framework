@@ -24,6 +24,14 @@ abstract class Screen<B extends Bloc<V>, V extends ViewModel> extends StatefulWi
 
 class _ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B, V>> {
   @override
+  void initState() {
+    super.initState();
+
+    widget._bloc.setBuildContextGetter = () => context;
+    widget._bloc.onInitState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<V>(
       stream: widget._bloc.viewModelStream,

@@ -82,6 +82,7 @@ void main() {
         expect(viewModel.value, '5');
         subscription.cancel();
       }));
+      simpleBloc.onInitState();
     }, timeout: const Timeout(Duration(seconds: 3)));
 
     /// When the _SimpleBloc builds from the TestEntity, it should recognize this dependency and
@@ -102,6 +103,7 @@ void main() {
         }
         callCount++;
       }, count: 3));
+      simpleBloc.onInitState();
     }, timeout: const Timeout(Duration(seconds: 3)));
 
     /// See the comment in the test for an explanation.
@@ -125,6 +127,7 @@ void main() {
         }
         callCount++;
       }, count: 2));
+      simpleBloc.onInitState();
       await Future.delayed(Duration.zero);
     }, timeout: const Timeout(Duration(seconds: 3)));
 
@@ -149,6 +152,7 @@ void main() {
         }
         callCount++;
       }, count: 3));
+      toggleBuildBloc.onInitState();
     }, timeout: const Timeout(Duration(seconds: 3)));
 
     /// Unless overridden, the shouldSendNewModel method prevents sending duplicates.
@@ -167,6 +171,7 @@ void main() {
         }
         callCount++;
       }, count: 2));
+      simpleBloc.onInitState();
     }, timeout: const Timeout(Duration(seconds: 3)));
 
     /// The _BuildUnderTenBloc overrides shouldSendNewModel to prevent sending any ViewModel with
@@ -186,6 +191,7 @@ void main() {
         }
         callCount++;
       }, count: 2));
+      buildUnderTenBloc.onInitState();
     }, timeout: const Timeout(Duration(seconds: 3)));
 
     /// The _CreateDelayBloc overrides onCreate to wait 10 milliseconds, then sets testEntity's
@@ -197,6 +203,7 @@ void main() {
         expect(viewModel.value, '123');
         subscription.cancel();
       }));
+      createDelayBloc.onInitState();
     });
 
     /// It is possible to have two or more Screens depending on the same Bloc. In this case, we
@@ -216,6 +223,7 @@ void main() {
         }
         firstCallCount++;
       }, count: 2));
+      simpleBloc.onInitState();
 
       late final StreamSubscription secondSubscription;
       int secondCallCount = 0;
