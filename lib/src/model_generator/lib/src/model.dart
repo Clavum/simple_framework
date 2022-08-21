@@ -104,7 +104,7 @@ class Model {
   /// set fieldName(String fieldName) => Repository().set(_model.merge(fieldName: fieldName));
   String modifierParameterList() {
     return parameters.expand((parameter) {
-      return [parameter.modifierGetter(), parameter.modifierSetter()];
+      return [parameter.modifierGetter(mainClassName), parameter.modifierSetter()];
     }).join('\n\n');
   }
 
@@ -122,26 +122,7 @@ $className get ${parameter.name} => $modifierClassName(
   /// static const List<int> $fieldNameDefaultValue = [defaultValue];
   String collectionDefaults() {
     return parameters.expand((parameter) {
-      return parameter.isEligibleForModifier ? [parameter.collectionDefault()] : [];
-    }).join('\n');
-  }
-
-  /// Makes any necessary conversions when the modifier getter is called.
-  /// --- Example format ---
-  /// if (object == _$_ClassName.$fieldNameDefaultValue) {
-  /// return (fieldName = List.from(_$_ClassName.$fieldNameDefaultValue)) as E;
-  /// }
-  String processParameterConversions() {
-    return parameters.expand((parameter) {
-      if (!parameter.isEligibleForModifier) {
-        return [];
-      }
-      return [
-        'if (object == ${mainClassName}.${parameter.defaultValueName}) {',
-        'return (${parameter.name} = ${parameter.collectionName}' +
-            '.from(${mainClassName}.${parameter.defaultValueName})) as E;',
-        '}',
-      ];
+      return parameter.isOptionalIterable ? [parameter.collectionDefault()] : [];
     }).join('\n');
   }
 

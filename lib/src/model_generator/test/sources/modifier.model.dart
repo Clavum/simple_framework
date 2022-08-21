@@ -21,6 +21,8 @@ mixin _$ModifierEntity {
 
   Set<int> get setValue => throw _modifierEntityBypassError;
 
+  Map<String, int> get secondMap => throw _modifierEntityBypassError;
+
   BasicEntity get basicEntity => throw _modifierEntityBypassError;
 
   ModifierEntity merge({
@@ -28,6 +30,7 @@ mixin _$ModifierEntity {
     List<int>? listValue,
     Map<String, int>? mapValue,
     Set<int>? setValue,
+    Map<String, int>? secondMap,
     BasicEntity? basicEntity,
   }) {
     throw _modifierEntityBypassError;
@@ -38,15 +41,17 @@ mixin _$ModifierEntity {
 
 /// @nodoc
 class _$_ModifierEntity extends _ModifierEntity {
-  static const List<int> $listValueDefaultValue = const [];
-  static const Map<String, int> $mapValueDefaultValue = const {};
-  static const Set<int> $setValueDefaultValue = const {};
+  static const List<int> $listValueDefaultValue = [];
+  static const Map<String, int> $mapValueDefaultValue = {};
+  static const Set<int> $setValueDefaultValue = {};
+  static const Map<String, int> $secondMapDefaultValue = {};
 
   const _$_ModifierEntity({
     this.intValue = 0,
     this.listValue = $listValueDefaultValue,
     this.mapValue = $mapValueDefaultValue,
     this.setValue = $setValueDefaultValue,
+    this.secondMap = $secondMapDefaultValue,
     this.basicEntity = const BasicEntity(),
   }) : super._();
 
@@ -59,6 +64,8 @@ class _$_ModifierEntity extends _ModifierEntity {
   @override
   final Set<int> setValue;
   @override
+  final Map<String, int> secondMap;
+  @override
   final BasicEntity basicEntity;
 
   @override
@@ -67,6 +74,7 @@ class _$_ModifierEntity extends _ModifierEntity {
         listValue,
         mapValue,
         setValue,
+        secondMap,
         basicEntity,
       ];
 
@@ -76,6 +84,7 @@ class _$_ModifierEntity extends _ModifierEntity {
     List<int>? listValue,
     Map<String, int>? mapValue,
     Set<int>? setValue,
+    Map<String, int>? secondMap,
     BasicEntity? basicEntity,
   }) {
     return _ModifierEntity(
@@ -83,6 +92,7 @@ class _$_ModifierEntity extends _ModifierEntity {
       listValue: listValue ?? this.listValue,
       mapValue: mapValue ?? this.mapValue,
       setValue: setValue ?? this.setValue,
+      secondMap: secondMap ?? this.secondMap,
       basicEntity: basicEntity ?? this.basicEntity,
     );
   }
@@ -98,6 +108,7 @@ abstract class _ModifierEntity extends ModifierEntity {
     List<int> listValue,
     Map<String, int> mapValue,
     Set<int> setValue,
+    Map<String, int> secondMap,
     BasicEntity basicEntity,
   }) = _$_ModifierEntity;
 
@@ -114,6 +125,9 @@ abstract class _ModifierEntity extends ModifierEntity {
 
   @override
   Set<int> get setValue;
+
+  @override
+  Map<String, int> get secondMap;
 
   @override
   BasicEntity get basicEntity;
@@ -150,19 +164,40 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
   set intValue(int intValue) => _set(_get.merge(intValue: intValue));
 
   @override
-  List<int> get listValue => _process(_get.listValue);
+  List<int> get listValue {
+    var value = _get.listValue;
+    return (value == _$_ModifierEntity.$listValueDefaultValue)
+        ? listValue = List.from(value)
+        : value;
+  }
 
   set listValue(List<int> listValue) => _set(_get.merge(listValue: listValue));
 
   @override
-  Map<String, int> get mapValue => _process(_get.mapValue);
+  Map<String, int> get mapValue {
+    var value = _get.mapValue;
+    return (value == _$_ModifierEntity.$mapValueDefaultValue) ? mapValue = Map.from(value) : value;
+  }
 
   set mapValue(Map<String, int> mapValue) => _set(_get.merge(mapValue: mapValue));
 
   @override
-  Set<int> get setValue => _process(_get.setValue);
+  Set<int> get setValue {
+    var value = _get.setValue;
+    return (value == _$_ModifierEntity.$setValueDefaultValue) ? setValue = Set.from(value) : value;
+  }
 
   set setValue(Set<int> setValue) => _set(_get.merge(setValue: setValue));
+
+  @override
+  Map<String, int> get secondMap {
+    var value = _get.secondMap;
+    return (value == _$_ModifierEntity.$secondMapDefaultValue)
+        ? secondMap = Map.from(value)
+        : value;
+  }
+
+  set secondMap(Map<String, int> secondMap) => _set(_get.merge(secondMap: secondMap));
 
   @override
   $BasicEntityModifier get basicEntity => $BasicEntityModifier(
@@ -173,25 +208,13 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
 
   set basicEntity(BasicEntity basicEntity) => _set(_get.merge(basicEntity: basicEntity));
 
-  E _process<E extends Object>(E object) {
-    if (object == _$_ModifierEntity.$listValueDefaultValue) {
-      return (listValue = List.from(_$_ModifierEntity.$listValueDefaultValue)) as E;
-    }
-    if (object == _$_ModifierEntity.$mapValueDefaultValue) {
-      return (mapValue = Map.from(_$_ModifierEntity.$mapValueDefaultValue)) as E;
-    }
-    if (object == _$_ModifierEntity.$setValueDefaultValue) {
-      return (setValue = Set.from(_$_ModifierEntity.$setValueDefaultValue)) as E;
-    }
-    return object;
-  }
-
   @override
   _ModifierEntity merge({
     int? intValue,
     List<int>? listValue,
     Map<String, int>? mapValue,
     Set<int>? setValue,
+    Map<String, int>? secondMap,
     BasicEntity? basicEntity,
   }) {
     if (intValue != null) {
@@ -205,6 +228,9 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
     }
     if (setValue != null) {
       this.setValue = setValue;
+    }
+    if (secondMap != null) {
+      this.secondMap = secondMap;
     }
     if (basicEntity != null) {
       this.basicEntity = basicEntity;

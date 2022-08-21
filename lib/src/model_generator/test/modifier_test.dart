@@ -71,6 +71,7 @@ void main() {
     Repository().removeModel<ModifierEntity>();
     modifierEntity.mapValue['a'] = 1;
     expect(modifierEntity.mapValue, {'a': 1});
+    expect(modifierEntity.mapValue['a'], 1);
   });
 
   test('can modify sets', () {
@@ -117,5 +118,14 @@ void main() {
     modifierEntity.merge(intValue: 10, listValue: [1, 2, 3]);
     expect(modifierEntity.intValue, 10);
     expect(modifierEntity.listValue, [1, 2, 3]);
+  });
+
+  test('regression - iterable fields with same default value don\'t reset each other', () {
+    modifierEntity.mapValue = {'a': 1};
+    expect(modifierEntity.mapValue, {'a': 1});
+    // Retrieving the value of another field with the same object type and default value used to
+    // reset the first field.
+    modifierEntity.secondMap;
+    expect(modifierEntity.mapValue, {'a': 1});
   });
 }

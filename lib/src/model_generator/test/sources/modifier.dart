@@ -13,6 +13,7 @@ class ModifierEntity extends Entity with _$ModifierEntity {
     @Default([]) List<int> listValue,
     @Default({}) Map<String, int> mapValue,
     @Default({}) Set<int> setValue,
+    @Default({}) Map<String, int> secondMap,
     @Default(BasicEntity()) BasicEntity basicEntity,
   }) = _ModifierEntity;
 }

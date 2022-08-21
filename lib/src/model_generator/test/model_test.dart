@@ -101,7 +101,7 @@ void main() {
 
   const Parameter listParameter = Parameter(
     name: 'list',
-    defaultValue: '[]',
+    defaultValue: 'const []',
     isRequired: false,
     type: 'List<int>',
     isDartCoreList: true,
@@ -125,7 +125,7 @@ void main() {
 
   const Parameter mapParameter = Parameter(
     name: 'map',
-    defaultValue: '{}',
+    defaultValue: 'const {}',
     isRequired: false,
     type: 'Map<String, int>',
     isDartCoreList: false,
@@ -137,7 +137,7 @@ void main() {
 
   const Parameter setParameter = Parameter(
     name: 'set',
-    defaultValue: '{}',
+    defaultValue: 'const {}',
     isRequired: false,
     type: 'Set<int>',
     isDartCoreList: false,
@@ -399,7 +399,10 @@ int? get defaultNullable => _get.defaultNullable;
 set defaultNullable(int? defaultNullable) => _set(_get.merge(defaultNullable: defaultNullable));
 
 @override
-List<int> get list => _process(_get.list);
+List<int> get list {
+  var value = _get.list;
+  return (value == _$_ClassName.$listDefaultValue) ? list = List.from(value) : value;
+}
 
 set list(List<int> list) => _set(_get.merge(list: list));
 
@@ -409,12 +412,18 @@ List<int> get requiredList => _get.requiredList;
 set requiredList(List<int> requiredList) => _set(_get.merge(requiredList: requiredList));
 
 @override
-Map<String, int> get map => _process(_get.map);
+Map<String, int> get map {
+  var value = _get.map;
+  return (value == _$_ClassName.$mapDefaultValue) ? map = Map.from(value) : value;
+}
 
 set map(Map<String, int> map) => _set(_get.merge(map: map));
 
 @override
-Set<int> get set => _process(_get.set);
+Set<int> get set {
+  var value = _get.set;
+  return (value == _$_ClassName.$setDefaultValue) ? set = Set.from(value) : value;
+}
 
 set set(Set<int> set) => _set(_get.merge(set: set));
 
@@ -436,22 +445,6 @@ set nestedModel(ExampleModel nestedModel) => _set(_get.merge(nestedModel: nested
 static const List<int> $listDefaultValue = [];
 static const Map<String, int> $mapDefaultValue = {};
 static const Set<int> $setDefaultValue = {};''',
-      );
-    });
-
-    test('processParameterConversions', () {
-      expect(
-        testModel.processParameterConversions(),
-        r'''
-if (object == _$_ClassName.$listDefaultValue) {
-return (list = List.from(_$_ClassName.$listDefaultValue)) as E;
-}
-if (object == _$_ClassName.$mapDefaultValue) {
-return (map = Map.from(_$_ClassName.$mapDefaultValue)) as E;
-}
-if (object == _$_ClassName.$setDefaultValue) {
-return (set = Set.from(_$_ClassName.$setDefaultValue)) as E;
-}''',
       );
     });
   });

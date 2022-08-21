@@ -7,6 +7,8 @@ class ModifierTemplate {
 
   @override
   String toString() {
+    String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
+    String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
     return '''
 ${model.modifierClassName} get ${model.camelCaseName} => ${model.modifierClassName}();
 
@@ -35,32 +37,13 @@ class ${model.modifierClassName} extends ${model.mainClassName} {
 
   ${model.modifierParameterList()}
 
-  ${model.hasDartCoreCollection ? processMethod : ''}
-  $modifierMerge
-}
-    ''';
+  @override
+  ${model.abstractClassName} merge($maybeLeftBrace
+    ${model.nullableParameterList()}
+  $maybeRightBrace) {
+    ${model.modifierMergeSetters()}
+    return this;
   }
-
-  String get processMethod {
-    return '''
-E _process<E extends Object>(E object) {
-  ${model.processParameterConversions()}
-  return object;
-}
-    ''';
-  }
-
-  String get modifierMerge {
-    String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
-    String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
-
-    return '''
-@override
-${model.abstractClassName} merge($maybeLeftBrace
-  ${model.nullableParameterList()}
-$maybeRightBrace) {
-  ${model.modifierMergeSetters()}
-  return this;
 }
     ''';
   }

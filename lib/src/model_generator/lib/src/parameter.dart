@@ -23,7 +23,7 @@ class Parameter {
 
   bool get isValid => isRequired || isNullable || defaultValue != null;
 
-  bool get isEligibleForModifier {
+  bool get isOptionalIterable {
     return (isDartCoreList || isDartCoreMap || isDartCoreSet) && !isRequired;
   }
 
@@ -97,7 +97,7 @@ class Parameter {
   String defaultedParameter() {
     if (defaultValue == null) {
       return 'this.$name,';
-    } else if (isEligibleForModifier) {
+    } else if (isOptionalIterable) {
       return 'this.$name = $defaultValueName,';
     } else {
       return 'this.$name = $defaultValue,';
@@ -121,9 +121,14 @@ class Parameter {
   }
 
   /// Format as a getter which returns the current value from the [Repository].
-  String modifierGetter() {
-    if (isEligibleForModifier) {
-      return '@override\n${getter('_process(_get.$name)')}';
+  String modifierGetter(String mainClassName) {
+    if (isOptionalIterable) {
+      return '''
+@override
+$type get $name {
+  var value = _get.$name;
+  return (value == ${mainClassName}.${defaultValueName}) ? $name = $collectionName.from(value) : value;
+}''';
     } else if (isGeneratedModel) {
       return '''
 @override
@@ -143,6 +148,8 @@ class Parameter {
   }
 
   String collectionDefault() {
-    return 'static const $type $defaultValueName = $defaultValue;';
+    final withoutConst =
+        (defaultValue?.substring(0, 6) == 'const ') ? defaultValue!.substring(6) : defaultValue;
+    return 'static const $type $defaultValueName = $withoutConst;';
   }
 }
