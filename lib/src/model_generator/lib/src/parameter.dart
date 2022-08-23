@@ -7,7 +7,7 @@ class Parameter {
   final bool isDartCoreMap;
   final bool isDartCoreSet;
   final bool isNullable;
-  final bool isGeneratedModel;
+  final bool hasGeneratedModifier;
 
   const Parameter({
     required this.defaultValue,
@@ -18,7 +18,7 @@ class Parameter {
     required this.isDartCoreMap,
     required this.isDartCoreSet,
     required this.isNullable,
-    required this.isGeneratedModel,
+    required this.hasGeneratedModifier,
   });
 
   bool get isValid => isRequired || isNullable || defaultValue != null;
@@ -129,7 +129,7 @@ $type get $name {
   var value = _get.$name;
   return (value == ${mainClassName}.${defaultValueName}) ? $name = $collectionName.from(value) : value;
 }''';
-    } else if (isGeneratedModel) {
+    } else if (hasGeneratedModifier) {
       return '''
 @override
 \$${type}Modifier get $name => \$${type}Modifier(

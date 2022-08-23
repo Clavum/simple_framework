@@ -25,8 +25,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
       options: Options(
         annotation.read('annotationName').stringValue,
         annotation.read('shouldGenerateMerge').boolValue,
-        annotation.read('shouldGenerateGetter').boolValue,
-        annotation.read('shouldGenerateSetters').boolValue,
+        annotation.read('shouldGenerateModifier').boolValue,
         annotation.read('mustExtend').stringValue,
       ),
     );
@@ -43,7 +42,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
 
     buffer.writeln(AbstractTemplate(visitedModel).toString());
 
-    if (visitedModel.options.shouldGenerateGetter) {
+    if (visitedModel.options.shouldGenerateModifier) {
       if (visitedModel.requiredParameters().isNotEmpty) {
         Validator().assertNoRequiredParameters(visitedModel);
       }

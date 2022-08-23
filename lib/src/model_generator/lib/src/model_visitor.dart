@@ -83,17 +83,22 @@ class ModelVisitor extends SimpleElementVisitor<void> {
         isDartCoreMap: element.type.isDartCoreMap,
         isDartCoreSet: element.type.isDartCoreSet,
         isNullable: element.type.nullabilitySuffix == NullabilitySuffix.question,
-        isGeneratedModel: element.isGeneratedModel,
+        hasGeneratedModifier: element.hasGeneratedModifier,
       ),
     );
   }
 }
 
 extension DefaultValue on ParameterElement {
-  bool get isGeneratedModel {
-    return (type.element != null &&
+  static const _typeChecker = TypeChecker.fromRuntime(GenerateModel);
+
+  bool get hasGeneratedModifier {
+    return type.element != null &&
         type.element is ClassElement &&
-        const TypeChecker.fromRuntime(GenerateModel).hasAnnotationOf(type.element!));
+        (_typeChecker.firstAnnotationOf(type.element!))
+                ?.getField('shouldGenerateModifier')
+                ?.toBoolValue() ==
+            true;
   }
 
   /// This code is from the Freezed package: https://pub.dev/packages/freezed

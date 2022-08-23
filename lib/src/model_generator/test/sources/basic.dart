@@ -19,3 +19,13 @@ class BasicViewModel extends ViewModel with _$BasicViewModel {
     required int value,
   }) = _BasicViewModel;
 }
+
+// This is here to make sure there are no errors when a ViewModel is generated with a List.
+@generateViewModel
+class ModifierViewModel extends ViewModel with _$ModifierViewModel {
+  const ModifierViewModel._();
+
+  const factory ModifierViewModel({
+    required List<int> listValue,
+  }) = _ModifierViewModel;
+}

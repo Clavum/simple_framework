@@ -5,11 +5,8 @@ class GenerateModel {
   /// Whether to generate the merge method.
   final bool shouldGenerateMerge;
 
-  /// Whether to generate a global Entity getter
-  final bool shouldGenerateGetter;
-
-  /// Whether to generate setter methods which update the Model in the Repository.
-  final bool shouldGenerateSetters;
+  /// Whether to generate a modifier class.
+  final bool shouldGenerateModifier;
 
   /// The name of the class which the annotated Model must extend.
   final String? mustExtend;
@@ -17,33 +14,36 @@ class GenerateModel {
   const GenerateModel({
     this.annotationName = '@GenerateModel',
     required this.shouldGenerateMerge,
-    required this.shouldGenerateGetter,
-    required this.shouldGenerateSetters,
+    required this.shouldGenerateModifier,
     this.mustExtend,
   });
 }
 
+const generateModel = GenerateModel(
+  annotationName: '@generateModel',
+  shouldGenerateMerge: true,
+  shouldGenerateModifier: false,
+  mustExtend: 'Model',
+);
+
 const generateEntity = GenerateModel(
   annotationName: '@generateEntity',
   shouldGenerateMerge: true,
-  shouldGenerateGetter: true,
-  shouldGenerateSetters: true,
+  shouldGenerateModifier: true,
   mustExtend: 'Entity',
 );
 
 const generateViewModel = GenerateModel(
   annotationName: '@generateViewModel',
   shouldGenerateMerge: false,
-  shouldGenerateGetter: false,
-  shouldGenerateSetters: false,
+  shouldGenerateModifier: false,
   mustExtend: 'ViewModel',
 );
 
 const generateServiceModel = GenerateModel(
   annotationName: '@generateServiceModel',
   shouldGenerateMerge: false,
-  shouldGenerateGetter: false,
-  shouldGenerateSetters: false,
+  shouldGenerateModifier: false,
   mustExtend: 'ServiceModel',
 );
 

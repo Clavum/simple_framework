@@ -24,7 +24,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: false,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter customTypeParameter = Parameter(
@@ -36,7 +36,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: false,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter requiredParameter = Parameter(
@@ -48,7 +48,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: false,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter nullableParameter = Parameter(
@@ -60,7 +60,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: true,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter invalidParameter = Parameter(
@@ -72,7 +72,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: false,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter requiredNullableParameter = Parameter(
@@ -84,7 +84,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: true,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter defaultNullableParameter = Parameter(
@@ -96,7 +96,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: true,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter listParameter = Parameter(
@@ -108,7 +108,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: false,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter requiredList = Parameter(
@@ -120,7 +120,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: false,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter mapParameter = Parameter(
@@ -132,7 +132,7 @@ void main() {
     isDartCoreMap: true,
     isDartCoreSet: false,
     isNullable: false,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter setParameter = Parameter(
@@ -144,7 +144,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: true,
     isNullable: false,
-    isGeneratedModel: false,
+    hasGeneratedModifier: false,
   );
 
   const Parameter nestedModelParameter = Parameter(
@@ -156,7 +156,7 @@ void main() {
     isDartCoreMap: false,
     isDartCoreSet: false,
     isNullable: false,
-    isGeneratedModel: true,
+    hasGeneratedModifier: true,
   );
 
   group('Model', () {
@@ -164,7 +164,6 @@ void main() {
       annotatedElement: ElementFake(),
       options: Options(
         'GenerateModel',
-        true,
         true,
         true,
         'Object',

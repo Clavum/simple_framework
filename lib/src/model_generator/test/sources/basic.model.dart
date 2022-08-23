@@ -144,3 +144,44 @@ abstract class _BasicViewModel extends BasicViewModel {
   @override
   int get value;
 }
+
+final _modifierViewModelBypassError = UnsupportedError(
+  'ModifierViewModel\'s constructor was bypassed by another constructor.',
+);
+
+/// @nodoc
+mixin _$ModifierViewModel {
+  List<int> get listValue => throw _modifierViewModelBypassError;
+
+  List<Object?> get props => throw _modifierViewModelBypassError;
+}
+
+/// @nodoc
+class _$_ModifierViewModel extends _ModifierViewModel {
+  const _$_ModifierViewModel({
+    required this.listValue,
+  }) : super._();
+
+  @override
+  final List<int> listValue;
+
+  @override
+  List<Object?> get props => [
+        listValue,
+      ];
+
+  @override
+  Type get runtimeType => ModifierViewModel;
+}
+
+/// @nodoc
+abstract class _ModifierViewModel extends ModifierViewModel {
+  const factory _ModifierViewModel({
+    required List<int> listValue,
+  }) = _$_ModifierViewModel;
+
+  const _ModifierViewModel._() : super._();
+
+  @override
+  List<int> get listValue;
+}
