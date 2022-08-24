@@ -2,21 +2,19 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class Model extends Equatable {
-  @override
-  bool get stringify => true;
-
+abstract class Model extends Equatable {
   const Model();
 
-  Model merge() {
-    return const Model();
-  }
+  @override
+  bool get stringify => true;
 
   @override
   List<Object?> get props => [];
 }
 
 /// Used to ensure only certain Models are put in the Repository.
-class RepositoryModel extends Model {
-  const RepositoryModel();
+mixin RepositoryModel on Model {}
+
+mixin MergingModel on Model {
+  Model merge() => this;
 }

@@ -8,7 +8,7 @@ enum ServiceModelStatus {
 }
 
 @immutable
-abstract class ServiceModel extends RepositoryModel {
+abstract class ServiceModel extends Model with RepositoryModel {
   const ServiceModel();
 
   ServiceModelSettings settings() => ServiceModelSettings();
