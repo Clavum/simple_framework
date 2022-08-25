@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CounterScreen(title: 'Simple Framework Counter'),
+      home: const CounterScreen(title: 'Simple Framework Counter'),
     );
   }
 }
