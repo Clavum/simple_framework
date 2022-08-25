@@ -24,16 +24,11 @@ void main() {
       TestServiceModel? serviceModel;
 
       bool modelSent = false;
-      bool callbackCalled = false;
       late StreamSubscription subscription;
       subscription = Repository().streamOf<TestServiceModel>().listen((model) {
         modelSent = true;
         subscription.cancel();
       });
-      Repository().onFetch = <M extends RepositoryModel>() {
-        callbackCalled = true;
-        Repository().onFetch = null;
-      };
 
       void setModelAsync() async {
         serviceModel = await Repository().getServiceModel(const TestServiceModel());
@@ -51,7 +46,6 @@ void main() {
       expect(serviceModel?.state, TestServiceModelState.fromLoad);
 
       expect(modelSent, isTrue);
-      expect(callbackCalled, isTrue);
     });
 
     test('when load method returns wrong class', () async {

@@ -1,4 +1,4 @@
-part of simple_framework;
+part of 'core.dart';
 
 abstract class Bloc<V extends ViewModel> {
   // Set by the ScreenState.

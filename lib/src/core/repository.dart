@@ -1,8 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
-import 'package:simple_framework/simple_framework.dart';
+part of 'core.dart';
 
 class Repository {
   static Repository? _instance;
@@ -116,11 +112,6 @@ class Repository {
 
   void setServiceModelStatus<S extends ServiceModel>(ServiceModelStatus status) {
     _serviceModelStatuses[S] = status;
-  }
-
-  @internal
-  set onFetch(void Function<M extends RepositoryModel>()? callback) {
-    _fetchCallback = callback;
   }
 
   void reset() => _instance = null;

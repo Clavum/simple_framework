@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+part of '../core.dart';
 
 @immutable
 abstract class Model extends Equatable {

@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:simple_framework/simple_framework.dart';
+part of '../core.dart';
 
 @immutable
 abstract class ViewModel extends Model {

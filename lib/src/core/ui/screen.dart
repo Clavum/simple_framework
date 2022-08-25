@@ -1,4 +1,4 @@
-part of simple_framework;
+part of '../core.dart';
 
 enum _ScreenStateLifecycle {
   created,
@@ -52,9 +52,9 @@ class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B
   }
 
   void _sendModel() async {
-    Repository().onFetch = _onModelRequested;
+    Repository()._fetchCallback = _onModelRequested;
     final V nextViewModel = await bloc.buildViewModel();
-    Repository().onFetch = null;
+    Repository()._fetchCallback = null;
 
     if (bloc.shouldSendNewModel(_currentViewModel, nextViewModel)) {
       _currentViewModel = nextViewModel;
