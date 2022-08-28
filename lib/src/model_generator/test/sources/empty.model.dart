@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element, sort_constructors_first, library_private_types_in_public_api
 // coverage:ignore-file
 
 part of 'empty.dart';
@@ -8,7 +8,7 @@ part of 'empty.dart';
 // **************************************************************************
 
 final _emptyEntityBypassError = UnsupportedError(
-  'EmptyEntity\'s constructor was bypassed by another constructor.',
+  "EmptyEntity's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
@@ -75,7 +75,7 @@ class $EmptyEntityModifier extends _$_EmptyEntity {
 }
 
 final _emptyViewModelBypassError = UnsupportedError(
-  'EmptyViewModel\'s constructor was bypassed by another constructor.',
+  "EmptyViewModel's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc

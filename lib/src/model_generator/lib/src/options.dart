@@ -1,3 +1,5 @@
+//ignore_for_file: avoid_positional_boolean_parameters
+
 class Options {
   final String annotationName;
   final bool shouldGenerateMerge;
@@ -8,6 +10,5 @@ class Options {
     this.annotationName,
     this.shouldGenerateMerge,
     this.shouldGenerateModifier,
-    this.mustExtend,
-  );
+      this.mustExtend,);
 }

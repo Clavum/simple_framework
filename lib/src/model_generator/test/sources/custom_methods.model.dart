@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element, sort_constructors_first, library_private_types_in_public_api
 // coverage:ignore-file
 
 part of 'custom_methods.dart';
@@ -8,7 +8,7 @@ part of 'custom_methods.dart';
 // **************************************************************************
 
 final _customMethodsEntityBypassError = UnsupportedError(
-  'CustomMethodsEntity\'s constructor was bypassed by another constructor.',
+  "CustomMethodsEntity's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
@@ -105,7 +105,7 @@ class $CustomMethodsEntityModifier extends _$_CustomMethodsEntity {
 }
 
 final _customMethodsViewModelBypassError = UnsupportedError(
-  'CustomMethodsViewModel\'s constructor was bypassed by another constructor.',
+  "CustomMethodsViewModel's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc

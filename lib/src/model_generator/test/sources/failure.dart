@@ -1,4 +1,4 @@
-//ignore_for_file: unused_element
+//ignore_for_file: unused_element, avoid_unused_constructor_parameters
 
 import 'package:model_generator_annotation/model_generator_annotation.dart';
 import 'package:source_gen_test/annotations.dart';

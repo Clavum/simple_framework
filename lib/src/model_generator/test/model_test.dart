@@ -160,7 +160,7 @@ void main() {
   );
 
   group('Model', () {
-    Model testModel = Model(
+    final Model testModel = Model(
       annotatedElement: ElementFake(),
       options: Options(
         'GenerateModel',
@@ -168,27 +168,29 @@ void main() {
         true,
         'Object',
       ),
-    );
-    testModel.className = 'ClassName';
-    testModel.parameters.add(defaultParameter);
-    testModel.parameters.add(customTypeParameter);
-    testModel.parameters.add(requiredParameter);
-    testModel.parameters.add(nullableParameter);
-    testModel.parameters.add(invalidParameter);
-    testModel.parameters.add(requiredNullableParameter);
-    testModel.parameters.add(defaultNullableParameter);
-    testModel.parameters.add(listParameter);
-    testModel.parameters.add(requiredList);
-    testModel.parameters.add(mapParameter);
-    testModel.parameters.add(setParameter);
-    testModel.parameters.add(nestedModelParameter);
+    )
+      ..className = 'ClassName'
+      ..parameters.addAll([
+        defaultParameter,
+        customTypeParameter,
+        requiredParameter,
+        nullableParameter,
+        invalidParameter,
+        requiredNullableParameter,
+        defaultNullableParameter,
+        listParameter,
+        requiredList,
+        mapParameter,
+        setParameter,
+        nestedModelParameter,
+      ]);
 
     test('Class names', () {
       expect(testModel.camelCaseName, 'className');
-      expect(testModel.mixinName, '_\$ClassName');
+      expect(testModel.mixinName, r'_$ClassName');
       expect(testModel.abstractClassName, '_ClassName');
-      expect(testModel.mainClassName, '_\$_ClassName');
-      expect(testModel.modifierClassName, '\$ClassNameModifier');
+      expect(testModel.mainClassName, r'_$_ClassName');
+      expect(testModel.modifierClassName, r'$ClassNameModifier');
     });
 
     test('invalidParameters', () {
@@ -399,7 +401,7 @@ set defaultNullable(int? defaultNullable) => _set(_get.merge(defaultNullable: de
 
 @override
 List<int> get list {
-  var value = _get.list;
+  final value = _get.list;
   return (value == _$_ClassName.$listDefaultValue) ? list = List.from(value) : value;
 }
 
@@ -412,7 +414,7 @@ set requiredList(List<int> requiredList) => _set(_get.merge(requiredList: requir
 
 @override
 Map<String, int> get map {
-  var value = _get.map;
+  final value = _get.map;
   return (value == _$_ClassName.$mapDefaultValue) ? map = Map.from(value) : value;
 }
 
@@ -420,7 +422,7 @@ set map(Map<String, int> map) => _set(_get.merge(map: map));
 
 @override
 Set<int> get set {
-  var value = _get.set;
+  final value = _get.set;
   return (value == _$_ClassName.$setDefaultValue) ? set = Set.from(value) : value;
 }
 

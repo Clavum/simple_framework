@@ -120,7 +120,7 @@ void main() {
     expect(modifierEntity.listValue, [1, 2, 3]);
   });
 
-  test('regression - iterable fields with same default value don\'t reset each other', () {
+  test("regression - iterable fields with same default value don't reset each other", () {
     modifierEntity.mapValue = {'a': 1};
     expect(modifierEntity.mapValue, {'a': 1});
     // Retrieving the value of another field with the same object type and default value used to

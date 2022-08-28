@@ -45,13 +45,13 @@ class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B
     _createAndSend();
   }
 
-  void _createAndSend() async {
+  Future<void> _createAndSend() async {
     await bloc.onCreate();
     _sendModel();
     _state = _ScreenStateLifecycle.active;
   }
 
-  void _sendModel() async {
+  Future<void> _sendModel() async {
     Repository()._fetchCallback = _onModelRequested;
     final V nextViewModel = await bloc.buildViewModel();
     Repository()._fetchCallback = null;

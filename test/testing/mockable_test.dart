@@ -6,7 +6,7 @@ class ExampleClass {
   ExampleClass._();
 
   factory ExampleClass() {
-    return mockable(() => ExampleClass._());
+    return mockable(ExampleClass._);
   }
 
   int getValue() {
@@ -16,7 +16,7 @@ class ExampleClass {
 
 class ExampleClassMock extends Mock implements ExampleClass {
   ExampleClassMock(int mockReturnValue) {
-    when(() => getValue()).thenAnswer((_) => mockReturnValue);
+    when(getValue).thenAnswer((_) => mockReturnValue);
   }
 }
 
@@ -26,7 +26,7 @@ class ExceptionIfConstructed {
   }
 
   factory ExceptionIfConstructed() {
-    return mockable(() => ExceptionIfConstructed._());
+    return mockable(ExceptionIfConstructed._);
   }
 }
 

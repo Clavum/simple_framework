@@ -5,7 +5,8 @@ import 'package:simple_framework/simple_framework.dart';
 
 @visibleForTesting
 M getSentModel<M extends RepositoryModel>() {
-  List<dynamic> models = verify(() => Repository().sendModel(captureAny(that: isA<M>()))).captured;
+  final List<dynamic> models =
+      verify(() => Repository().sendModel(captureAny(that: isA<M>()))).captured;
 
   if (models.isEmpty) throw _noMatchingModelSent<M>();
   return models.firstWhere((model) => model.runtimeType == M, orElse: () {

@@ -3,16 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
+import '../../test_classes/second_entity.dart';
 import '../../test_classes/test_bloc.dart';
 import '../../test_classes/test_entity.dart';
-import '../../test_classes/second_entity.dart';
 import '../../test_classes/test_screen.dart';
 import '../../test_classes/test_view_model.dart';
 
 class TestBlocMock extends Mock implements TestBloc {
   TestBlocMock() {
     registerFallbackValue(const TestViewModel(value: '999'));
-    when(() => buildViewModel()).thenAnswer((_) {
+    when(buildViewModel).thenAnswer((_) {
       return TestViewModel(value: Repository().get(const TestEntity()).value.toString());
     });
     when(() => shouldSendNewModel(any(), any())).thenReturn(true);

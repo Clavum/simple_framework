@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element, sort_constructors_first, library_private_types_in_public_api
 // coverage:ignore-file
 
 part of 'person_model.dart';
@@ -8,7 +8,7 @@ part of 'person_model.dart';
 // **************************************************************************
 
 final _personModelBypassError = UnsupportedError(
-  'PersonModel\'s constructor was bypassed by another constructor.',
+  "PersonModel's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
@@ -77,7 +77,7 @@ abstract class _PersonModel extends PersonModel {
 }
 
 final _usesModelEntityBypassError = UnsupportedError(
-  'UsesModelEntity\'s constructor was bypassed by another constructor.',
+  "UsesModelEntity's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
@@ -174,7 +174,7 @@ class $UsesModelEntityModifier extends _$_UsesModelEntity {
 
   @override
   List<PersonModel> get people {
-    var value = _get.people;
+    final value = _get.people;
     return (value == _$_UsesModelEntity.$peopleDefaultValue) ? people = List.from(value) : value;
   }
 

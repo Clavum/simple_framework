@@ -27,30 +27,32 @@ class Validator {
     if (visitor.missingRequirements.isEmpty) {
       return;
     }
-    StringBuffer errorBuffer = StringBuffer();
-
-    errorBuffer.writeln('Invalid syntax for generated model: ${model.className}');
+    final StringBuffer errorBuffer = StringBuffer()
+      ..writeln('Invalid syntax for generated model: ${model.className}');
 
     if (visitor.missingRequirements.contains(SyntaxRequirements.extendsRequiredClass)) {
-      errorBuffer.writeln();
-      errorBuffer.write('${model.className} must extend ${model.options.mustExtend}');
-      errorBuffer.writeln(' if it is annotated with ${model.options.annotationName}.');
+      errorBuffer
+        ..writeln()
+        ..write('${model.className} must extend ${model.options.mustExtend}')
+        ..writeln(' if it is annotated with ${model.options.annotationName}.');
     }
     if (visitor.missingRequirements.contains(SyntaxRequirements.hasPrivateConstructor)) {
-      errorBuffer.writeln();
-      errorBuffer.writeln('Missing a valid const private constructor. You must have:');
-      errorBuffer.writeln('const ${model.className}._();');
+      errorBuffer
+        ..writeln()
+        ..writeln('Missing a valid const private constructor. You must have:')
+        ..writeln('const ${model.className}._();');
     }
     if (visitor.missingRequirements.contains(SyntaxRequirements.hasFactoryConstructor)) {
-      errorBuffer.writeln();
-      errorBuffer.writeln('Missing a const factory constructor:');
-      errorBuffer.writeln(
-        '''
+      errorBuffer
+        ..writeln()
+        ..writeln('Missing a const factory constructor:')
+        ..writeln(
+          '''
 const factory ${model.className}({
   ...your fields
 }) = _${model.className};
 ''',
-      );
+        );
     }
 
     throw InvalidGenerationSourceError(

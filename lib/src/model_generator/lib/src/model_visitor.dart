@@ -42,7 +42,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
     if (visitedModel.options.mustExtend == null) {
       missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
     } else {
-      for (var type in element.allSupertypes) {
+      for (final type in element.allSupertypes) {
         if (type.getDisplayString(withNullability: false) == visitedModel.options.mustExtend) {
           missingRequirements.remove(SyntaxRequirements.extendsRequiredClass);
         }
@@ -77,7 +77,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
       Parameter(
         defaultValue: element.defaultValue,
         type: parseTypeSource(element) ?? '',
-        name: element.name.toString(),
+        name: element.name,
         isRequired: element.isNotOptional,
         isDartCoreList: element.type.isDartCoreList,
         isDartCoreMap: element.type.isDartCoreMap,
@@ -113,7 +113,7 @@ extension DefaultValue on ParameterElement {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
 
-        var needsConstModifier = !res.trimLeft().startsWith('const') &&
+        final needsConstModifier = !res.trimLeft().startsWith('const') &&
             (res.contains('(') || res.contains('[') || res.contains('{'));
 
         if (needsConstModifier) {
@@ -129,7 +129,7 @@ extension DefaultValue on ParameterElement {
 
 /// This code is from the Freezed package: https://pub.dev/packages/freezed
 String? parseTypeSource(VariableElement element) {
-  String? type = element.type.getDisplayString(withNullability: true);
+  final String type = element.type.getDisplayString(withNullability: true);
 
   if (type.contains('dynamic') && element.nameOffset > 0) {
     final source = element.source!.contents.data.substring(0, element.nameOffset);

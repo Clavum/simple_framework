@@ -34,13 +34,11 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
 
     Validator().assertNoInvalidParameters(visitedModel);
 
-    buffer.writeln(bypassError(visitedModel));
-
-    buffer.writeln(MixinTemplate(visitedModel).toString());
-
-    buffer.writeln(ConcreteTemplate(visitedModel).toString());
-
-    buffer.writeln(AbstractTemplate(visitedModel).toString());
+    buffer
+      ..writeln(bypassError(visitedModel))
+      ..writeln(MixinTemplate(visitedModel).toString())
+      ..writeln(ConcreteTemplate(visitedModel).toString())
+      ..writeln(AbstractTemplate(visitedModel).toString());
 
     if (visitedModel.options.shouldGenerateModifier) {
       if (visitedModel.requiredParameters().isNotEmpty) {
@@ -55,7 +53,7 @@ class ModelGenerator extends GeneratorForAnnotation<GenerateModel> {
   String bypassError(Model model) {
     return '''
 final ${model.bypassError} = UnsupportedError(
-  '${model.className}\\'s constructor was bypassed by another constructor.',
+  "${model.className}'s constructor was bypassed by another constructor.",
 );
 
 ''';

@@ -60,7 +60,7 @@ class Mockable {
   /// This is to allow lazy initialization. If the class has been mocked, then
   /// we can spare resources by not creating the real class.
   T getClass<T extends Object>(T Function() real) {
-    for (var mock in _mocks.values) {
+    for (final mock in _mocks.values) {
       if (mock is T) return mock;
     }
     return real();
@@ -75,7 +75,7 @@ class Mockable {
       throw _setMockUsedWithRealClassError(mock);
     }
     setupCommonMockStubs(mock);
-    _mocks[T] = (mock);
+    _mocks[T] = mock;
   }
 
   void clear() {

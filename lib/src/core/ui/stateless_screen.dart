@@ -9,7 +9,7 @@ abstract class StatelessScreen<B extends Bloc> extends StatefulWidget {
 
   @override
   @nonVirtual
-  _ScreenState<B> createState() => _ScreenState<B>();
+  State<StatelessScreen<B>> createState() => _ScreenState<B>();
 }
 
 class _ScreenState<B extends Bloc> extends State<StatelessScreen<B>> {

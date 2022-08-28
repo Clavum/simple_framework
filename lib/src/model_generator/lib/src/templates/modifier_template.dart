@@ -7,8 +7,8 @@ class ModifierTemplate {
 
   @override
   String toString() {
-    String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
-    String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
+    final String maybeLeftBrace = model.parameters.isEmpty ? '' : '{';
+    final String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
     return '''
 ${model.modifierClassName} get ${model.camelCaseName} => ${model.modifierClassName}();
 

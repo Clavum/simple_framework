@@ -6,10 +6,9 @@ import '../../test_classes/test_entity.dart';
 
 void main() {
   test('Entity send', () {
-    RepositoryMock repositoryMock = RepositoryMock();
+    final RepositoryMock repositoryMock = RepositoryMock();
     setMock(repositoryMock);
-    TestEntity testEntity = const TestEntity(value: 1);
-    testEntity.send();
+    final TestEntity testEntity = const TestEntity(value: 1)..send();
 
     verify(() => repositoryMock.sendModel(testEntity)).called(1);
   });

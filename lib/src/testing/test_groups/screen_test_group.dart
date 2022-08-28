@@ -12,9 +12,7 @@ void screenTestGroup(String screenName, void Function() body) {
       setupCommonFallbackValues();
     });
 
-    tearDown(() {
-      commonTearDown();
-    });
+    tearDown(commonTearDown);
 
     body();
   });

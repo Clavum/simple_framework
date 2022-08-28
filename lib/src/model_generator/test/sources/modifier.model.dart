@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element, sort_constructors_first, library_private_types_in_public_api
 // coverage:ignore-file
 
 part of 'modifier.dart';
@@ -8,7 +8,7 @@ part of 'modifier.dart';
 // **************************************************************************
 
 final _modifierEntityBypassError = UnsupportedError(
-  'ModifierEntity\'s constructor was bypassed by another constructor.',
+  "ModifierEntity's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
@@ -165,7 +165,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
 
   @override
   List<int> get listValue {
-    var value = _get.listValue;
+    final value = _get.listValue;
     return (value == _$_ModifierEntity.$listValueDefaultValue)
         ? listValue = List.from(value)
         : value;
@@ -175,7 +175,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
 
   @override
   Map<String, int> get mapValue {
-    var value = _get.mapValue;
+    final value = _get.mapValue;
     return (value == _$_ModifierEntity.$mapValueDefaultValue) ? mapValue = Map.from(value) : value;
   }
 
@@ -183,7 +183,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
 
   @override
   Set<int> get setValue {
-    var value = _get.setValue;
+    final value = _get.setValue;
     return (value == _$_ModifierEntity.$setValueDefaultValue) ? setValue = Set.from(value) : value;
   }
 
@@ -191,7 +191,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
 
   @override
   Map<String, int> get secondMap {
-    var value = _get.secondMap;
+    final value = _get.secondMap;
     return (value == _$_ModifierEntity.$secondMapDefaultValue)
         ? secondMap = Map.from(value)
         : value;

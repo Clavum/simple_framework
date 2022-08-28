@@ -1,3 +1,5 @@
+//ignore_for_file: avoid_catching_errors
+
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +17,8 @@ void main() {
 
     test('model is already valid', () async {
       Repository().setServiceModelStatus<TestServiceModel>(ServiceModelStatus.valid);
-      TestServiceModel serviceModel = await Repository().getServiceModel(const TestServiceModel());
+      final TestServiceModel serviceModel =
+          await Repository().getServiceModel(const TestServiceModel());
 
       expect(serviceModel.state, TestServiceModelState.fromRepository);
     });
@@ -30,7 +33,7 @@ void main() {
         subscription.cancel();
       });
 
-      void setModelAsync() async {
+      Future<void> setModelAsync() async {
         serviceModel = await Repository().getServiceModel(const TestServiceModel());
       }
 
@@ -65,7 +68,7 @@ void main() {
       TestServiceModel? firstModel;
       TestServiceModel? secondModel;
 
-      void setFirstModelAsync() async {
+      Future<void> setFirstModelAsync() async {
         firstModel = await Repository().getServiceModel(const TestServiceModel());
       }
 
@@ -73,7 +76,7 @@ void main() {
 
       expect(Repository().getServiceModelStatus<TestServiceModel>(), ServiceModelStatus.loading);
 
-      void setSecondModelAsync() async {
+      Future<void> setSecondModelAsync() async {
         secondModel = await Repository().getServiceModel(const TestServiceModel());
       }
 

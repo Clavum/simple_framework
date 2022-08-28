@@ -7,7 +7,7 @@ import 'sources/custom_methods.dart';
 
 void main() {
   test('Entity with custom methods', () {
-    var entity = const CustomMethodsEntity(value: 10);
+    const entity = CustomMethodsEntity(value: 10);
     expect(entity.someMethod(10), 20);
   });
 
@@ -17,7 +17,7 @@ void main() {
   });
 
   test('ViewModel with custom methods', () {
-    var viewModel = const CustomMethodsViewModel(value: 10);
+    const viewModel = CustomMethodsViewModel(value: 10);
     expect(viewModel.someMethod(10), 20);
   });
 }

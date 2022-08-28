@@ -1,3 +1,5 @@
+//ignore_for_file: avoid_catching_errors
+
 part of 'core.dart';
 
 class Repository {
@@ -30,28 +32,31 @@ class Repository {
 
   /// Set a [Model] in the [Repository]. Any existing model of the same type will be replaced.
   M set<M extends RepositoryModel>(M model) {
-    _models.retainWhere((element) => element.runtimeType != model.runtimeType);
-    _models.add(model);
+    _models
+      ..retainWhere((element) => element.runtimeType != model.runtimeType)
+      ..add(model);
     return model;
   }
 
   /// Sends a [Model] to its corresponding Stream. This notifies any [Bloc] streaming from this
   /// [Model] to send a new ViewModel. The provided [model] will also be set in the [Repository].
   void sendModel(RepositoryModel model) {
-    _models.retainWhere((element) => element.runtimeType != model.runtimeType);
-    _models.add(model);
+    _models
+      ..retainWhere((element) => element.runtimeType != model.runtimeType)
+      ..add(model);
     if (_streams.containsKey(model.runtimeType)) {
       _streams[model.runtimeType]!.add(model);
     } else {
       if (model is Entity) {
-        debugPrint('There is no Screen subscribed to receive ${model.runtimeType}');
+        debugPrint('Simple Framework: An instance of ${model.runtimeType} was sent, but no Screen '
+            'is subscribed to receive it');
       }
     }
   }
 
   /// Whether the [Repository] contains the [Model] of the specified type.
   bool containsModel<M extends RepositoryModel>() {
-    for (var model in _models) {
+    for (final model in _models) {
       if (model.runtimeType == M) {
         return true;
       }
@@ -78,7 +83,7 @@ class Repository {
     /// If the ServiceModel is loading, that means it is currently being loaded, and will send it
     /// once done. This code waits for and sends the next model from the stream.
     if (Repository().getServiceModelStatus<M>() == ServiceModelStatus.loading) {
-      await for (var model in Repository().streamOf<M>()) {
+      await for (final model in Repository().streamOf<M>()) {
         return model;
       }
     }

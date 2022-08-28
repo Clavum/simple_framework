@@ -7,7 +7,7 @@ import 'sources/various_parameters.dart';
 
 void main() {
   test('Entity with all possible types of parameters', () {
-    var entity = const VariousParametersEntity();
+    const entity = VariousParametersEntity();
     expect(entity.defaultParameter, 'defaultValue');
     expect(entity.nullableParameter, null);
     expect(entity.customClass.value, 'custom');
@@ -15,7 +15,7 @@ void main() {
   });
 
   test('ViewModel with all possible types of parameters', () {
-    var viewModel = const VariousParametersViewModel(requiredParameter: 10);
+    const viewModel = VariousParametersViewModel(requiredParameter: 10);
     expect(viewModel.defaultParameter, 'defaultValue');
     expect(viewModel.requiredParameter, 10);
     expect(viewModel.nullableParameter, null);

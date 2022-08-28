@@ -70,7 +70,7 @@ class Parameter {
   /// ExampleType? exampleName,
   /// ```
   String nullableParameter() {
-    String addNullable = isNullable ? '' : '?';
+    final String addNullable = isNullable ? '' : '?';
     return '$type$addNullable $name,';
   }
 
@@ -120,20 +120,20 @@ class Parameter {
     return '$name: $name ?? this.$name,';
   }
 
-  /// Format as a getter which returns the current value from the [Repository].
+  /// Format as a getter which returns the current value from the Repository.
   String modifierGetter(String mainClassName) {
     if (isOptionalIterable) {
       return '''
 @override
 $type get $name {
-  var value = _get.$name;
-  return (value == ${mainClassName}.${defaultValueName}) ? $name = $collectionName.from(value) : value;
+  final value = _get.$name;
+  return (value == $mainClassName.$defaultValueName) ? $name = $collectionName.from(value) : value;
 }''';
     } else if (hasGeneratedModifier) {
       return '''
 @override
 \$${type}Modifier get $name => \$${type}Modifier(
-        () => _get.${name},
+        () => _get.$name,
         ($type $name) => this.$name = $name,
         () => send(),
       );''';
@@ -142,9 +142,9 @@ $type get $name {
     }
   }
 
-  /// Format as a setter which updates the value in the [Repository].
+  /// Format as a setter which updates the value in the Repository.
   String modifierSetter() {
-    return '${setter('_set(_get.merge($name: $name))')}';
+    return setter('_set(_get.merge($name: $name))');
   }
 
   String collectionDefault() {

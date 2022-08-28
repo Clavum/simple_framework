@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element, sort_constructors_first, library_private_types_in_public_api
 // coverage:ignore-file
 
 part of 'counter_view_model.dart';
@@ -8,7 +8,7 @@ part of 'counter_view_model.dart';
 // **************************************************************************
 
 final _counterViewModelBypassError = UnsupportedError(
-  'CounterViewModel\'s constructor was bypassed by another constructor.',
+  "CounterViewModel's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc

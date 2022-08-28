@@ -7,14 +7,14 @@ import 'sources/empty.dart';
 
 void main() {
   test('Entity with no fields', () {
-    var entity = const EmptyEntity();
+    const entity = EmptyEntity();
     expect(entity.props, isEmpty);
 
     expect(entity, const EmptyEntity());
   });
 
   test('ViewModel with no fields', () {
-    var viewModel = const EmptyViewModel();
+    const viewModel = EmptyViewModel();
 
     expect(viewModel.props, isEmpty);
 

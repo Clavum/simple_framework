@@ -16,7 +16,7 @@ class Model {
   });
 
   String get camelCaseName {
-    String firstLetter = className.substring(0, 1);
+    final String firstLetter = className.substring(0, 1);
     return '${firstLetter.toLowerCase()}${className.substring(1, className.length)}';
   }
 
@@ -59,7 +59,7 @@ class Model {
 
   /// --- Example format ---
   /// required this.fieldName,            <-- for required parameters
-  /// this.fieldName = [defaultValue],    <-- for default parameters
+  /// this.fieldName = `defaultValue`,    <-- for default parameters
   String concreteParameterList() {
     return parameters.map((parameter) {
       return parameter.isRequired ? parameter.requiredParameter() : parameter.defaultedParameter();
@@ -97,7 +97,7 @@ class Model {
     }).join('\n');
   }
 
-  /// Used by the modifier class to get and set fields using the [Repository].
+  /// Used by the modifier class to get and set fields using the Repository.
   /// --- Example format ---
   /// String get fieldName => _model.fieldName;
   ///
@@ -112,14 +112,14 @@ class Model {
     return '''
 $className get ${parameter.name} => $modifierClassName(
   () => _get.${parameter.name},
-  (${className} ) => this.basicEntity = basicEntity,
+  ($className ) => this.basicEntity = basicEntity,
   () => send(),
 );
     ''';
   }
 
   /// --- Example format ---
-  /// static const List<int> $fieldNameDefaultValue = [defaultValue];
+  /// static const List<int> $fieldNameDefaultValue = `defaultValue`;
   String collectionDefaults() {
     return parameters.expand((parameter) {
       return parameter.isOptionalIterable ? [parameter.collectionDefault()] : [];

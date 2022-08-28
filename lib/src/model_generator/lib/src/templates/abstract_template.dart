@@ -7,8 +7,8 @@ class AbstractTemplate {
 
   @override
   String toString() {
-    String maybeLeftBrace = model.parameters.isNotEmpty ? '{' : '';
-    String maybeRightBrace = model.parameters.isNotEmpty ? '}' : '';
+    final String maybeLeftBrace = model.parameters.isNotEmpty ? '{' : '';
+    final String maybeRightBrace = model.parameters.isNotEmpty ? '}' : '';
 
     return '''
 /// @nodoc

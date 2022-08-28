@@ -6,10 +6,9 @@ import '../../test_classes/test_service_model.dart';
 
 void main() {
   test('ServiceModel send', () {
-    RepositoryMock repositoryMock = RepositoryMock();
+    final RepositoryMock repositoryMock = RepositoryMock();
     setMock(repositoryMock);
-    TestServiceModel testServiceModel = const TestServiceModel(value: 1);
-    testServiceModel.send();
+    final TestServiceModel testServiceModel = const TestServiceModel(value: 1)..send();
 
     verify(() => repositoryMock.sendModel(testServiceModel)).called(1);
   });

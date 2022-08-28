@@ -9,9 +9,7 @@ void builderTest(String builderName, void Function() body) {
   test('$builderName test', () {
     setupCommonFallbackValues();
 
-    addTearDown(() {
-      commonTearDown();
-    });
+    addTearDown(commonTearDown);
 
     body();
   });

@@ -6,7 +6,7 @@ import 'test_view_model.dart';
 class TestBloc extends Bloc<TestViewModel> {
   TestBloc._();
 
-  factory TestBloc() => mockable(() => TestBloc._());
+  factory TestBloc() => mockable(TestBloc._);
 
   @override
   TestViewModel buildViewModel() => TestViewModel(value: testEntity.value.toString());

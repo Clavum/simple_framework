@@ -23,7 +23,7 @@ void main() {
   });
 
   test('basic ViewModel functionality', () {
-    var entity = const BasicViewModel(value: 10);
+    const entity = BasicViewModel(value: 10);
     // Returns provided value.
     expect(entity.value, 10);
 

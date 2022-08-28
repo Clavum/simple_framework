@@ -1,25 +1,5 @@
-analyzer:
-  errors:
-    missing_required_param: error
-    import_of_legacy_library_into_null_safe: ignore
-  exclude: [ build/**, lib/**.model.dart, lib/**.g.dart, test/**.model.dart, test/**.g.dart ]
+include: package:simple_framework/analysis_options.yaml
 
 linter:
   rules:
-    - avoid_print
-    - prefer_is_empty
-    - prefer_is_not_empty
-    - avoid_init_to_null
-    - prefer_conditional_assignment
-    - prefer_if_null_operators
-    - unnecessary_null_in_if_null_operators
-    - avoid_unnecessary_containers
-    - avoid_web_libraries_in_flutter
-    - prefer_const_constructors
-    - prefer_const_constructors_in_immutables
-    - prefer_const_declarations
-    - prefer_const_literals_to_create_immutables
-    - sized_box_for_whitespace
-    - use_key_in_widget_constructors
-    - curly_braces_in_flow_control_structures
-    - require_trailing_commas
+    implementation_imports: false

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element, sort_constructors_first, library_private_types_in_public_api
 // coverage:ignore-file
 
 part of 'basic.dart';
@@ -8,7 +8,7 @@ part of 'basic.dart';
 // **************************************************************************
 
 final _basicEntityBypassError = UnsupportedError(
-  'BasicEntity\'s constructor was bypassed by another constructor.',
+  "BasicEntity's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
@@ -105,7 +105,7 @@ class $BasicEntityModifier extends _$_BasicEntity {
 }
 
 final _basicViewModelBypassError = UnsupportedError(
-  'BasicViewModel\'s constructor was bypassed by another constructor.',
+  "BasicViewModel's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
@@ -146,7 +146,7 @@ abstract class _BasicViewModel extends BasicViewModel {
 }
 
 final _modifierViewModelBypassError = UnsupportedError(
-  'ModifierViewModel\'s constructor was bypassed by another constructor.',
+  "ModifierViewModel's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc

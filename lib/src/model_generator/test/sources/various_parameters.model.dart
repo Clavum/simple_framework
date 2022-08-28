@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element, sort_constructors_first, library_private_types_in_public_api
 // coverage:ignore-file
 
 part of 'various_parameters.dart';
@@ -8,7 +8,7 @@ part of 'various_parameters.dart';
 // **************************************************************************
 
 final _variousParametersEntityBypassError = UnsupportedError(
-  'VariousParametersEntity\'s constructor was bypassed by another constructor.',
+  "VariousParametersEntity's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
@@ -152,7 +152,7 @@ class $VariousParametersEntityModifier extends _$_VariousParametersEntity {
 }
 
 final _variousParametersViewModelBypassError = UnsupportedError(
-  'VariousParametersViewModel\'s constructor was bypassed by another constructor.',
+  "VariousParametersViewModel's constructor was bypassed by another constructor.",
 );
 
 /// @nodoc
