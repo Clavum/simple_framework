@@ -14,7 +14,7 @@ dependencies:
     path: ../../../../simple_framework
   model_generator_annotation:
     path: ../model_generator_annotation
-  source_gen: 1.2.1
+  source_gen: 1.2.2
 
 dev_dependencies:
   flutter_test:
