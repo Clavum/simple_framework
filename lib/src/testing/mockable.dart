@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 /// See [Mockable.getClass] for more information.
@@ -71,9 +70,6 @@ class Mockable {
   /// the mock implements.
   @visibleForTesting
   void setMock<T extends Object>(T mock) {
-    if (mock is! Mock && mock is! Fake) {
-      throw _setMockUsedWithRealClassError(mock);
-    }
     setupCommonMockStubs(mock);
     _mocks[T] = mock;
   }
@@ -81,13 +77,4 @@ class Mockable {
   void clear() {
     _instance = null;
   }
-}
-
-ArgumentError _setMockUsedWithRealClassError(Object mock) {
-  return ArgumentError(
-    '''
-${mock.runtimeType} is not a Mock or a Fake.
-You cannot use setMock with a real class.
-''',
-  );
 }

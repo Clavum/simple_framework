@@ -73,8 +73,4 @@ void main() {
     setMock(ExceptionIfConstructedMock());
     ExceptionIfConstructed();
   });
-
-  test('with invalid mock', () {
-    expect(() => setMock(ExampleClass()), throwsArgumentError);
-  });
 }
