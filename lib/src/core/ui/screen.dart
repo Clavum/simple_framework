@@ -69,6 +69,12 @@ class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B
   void _onEntityUpdated(_) => _sendModel();
 
   @override
+  void reassemble() {
+    _sendModel();
+    super.reassemble();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<V>(
       stream: _viewModelStreamController.stream,
