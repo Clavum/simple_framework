@@ -9,6 +9,8 @@ part 'bloc.dart';
 
 part 'repository.dart';
 
+part 'stateless_bloc.dart';
+
 part 'ui/screen.dart';
 
 part 'ui/stateless_screen.dart';
