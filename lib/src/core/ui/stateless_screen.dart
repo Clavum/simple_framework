@@ -1,11 +1,11 @@
 part of '../core.dart';
 
 abstract class StatelessScreen<B extends Bloc> extends StatefulWidget {
-  final B _bloc;
-
-  const StatelessScreen(this._bloc, {Key? key}) : super(key: key);
+  const StatelessScreen({super.key});
 
   Widget build(BuildContext context, B bloc);
+
+  B createBloc();
 
   @override
   @nonVirtual
@@ -13,20 +13,22 @@ abstract class StatelessScreen<B extends Bloc> extends StatefulWidget {
 }
 
 class _ScreenState<B extends Bloc> extends State<StatelessScreen<B>> {
+  late final B bloc;
+
   @override
   void initState() {
     super.initState();
-    widget._bloc.onCreate();
+    bloc = widget.createBloc()..onCreate();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.build(context, widget._bloc);
+    return widget.build(context, bloc);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget._bloc.onDispose();
+    bloc.onDispose();
   }
 }

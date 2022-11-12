@@ -6,7 +6,7 @@ enum _ScreenStateLifecycle {
 }
 
 abstract class Screen<B extends Bloc<V>, V extends ViewModel> extends StatefulWidget {
-  const Screen({Key? key}) : super(key: key);
+  const Screen({super.key});
 
   Widget build(BuildContext context, B bloc, V viewModel);
 
