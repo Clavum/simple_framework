@@ -86,6 +86,10 @@ mixin _$UsesModelEntity {
 
   PersonModel get person => throw _usesModelEntityBypassError;
 
+  set people(List<PersonModel> people) => throw _usesModelEntityBypassError;
+
+  set person(PersonModel person) => throw _usesModelEntityBypassError;
+
   UsesModelEntity merge({
     List<PersonModel>? people,
     PersonModel? person,

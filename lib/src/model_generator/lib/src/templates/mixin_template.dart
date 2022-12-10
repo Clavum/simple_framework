@@ -27,6 +27,8 @@ ${model.className} merge($maybeLeftBrace
 mixin ${model.mixinName} {
   ${model.getterList(returnValue: 'throw ${model.bypassError}')}
 
+  ${(model.options.shouldGenerateModifier) ? model.setterList(returnValue: 'throw ${model.bypassError}') : ''}
+
   ${mergeBuffer.toString()}
 
   List<Object?> get props => throw ${model.bypassError};

@@ -19,6 +19,12 @@ mixin _$VariousParametersEntity {
 
   CustomClass get customClass => throw _variousParametersEntityBypassError;
 
+  set defaultParameter(String defaultParameter) => throw _variousParametersEntityBypassError;
+
+  set nullableParameter(bool? nullableParameter) => throw _variousParametersEntityBypassError;
+
+  set customClass(CustomClass customClass) => throw _variousParametersEntityBypassError;
+
   VariousParametersEntity merge({
     String? defaultParameter,
     bool? nullableParameter,

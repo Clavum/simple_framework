@@ -234,6 +234,36 @@ ExampleModel get nestedModel => throw Error();''',
       );
     });
 
+    test('setterList', () {
+      expect(
+        testModel.setterList(returnValue: 'throw Error()'),
+        '''
+set default(int default) => throw Error();
+
+set customType(Custom customType) => throw Error();
+
+set requiredField(int requiredField) => throw Error();
+
+set nullable(int? nullable) => throw Error();
+
+set invalid(int invalid) => throw Error();
+
+set requiredNullable(int? requiredNullable) => throw Error();
+
+set defaultNullable(int? defaultNullable) => throw Error();
+
+set list(List<int> list) => throw Error();
+
+set requiredList(List<int> requiredList) => throw Error();
+
+set map(Map<String, int> map) => throw Error();
+
+set set(Set<int> set) => throw Error();
+
+set nestedModel(ExampleModel nestedModel) => throw Error();''',
+      );
+    });
+
     test('nullableParameterList', () {
       expect(
         testModel.nullableParameterList(),

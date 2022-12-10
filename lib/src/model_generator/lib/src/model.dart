@@ -52,6 +52,15 @@ class Model {
   }
 
   /// --- Example format ---
+  /// @override
+  /// set fieldName(String value) => [returnValue];
+  String setterList({String? returnValue, bool useOverride = false}) {
+    return parameters
+        .expand((parameter) => [if (useOverride) '@override', parameter.setter(returnValue)])
+        .join('\n\n');
+  }
+
+  /// --- Example format ---
   /// String? fieldName,
   String nullableParameterList() {
     return parameters.map((parameter) => parameter.nullableParameter()).join('\n');

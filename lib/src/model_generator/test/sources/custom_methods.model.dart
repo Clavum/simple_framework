@@ -15,6 +15,8 @@ final _customMethodsEntityBypassError = UnsupportedError(
 mixin _$CustomMethodsEntity {
   int get value => throw _customMethodsEntityBypassError;
 
+  set value(int value) => throw _customMethodsEntityBypassError;
+
   CustomMethodsEntity merge({
     int? value,
   }) {

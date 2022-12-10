@@ -15,6 +15,8 @@ final _basicEntityBypassError = UnsupportedError(
 mixin _$BasicEntity {
   int get value => throw _basicEntityBypassError;
 
+  set value(int value) => throw _basicEntityBypassError;
+
   BasicEntity merge({
     int? value,
   }) {

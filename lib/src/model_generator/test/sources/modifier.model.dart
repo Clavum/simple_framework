@@ -25,6 +25,18 @@ mixin _$ModifierEntity {
 
   BasicEntity get basicEntity => throw _modifierEntityBypassError;
 
+  set intValue(int intValue) => throw _modifierEntityBypassError;
+
+  set listValue(List<int> listValue) => throw _modifierEntityBypassError;
+
+  set mapValue(Map<String, int> mapValue) => throw _modifierEntityBypassError;
+
+  set setValue(Set<int> setValue) => throw _modifierEntityBypassError;
+
+  set secondMap(Map<String, int> secondMap) => throw _modifierEntityBypassError;
+
+  set basicEntity(BasicEntity basicEntity) => throw _modifierEntityBypassError;
+
   ModifierEntity merge({
     int? intValue,
     List<int>? listValue,

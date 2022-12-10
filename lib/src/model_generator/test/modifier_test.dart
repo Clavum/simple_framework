@@ -128,4 +128,14 @@ void main() {
     modifierEntity.secondMap;
     expect(modifierEntity.mapValue, {'a': 1});
   });
+
+  test('regression - setters are part of model interface', () {
+    void expectsModel(ModifierEntity entity) {
+      // Given a model, we can call setters on it.
+      entity.intValue = 10;
+    }
+
+    expectsModel(modifierEntity);
+    expect(modifierEntity.intValue, 10);
+  });
 }

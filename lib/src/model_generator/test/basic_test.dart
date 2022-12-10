@@ -23,14 +23,17 @@ void main() {
   });
 
   test('basic ViewModel functionality', () {
-    const entity = BasicViewModel(value: 10);
+    const viewModel = BasicViewModel(value: 10);
     // Returns provided value.
-    expect(entity.value, 10);
+    expect(viewModel.value, 10);
 
     // Is equal to another instance with the same values.
-    expect(entity, const BasicViewModel(value: 10));
+    expect(viewModel, const BasicViewModel(value: 10));
 
     // Props lists all field values.
-    expect(entity.props, [10]);
+    expect(viewModel.props, [10]);
+
+    // Only entities have setters.
+    expect(() => (viewModel as dynamic).value = 10, throwsNoSuchMethodError);
   });
 }
