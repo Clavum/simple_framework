@@ -47,9 +47,9 @@ class Repository {
     if (_streams.containsKey(model.runtimeType)) {
       _streams[model.runtimeType]!.add(model);
     } else {
-      if (model is Entity) {
-        debugPrint('Simple Framework: An instance of ${model.runtimeType} was sent, but no Screen '
-            'is subscribed to receive it');
+      if (kDebugMode && model is Entity) {
+        SimpleFrameworkSettings.onLog(LogLevel.warning,
+            'An instance of ${model.runtimeType} was sent, but no Screen is subscribed to receive it');
       }
     }
   }
