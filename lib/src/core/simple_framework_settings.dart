@@ -9,5 +9,7 @@ enum LogLevel {
 }
 
 class SimpleFrameworkSettings {
-  static void Function(LogLevel level, String message) onLog = (_, __) {};
+  static void Function(LogLevel level, String message) onLog = (_, message) {
+    debugPrint(message);
+  };
 }
