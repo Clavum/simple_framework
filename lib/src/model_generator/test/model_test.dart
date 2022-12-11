@@ -397,36 +397,43 @@ ExampleModel nestedModel,''',
 @override
 int get default => _get.default;
 
+@override
 set default(int default) => _set(_get.merge(default: default));
 
 @override
 Custom get customType => _get.customType;
 
+@override
 set customType(Custom customType) => _set(_get.merge(customType: customType));
 
 @override
 int get requiredField => _get.requiredField;
 
+@override
 set requiredField(int requiredField) => _set(_get.merge(requiredField: requiredField));
 
 @override
 int? get nullable => _get.nullable;
 
+@override
 set nullable(int? nullable) => _set(_get.merge(nullable: nullable));
 
 @override
 int get invalid => _get.invalid;
 
+@override
 set invalid(int invalid) => _set(_get.merge(invalid: invalid));
 
 @override
 int? get requiredNullable => _get.requiredNullable;
 
+@override
 set requiredNullable(int? requiredNullable) => _set(_get.merge(requiredNullable: requiredNullable));
 
 @override
 int? get defaultNullable => _get.defaultNullable;
 
+@override
 set defaultNullable(int? defaultNullable) => _set(_get.merge(defaultNullable: defaultNullable));
 
 @override
@@ -435,11 +442,13 @@ List<int> get list {
   return (value == _$_ClassName.$listDefaultValue) ? list = List.from(value) : value;
 }
 
+@override
 set list(List<int> list) => _set(_get.merge(list: list));
 
 @override
 List<int> get requiredList => _get.requiredList;
 
+@override
 set requiredList(List<int> requiredList) => _set(_get.merge(requiredList: requiredList));
 
 @override
@@ -448,6 +457,7 @@ Map<String, int> get map {
   return (value == _$_ClassName.$mapDefaultValue) ? map = Map.from(value) : value;
 }
 
+@override
 set map(Map<String, int> map) => _set(_get.merge(map: map));
 
 @override
@@ -456,15 +466,17 @@ Set<int> get set {
   return (value == _$_ClassName.$setDefaultValue) ? set = Set.from(value) : value;
 }
 
+@override
 set set(Set<int> set) => _set(_get.merge(set: set));
 
 @override
 $ExampleModelModifier get nestedModel => $ExampleModelModifier(
         () => _get.nestedModel,
         (ExampleModel nestedModel) => this.nestedModel = nestedModel,
-        () => send(),
+        (silent) => send(silent: silent),
       );
 
+@override
 set nestedModel(ExampleModel nestedModel) => _set(_get.merge(nestedModel: nestedModel));''',
       );
     });

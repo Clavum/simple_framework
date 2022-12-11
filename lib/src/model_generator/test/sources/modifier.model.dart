@@ -153,7 +153,7 @@ set modifierEntity(ModifierEntity model) => Repository().set(model);
 class $ModifierEntityModifier extends _$_ModifierEntity {
   final ModifierEntity Function()? _getOverride;
   final void Function(ModifierEntity)? _setOverride;
-  final void Function()? _sendOverride;
+  final void Function(bool)? _sendOverride;
 
   const $ModifierEntityModifier([
     this._getOverride,
@@ -168,11 +168,14 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
   @override
-  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+  void send({bool silent = false}) => (_sendOverride != null)
+      ? _sendOverride!.call(silent)
+      : Repository().sendModel(_get, silent: silent);
 
   @override
   int get intValue => _get.intValue;
 
+  @override
   set intValue(int intValue) => _set(_get.merge(intValue: intValue));
 
   @override
@@ -183,6 +186,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
         : value;
   }
 
+  @override
   set listValue(List<int> listValue) => _set(_get.merge(listValue: listValue));
 
   @override
@@ -191,6 +195,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
     return (value == _$_ModifierEntity.$mapValueDefaultValue) ? mapValue = Map.from(value) : value;
   }
 
+  @override
   set mapValue(Map<String, int> mapValue) => _set(_get.merge(mapValue: mapValue));
 
   @override
@@ -199,6 +204,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
     return (value == _$_ModifierEntity.$setValueDefaultValue) ? setValue = Set.from(value) : value;
   }
 
+  @override
   set setValue(Set<int> setValue) => _set(_get.merge(setValue: setValue));
 
   @override
@@ -209,15 +215,17 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
         : value;
   }
 
+  @override
   set secondMap(Map<String, int> secondMap) => _set(_get.merge(secondMap: secondMap));
 
   @override
   $BasicEntityModifier get basicEntity => $BasicEntityModifier(
         () => _get.basicEntity,
         (BasicEntity basicEntity) => this.basicEntity = basicEntity,
-        () => send(),
+        (silent) => send(silent: silent),
       );
 
+  @override
   set basicEntity(BasicEntity basicEntity) => _set(_get.merge(basicEntity: basicEntity));
 
   @override

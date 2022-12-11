@@ -15,6 +15,8 @@ final _counterEntityBypassError = UnsupportedError(
 mixin _$CounterEntity {
   int get counter => throw _counterEntityBypassError;
 
+  set counter(int counter) => throw _counterEntityBypassError;
+
   CounterEntity merge({
     int? counter,
   }) {
@@ -71,7 +73,7 @@ set counterEntity(CounterEntity model) => Repository().set(model);
 class $CounterEntityModifier extends _$_CounterEntity {
   final CounterEntity Function()? _getOverride;
   final void Function(CounterEntity)? _setOverride;
-  final void Function()? _sendOverride;
+  final void Function(bool)? _sendOverride;
 
   const $CounterEntityModifier([
     this._getOverride,
@@ -86,11 +88,14 @@ class $CounterEntityModifier extends _$_CounterEntity {
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
   @override
-  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+  void send({bool silent = false}) => (_sendOverride != null)
+      ? _sendOverride!.call(silent)
+      : Repository().sendModel(_get, silent: silent);
 
   @override
   int get counter => _get.counter;
 
+  @override
   set counter(int counter) => _set(_get.merge(counter: counter));
 
   @override

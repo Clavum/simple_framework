@@ -40,14 +40,21 @@ class Repository {
 
   /// Sends a [Model] to its corresponding Stream. This notifies any [Bloc] streaming from this
   /// [Model] to send a new ViewModel. The provided [model] will also be set in the [Repository].
-  void sendModel(RepositoryModel model) {
+  ///
+  /// If in debug mode, the [model] is an [Entity], and no [Screen] is subscribed to the [Entity],
+  /// a warning will be printed to help with debugging, as it may indicate a bug.
+  /// It's also possible that it is not a bug and that it is understood the screen may or may not
+  /// be displayed currently. In this case, the warning may become quite terribly annoying, like
+  /// why-does-this-exist sort of annoying. So, to disable it, just provide [silent], and you will
+  /// have peace again. At least, until the next time you forget to provide [silent].
+  void sendModel(RepositoryModel model, {bool silent = false}) {
     _models
       ..retainWhere((element) => element.runtimeType != model.runtimeType)
       ..add(model);
     if (_streams.containsKey(model.runtimeType)) {
       _streams[model.runtimeType]!.add(model);
     } else {
-      if (kDebugMode && model is Entity) {
+      if (kDebugMode && model is Entity && !silent) {
         SimpleFrameworkSettings.onLog(LogLevel.warning,
             'An instance of ${model.runtimeType} was sent, but no Screen is subscribed to receive it');
       }

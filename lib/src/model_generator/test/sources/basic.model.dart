@@ -73,7 +73,7 @@ set basicEntity(BasicEntity model) => Repository().set(model);
 class $BasicEntityModifier extends _$_BasicEntity {
   final BasicEntity Function()? _getOverride;
   final void Function(BasicEntity)? _setOverride;
-  final void Function()? _sendOverride;
+  final void Function(bool)? _sendOverride;
 
   const $BasicEntityModifier([
     this._getOverride,
@@ -88,11 +88,14 @@ class $BasicEntityModifier extends _$_BasicEntity {
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
   @override
-  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+  void send({bool silent = false}) => (_sendOverride != null)
+      ? _sendOverride!.call(silent)
+      : Repository().sendModel(_get, silent: silent);
 
   @override
   int get value => _get.value;
 
+  @override
   set value(int value) => _set(_get.merge(value: value));
 
   @override

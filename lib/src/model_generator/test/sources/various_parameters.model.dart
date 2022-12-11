@@ -103,7 +103,7 @@ set variousParametersEntity(VariousParametersEntity model) => Repository().set(m
 class $VariousParametersEntityModifier extends _$_VariousParametersEntity {
   final VariousParametersEntity Function()? _getOverride;
   final void Function(VariousParametersEntity)? _setOverride;
-  final void Function()? _sendOverride;
+  final void Function(bool)? _sendOverride;
 
   const $VariousParametersEntityModifier([
     this._getOverride,
@@ -119,23 +119,28 @@ class $VariousParametersEntityModifier extends _$_VariousParametersEntity {
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
   @override
-  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+  void send({bool silent = false}) => (_sendOverride != null)
+      ? _sendOverride!.call(silent)
+      : Repository().sendModel(_get, silent: silent);
 
   @override
   String get defaultParameter => _get.defaultParameter;
 
+  @override
   set defaultParameter(String defaultParameter) =>
       _set(_get.merge(defaultParameter: defaultParameter));
 
   @override
   bool? get nullableParameter => _get.nullableParameter;
 
+  @override
   set nullableParameter(bool? nullableParameter) =>
       _set(_get.merge(nullableParameter: nullableParameter));
 
   @override
   CustomClass get customClass => _get.customClass;
 
+  @override
   set customClass(CustomClass customClass) => _set(_get.merge(customClass: customClass));
 
   @override

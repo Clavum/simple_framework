@@ -51,7 +51,7 @@ set emptyEntity(EmptyEntity model) => Repository().set(model);
 class $EmptyEntityModifier extends _$_EmptyEntity {
   final EmptyEntity Function()? _getOverride;
   final void Function(EmptyEntity)? _setOverride;
-  final void Function()? _sendOverride;
+  final void Function(bool)? _sendOverride;
 
   const $EmptyEntityModifier([
     this._getOverride,
@@ -66,7 +66,9 @@ class $EmptyEntityModifier extends _$_EmptyEntity {
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
   @override
-  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+  void send({bool silent = false}) => (_sendOverride != null)
+      ? _sendOverride!.call(silent)
+      : Repository().sendModel(_get, silent: silent);
 
   @override
   _EmptyEntity merge() {

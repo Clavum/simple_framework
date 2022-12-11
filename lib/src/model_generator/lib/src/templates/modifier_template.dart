@@ -18,7 +18,7 @@ set ${model.camelCaseName}(${model.className} model) => Repository().set(model);
 class ${model.modifierClassName} extends ${model.mainClassName} {
    final ${model.className} Function()? _getOverride;
    final void Function(${model.className})? _setOverride;
-   final void Function()? _sendOverride;
+   final void Function(bool)? _sendOverride;
 
    const ${model.modifierClassName}([
      this._getOverride,
@@ -33,7 +33,9 @@ class ${model.modifierClassName} extends ${model.mainClassName} {
        (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
    @override
-   void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+   void send({bool silent = false}) => (_sendOverride != null) 
+       ? _sendOverride!.call(silent) 
+       : Repository().sendModel(_get, silent: silent);
 
   ${model.modifierParameterList()}
 

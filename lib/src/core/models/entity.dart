@@ -4,5 +4,5 @@ part of '../core.dart';
 abstract class Entity extends Model with MergingModel, RepositoryModel {
   const Entity();
 
-  void send() => Repository().sendModel(this);
+  void send({bool silent = false}) => Repository().sendModel(this, silent: silent);
 }

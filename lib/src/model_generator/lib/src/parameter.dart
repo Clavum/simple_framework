@@ -135,7 +135,7 @@ $type get $name {
 \$${type}Modifier get $name => \$${type}Modifier(
         () => _get.$name,
         ($type $name) => this.$name = $name,
-        () => send(),
+        (silent) => send(silent: silent),
       );''';
     } else {
       return '@override\n${getter('_get.$name')}';
@@ -144,7 +144,7 @@ $type get $name {
 
   /// Format as a setter which updates the value in the Repository.
   String modifierSetter() {
-    return setter('_set(_get.merge($name: $name))');
+    return '@override\n${setter('_set(_get.merge($name: $name))')}';
   }
 
   String collectionDefault() {

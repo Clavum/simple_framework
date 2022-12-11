@@ -159,7 +159,7 @@ set usesModelEntity(UsesModelEntity model) => Repository().set(model);
 class $UsesModelEntityModifier extends _$_UsesModelEntity {
   final UsesModelEntity Function()? _getOverride;
   final void Function(UsesModelEntity)? _setOverride;
-  final void Function()? _sendOverride;
+  final void Function(bool)? _sendOverride;
 
   const $UsesModelEntityModifier([
     this._getOverride,
@@ -174,7 +174,9 @@ class $UsesModelEntityModifier extends _$_UsesModelEntity {
       (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
   @override
-  void send() => (_sendOverride != null) ? _sendOverride!.call() : Repository().sendModel(_get);
+  void send({bool silent = false}) => (_sendOverride != null)
+      ? _sendOverride!.call(silent)
+      : Repository().sendModel(_get, silent: silent);
 
   @override
   List<PersonModel> get people {
@@ -182,11 +184,13 @@ class $UsesModelEntityModifier extends _$_UsesModelEntity {
     return (value == _$_UsesModelEntity.$peopleDefaultValue) ? people = List.from(value) : value;
   }
 
+  @override
   set people(List<PersonModel> people) => _set(_get.merge(people: people));
 
   @override
   PersonModel get person => _get.person;
 
+  @override
   set person(PersonModel person) => _set(_get.merge(person: person));
 
   @override
