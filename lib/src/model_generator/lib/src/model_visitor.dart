@@ -112,8 +112,8 @@ extension DefaultValue on ParameterElement {
       if (matcher.isExactlyType(obj.type!)) {
         final source = meta.toSource();
         final res = source.substring('@Default('.length, source.length - 1);
-
-        final needsConstModifier = !res.trimLeft().startsWith('const') &&
+        final needsConstModifier = !declaration.type.isDartCoreString &&
+            !res.trimLeft().startsWith('const') &&
             (res.contains('(') || res.contains('[') || res.contains('{'));
 
         if (needsConstModifier) {
