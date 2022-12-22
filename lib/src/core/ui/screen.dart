@@ -33,6 +33,14 @@ class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B
   _ScreenStateLifecycle _state = _ScreenStateLifecycle.created;
 
   @override
+  void didChangeDependencies() {
+    if (_state == _ScreenStateLifecycle.active) {
+      _sendModel();
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   void initState() {
     super.initState();
 
