@@ -156,7 +156,6 @@ linter:
     - use_named_constants
     - use_raw_strings
     - use_rethrow_when_possible
-    - use_setters_to_change_properties
     - use_string_buffers
     - use_super_parameters
     - use_to_and_as_if_applicable
