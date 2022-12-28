@@ -65,6 +65,7 @@ abstract class _CounterEntity extends CounterEntity {
   int get counter;
 }
 
+/// Looking for your model's code? You can go-to-source of this: [CounterEntity].
 $CounterEntityModifier get counterEntity => $CounterEntityModifier();
 
 set counterEntity(CounterEntity model) => Repository().set(model);

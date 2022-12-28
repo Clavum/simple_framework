@@ -151,6 +151,7 @@ abstract class _UsesModelEntity extends UsesModelEntity {
   PersonModel get person;
 }
 
+/// Looking for your model's code? You can go-to-source of this: [UsesModelEntity].
 $UsesModelEntityModifier get usesModelEntity => $UsesModelEntityModifier();
 
 set usesModelEntity(UsesModelEntity model) => Repository().set(model);

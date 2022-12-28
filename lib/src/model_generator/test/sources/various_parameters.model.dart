@@ -95,6 +95,7 @@ abstract class _VariousParametersEntity extends VariousParametersEntity {
   CustomClass get customClass;
 }
 
+/// Looking for your model's code? You can go-to-source of this: [VariousParametersEntity].
 $VariousParametersEntityModifier get variousParametersEntity => $VariousParametersEntityModifier();
 
 set variousParametersEntity(VariousParametersEntity model) => Repository().set(model);

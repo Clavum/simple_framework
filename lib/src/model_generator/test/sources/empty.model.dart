@@ -43,6 +43,7 @@ abstract class _EmptyEntity extends EmptyEntity {
   const _EmptyEntity._() : super._();
 }
 
+/// Looking for your model's code? You can go-to-source of this: [EmptyEntity].
 $EmptyEntityModifier get emptyEntity => $EmptyEntityModifier();
 
 set emptyEntity(EmptyEntity model) => Repository().set(model);

@@ -145,6 +145,7 @@ abstract class _ModifierEntity extends ModifierEntity {
   BasicEntity get basicEntity;
 }
 
+/// Looking for your model's code? You can go-to-source of this: [ModifierEntity].
 $ModifierEntityModifier get modifierEntity => $ModifierEntityModifier();
 
 set modifierEntity(ModifierEntity model) => Repository().set(model);
