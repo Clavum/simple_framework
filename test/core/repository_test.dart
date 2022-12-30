@@ -39,7 +39,7 @@ void main() {
 
       Repository().setServiceModelStatus<TestServiceModel>(ServiceModelStatus.invalid);
 
-      setModelAsync();
+      unawaited(setModelAsync());
       expect(Repository().getServiceModelStatus<TestServiceModel>(), ServiceModelStatus.loading);
 
       await Future.delayed(const Duration(milliseconds: 100));
@@ -72,7 +72,7 @@ void main() {
         firstModel = await Repository().getServiceModel(const TestServiceModel());
       }
 
-      setFirstModelAsync();
+      unawaited(setFirstModelAsync());
 
       expect(Repository().getServiceModelStatus<TestServiceModel>(), ServiceModelStatus.loading);
 
@@ -81,7 +81,7 @@ void main() {
       }
 
       await Future.delayed(const Duration(milliseconds: 50));
-      setSecondModelAsync();
+      unawaited(setSecondModelAsync());
 
       await Future.delayed(const Duration(milliseconds: 50));
 
