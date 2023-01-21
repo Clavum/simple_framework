@@ -5,9 +5,7 @@ import 'package:simple_framework/src/testing/mockable.dart';
 class ExampleClass {
   ExampleClass._();
 
-  factory ExampleClass() {
-    return mockable(ExampleClass._);
-  }
+  factory ExampleClass() => mockable(ExampleClass._);
 
   int getValue() {
     return 1;
@@ -25,13 +23,10 @@ class ExceptionIfConstructed {
     throw Exception();
   }
 
-  factory ExceptionIfConstructed() {
-    return mockable(ExceptionIfConstructed._);
-  }
+  factory ExceptionIfConstructed() => mockable(ExceptionIfConstructed._);
 }
 
-class ExceptionIfConstructedMock extends Mock
-    implements ExceptionIfConstructed {}
+class ExceptionIfConstructedMock extends Mock implements ExceptionIfConstructed {}
 
 void main() {
   tearDown(() {
@@ -72,5 +67,19 @@ void main() {
     // constructed during execution.
     setMock(ExceptionIfConstructedMock());
     ExceptionIfConstructed();
+  });
+
+  test('removeMock can clear with supertype', () {
+    setMock(ExampleClassMock(5));
+    expect(ExampleClass().getValue(), 5);
+    // Can remove with mock type:
+    removeMock<ExampleClassMock>();
+    expect(ExampleClass().getValue(), 1);
+
+    setMock(ExampleClassMock(5));
+    expect(ExampleClass().getValue(), 5);
+    // Can remove with supertype:
+    removeMock<ExampleClass>();
+    expect(ExampleClass().getValue(), 1);
   });
 }

@@ -21,6 +21,16 @@ void Function<T extends Object>(T mock) get setMock {
   return Mockable().setMock;
 }
 
+/// See [Mockable.removeMock] for more information.
+///
+/// A shortcut to:
+/// `Mockable().removeMock<SomeClass>();`
+/// Instead, it's:
+/// `removeMock<SomeClass>();`
+void Function<T extends Object>() get removeMock {
+  return Mockable().removeMock;
+}
+
 /// See [Mockable.clear] for more information.
 ///
 /// A shortcut to:
@@ -72,6 +82,17 @@ class Mockable {
   void setMock<T extends Object>(T mock) {
     setupCommonMockStubs(mock);
     _mocks[T] = mock;
+  }
+
+  /// Remove mocks of the given type, if any exist.
+  /// You may use supertypes:
+  /// `removeMock<Object>()` (removes all mocks)
+  /// the class type:
+  /// `removeMock<SomeClass>()`
+  /// or the mock type:
+  /// `removeMock<SomeClassMock>()` (same effect as above)
+  void removeMock<T extends Object>() {
+    _mocks.removeWhere((key, value) => value is T);
   }
 
   void clear() {
