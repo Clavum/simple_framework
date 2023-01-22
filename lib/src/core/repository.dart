@@ -31,11 +31,10 @@ class Repository {
   }
 
   /// Set a [Model] in the [Repository]. Any existing model of the same type will be replaced.
-  M set<M extends RepositoryModel>(M model) {
+  void set<M extends RepositoryModel>(M model) {
     _models
       ..retainWhere((element) => element.runtimeType != model.runtimeType)
       ..add(model);
-    return model;
   }
 
   /// Sends a [Model] to its corresponding Stream. This notifies any [Bloc] streaming from this

@@ -27,7 +27,6 @@ class RepositoryMock extends Mock implements Repository {
     if (M == RepositoryModel) throw _addMockModelCalledWithoutType();
     registerFallbackValue(mockModel);
     when(() => get<M>(any())).thenAnswer((_) => mockModel);
-    when(() => set<M>(any())).thenAnswer((_) => mockModel);
   }
 
   @override
