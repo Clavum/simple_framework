@@ -75,9 +75,25 @@ class Repository {
     _models.removeWhere((model) => model.runtimeType == M);
   }
 
+  /// Returns a stream which emits every model of type [M] that is sent with [sendModel].
   Stream<M> streamOf<M extends RepositoryModel>() {
-    _streams.putIfAbsent(M, () => StreamController<M>.broadcast(sync: true));
+    void _onCancel() {
+      _streams[M]?.close();
+      _streams.remove(M);
+    }
+
+    _streams.putIfAbsent(M, () => StreamController<M>.broadcast(sync: true, onCancel: _onCancel));
     return _streams[M]!.stream as Stream<M>;
+  }
+
+  /// Whether the [Repository] has an active model stream of the specified type. Because [streamOf]
+  /// is typically only used by [Bloc]s, this is a way to check if using [sendModel] with an
+  /// instance of [M] would possibly cause a visual update.
+  ///
+  /// This can be used to avoid unnecessary work. For example, you could have a timer on repeat
+  /// that refreshes the user's data, but only if that specific data is being displayed.
+  bool hasActiveStream<M extends RepositoryModel>() {
+    return _streams.containsKey(M);
   }
 
   Future<M> getServiceModel<M extends ServiceModel>(M model) async {

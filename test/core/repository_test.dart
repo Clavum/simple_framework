@@ -6,9 +6,29 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 import '../test_classes/broken_service_model.dart';
+import '../test_classes/test_entity.dart';
 import '../test_classes/test_service_model.dart';
 
 void main() {
+  test('hasActiveStream', () async {
+    // Single subscriber.
+    expect(Repository().hasActiveStream<TestEntity>(), false);
+    final subscription = Repository().streamOf<TestEntity>().listen((event) {});
+    expect(Repository().hasActiveStream<TestEntity>(), true);
+    await subscription.cancel();
+    expect(Repository().hasActiveStream<TestEntity>(), false);
+
+    // Multiple subscribers.
+    final subscription1 = Repository().streamOf<TestEntity>().listen((event) {});
+    final subscription2 = Repository().streamOf<TestEntity>().listen((event) {});
+    expect(Repository().hasActiveStream<TestEntity>(), true);
+    await subscription1.cancel();
+    expect(Repository().hasActiveStream<TestEntity>(), true);
+    expect(subscription2.isPaused, false);
+    await subscription2.cancel();
+    expect(Repository().hasActiveStream<TestEntity>(), false);
+  });
+
   group('getServiceModel', () {
     setUp(() {
       Repository().set(const TestServiceModel(state: TestServiceModelState.fromRepository));
