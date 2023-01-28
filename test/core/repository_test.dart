@@ -10,23 +10,48 @@ import '../test_classes/test_entity.dart';
 import '../test_classes/test_service_model.dart';
 
 void main() {
-  test('hasActiveStream', () async {
-    // Single subscriber.
-    expect(Repository().hasActiveStream<TestEntity>(), false);
-    final subscription = Repository().streamOf<TestEntity>().listen((event) {});
-    expect(Repository().hasActiveStream<TestEntity>(), true);
-    await subscription.cancel();
-    expect(Repository().hasActiveStream<TestEntity>(), false);
+  group('hasActiveStream', () {
+    test('single subscriber', () async {
+      expect(Repository().hasActiveStream<TestEntity>(), false);
+      final subscription = Repository().streamOf<TestEntity>().listen((event) {});
+      expect(Repository().hasActiveStream<TestEntity>(), true);
+      await subscription.cancel();
+      expect(Repository().hasActiveStream<TestEntity>(), false);
+    });
 
-    // Multiple subscribers.
-    final subscription1 = Repository().streamOf<TestEntity>().listen((event) {});
-    final subscription2 = Repository().streamOf<TestEntity>().listen((event) {});
-    expect(Repository().hasActiveStream<TestEntity>(), true);
-    await subscription1.cancel();
-    expect(Repository().hasActiveStream<TestEntity>(), true);
-    expect(subscription2.isPaused, false);
-    await subscription2.cancel();
-    expect(Repository().hasActiveStream<TestEntity>(), false);
+    test('multiple subscribers', () async {
+      final subscription1 = Repository().streamOf<TestEntity>().listen((event) {});
+      final subscription2 = Repository().streamOf<TestEntity>().listen((event) {});
+      expect(Repository().hasActiveStream<TestEntity>(), true);
+      await subscription1.cancel();
+      expect(Repository().hasActiveStream<TestEntity>(), true);
+      expect(subscription2.isPaused, false);
+      await subscription2.cancel();
+      expect(Repository().hasActiveStream<TestEntity>(), false);
+    });
+
+    test('can use type parameter', () async {
+      expect(Repository().hasActiveStream(type: TestEntity), false);
+      final subscription = Repository().streamOf<TestEntity>().listen((event) {});
+      expect(Repository().hasActiveStream(type: TestEntity), true);
+      await subscription.cancel();
+      expect(Repository().hasActiveStream(type: TestEntity), false);
+    });
+  });
+
+  test('onStreamAdded', () {
+    final list = <Type>[];
+    Repository().onStreamAdded.listen(list.add);
+
+    expect(list, isEmpty);
+
+    Repository().streamOf<TestEntity>().listen((_) {}).cancel();
+
+    expect(list, [TestEntity]);
+
+    Repository().streamOf<TestEntity>().listen((_) {}).cancel();
+
+    expect(list, [TestEntity, TestEntity]);
   });
 
   group('getServiceModel', () {

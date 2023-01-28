@@ -15,6 +15,9 @@ class Repository {
 
   void Function<M extends RepositoryModel>()? _fetchCallback;
 
+  final StreamController<Type> _onStreamAddedController =
+      StreamController<Type>.broadcast(sync: true);
+
   factory Repository() {
     _instance ??= Repository._();
     return mockable(() => _instance!);
@@ -76,7 +79,14 @@ class Repository {
   }
 
   /// Returns a stream which emits every model of type [M] that is sent with [sendModel].
+  ///
+  /// See also:
+  ///
+  ///  * [hasActiveStream], which indicates if a model has an active stream returned by this method.
+  ///  * [onStreamAdded], which emits every time a stream is added by this method.
   Stream<M> streamOf<M extends RepositoryModel>() {
+    _onStreamAddedController.add(M);
+
     void _onCancel() {
       _streams[M]?.close();
       _streams.remove(M);
@@ -87,14 +97,31 @@ class Repository {
   }
 
   /// Whether the [Repository] has an active model stream of the specified type. Because [streamOf]
-  /// is typically only used by [Bloc]s, this is a way to check if using [sendModel] with an
+  /// is typically only used by [Screen]s, this is a way to check if using [sendModel] with an
   /// instance of [M] would possibly cause a visual update.
   ///
   /// This can be used to avoid unnecessary work. For example, you could have a timer on repeat
   /// that refreshes the user's data, but only if that specific data is being displayed.
-  bool hasActiveStream<M extends RepositoryModel>() {
-    return _streams.containsKey(M);
+  ///
+  /// In cases where this method is called dynamically, meaning the type argument [M] cannot be
+  /// known until runtime, the [type] parameter can be used instead.
+  bool hasActiveStream<M extends RepositoryModel>({Type? type}) {
+    return _streams.containsKey(type ?? M);
   }
+
+  /// Returns a stream that emits every time [streamOf] is called. The emitted type is the type of
+  /// the model listened to.
+  ///
+  /// This is useful for refreshing the model's data without manually refreshing it from every
+  /// screen that uses it:
+  /// ```dart
+  /// Repository().onStreamAdded.listen((type) {
+  ///  if (type == MyModel) {
+  ///    // Refresh the model.
+  ///  }
+  /// });
+  /// ```
+  Stream<Type> get onStreamAdded => _onStreamAddedController.stream;
 
   Future<M> getServiceModel<M extends ServiceModel>(M model) async {
     /// If the ServiceModel already exists and is valid, it is returned.
@@ -105,9 +132,7 @@ class Repository {
     /// If the ServiceModel is loading, that means it is currently being loaded, and will send it
     /// once done. This code waits for and sends the next model from the stream.
     if (Repository().getServiceModelStatus<M>() == ServiceModelStatus.loading) {
-      await for (final model in Repository().streamOf<M>()) {
-        return model;
-      }
+      return Repository().streamOf<M>().first;
     }
 
     /// In all other scenarios, use the ServiceModel's build method to load itself.
