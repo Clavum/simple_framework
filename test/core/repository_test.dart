@@ -39,17 +39,17 @@ void main() {
     });
   });
 
-  test('onStreamAdded', () {
+  test('onStreamAdded', () async {
     final list = <Type>[];
     Repository().onStreamAdded.listen(list.add);
 
     expect(list, isEmpty);
 
-    Repository().streamOf<TestEntity>().listen((_) {}).cancel();
+    await Repository().streamOf<TestEntity>().listen((_) {}).cancel();
 
     expect(list, [TestEntity]);
 
-    Repository().streamOf<TestEntity>().listen((_) {}).cancel();
+    await Repository().streamOf<TestEntity>().listen((_) {}).cancel();
 
     expect(list, [TestEntity, TestEntity]);
   });

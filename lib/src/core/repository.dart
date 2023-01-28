@@ -15,8 +15,7 @@ class Repository {
 
   void Function<M extends RepositoryModel>()? _fetchCallback;
 
-  final StreamController<Type> _onStreamAddedController =
-      StreamController<Type>.broadcast(sync: true);
+  final StreamController<Type> _onStreamAddedController = StreamController<Type>.broadcast();
 
   factory Repository() {
     _instance ??= Repository._();
@@ -105,6 +104,10 @@ class Repository {
   ///
   /// In cases where this method is called dynamically, meaning the type argument [M] cannot be
   /// known until runtime, the [type] parameter can be used instead.
+  ///
+  /// NOTE: Depending on your app's navigation, specifically if the state of previous routes are
+  /// maintained, this method will return `true` if *any* previous screen uses the model, not just
+  /// if the current screen uses it.
   bool hasActiveStream<M extends RepositoryModel>({Type? type}) {
     return _streams.containsKey(type ?? M);
   }
