@@ -120,5 +120,17 @@ void main() {
       expect(find.text('0'), findsNothing);
       expect(find.text('123'), findsOneWidget);
     });
+
+    testWidgets('when disposed, Repository stream is cancelled', (tester) async {
+      await tester.pumpWidget(MaterialApp(home: TestScreen()));
+      await tester.pumpAndSettle();
+
+      expect(Repository().hasActiveStream<TestEntity>(), true);
+
+      await tester.pumpWidget(Container());
+      await tester.pumpAndSettle();
+
+      expect(Repository().hasActiveStream<TestEntity>(), false);
+    });
   });
 }
