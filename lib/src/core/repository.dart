@@ -107,7 +107,8 @@ class Repository {
   ///
   /// NOTE: Depending on your app's navigation, specifically if the state of previous routes are
   /// maintained, this method will return `true` if *any* previous screen uses the model, not just
-  /// if the current screen uses it.
+  /// if the current screen uses it. Consider passing `maintainState` as `false` for every
+  /// MaterialRoute or MaterialPage.
   bool hasActiveStream<M extends RepositoryModel>({Type? type}) {
     return _streams.containsKey(type ?? M);
   }
