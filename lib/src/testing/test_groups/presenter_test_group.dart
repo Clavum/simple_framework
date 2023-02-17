@@ -5,8 +5,8 @@ import 'package:utilities/utilities.dart';
 
 @isTestGroup
 @visibleForTesting
-void screenTestGroup(String screenName, void Function() body) {
-  group('$screenName tests', () {
+void presenterTestGroup(String presenterName, void Function() body) {
+  group('$presenterName tests', () {
     setUpAll(() async {
       await setupFirebaseMock();
       setupCommonFallbackValues();

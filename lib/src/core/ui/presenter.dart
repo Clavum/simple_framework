@@ -1,16 +1,16 @@
 part of '../core.dart';
 
-enum _ScreenStateLifecycle {
+enum _PresenterStateLifecycle {
   created,
   active,
 }
 
-abstract class Screen<B extends Bloc<V>, V extends ViewModel> extends StatefulWidget {
-  const Screen({super.key});
+abstract class Presenter<B extends Bloc<V>, V extends ViewModel> extends StatefulWidget {
+  const Presenter({super.key});
 
   Widget build(BuildContext context, B bloc, V viewModel);
 
-  Widget buildLoadingScreen(BuildContext context, B bloc) {
+  Widget buildLoadingWidget(BuildContext context, B bloc) {
     return const SizedBox.shrink(key: Key('waitingForStream'));
   }
 
@@ -18,10 +18,10 @@ abstract class Screen<B extends Bloc<V>, V extends ViewModel> extends StatefulWi
 
   @override
   @nonVirtual
-  ScreenState<B, V> createState() => ScreenState<B, V>();
+  PresenterState<B, V> createState() => PresenterState<B, V>();
 }
 
-class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B, V>> {
+class PresenterState<B extends Bloc<V>, V extends ViewModel> extends State<Presenter<B, V>> {
   late final B bloc;
 
   V? _currentViewModel;
@@ -30,11 +30,11 @@ class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B
 
   final Map<Type, StreamSubscription<void>> _entityStreams = {};
 
-  _ScreenStateLifecycle _state = _ScreenStateLifecycle.created;
+  _PresenterStateLifecycle _state = _PresenterStateLifecycle.created;
 
   @override
   void didChangeDependencies() {
-    if (_state == _ScreenStateLifecycle.active) {
+    if (_state == _PresenterStateLifecycle.active) {
       _sendModel();
     }
     super.didChangeDependencies();
@@ -44,10 +44,10 @@ class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B
   void initState() {
     super.initState();
 
-    bloc = widget.createBloc().._screenState = this;
+    bloc = widget.createBloc().._presenterState = this;
 
     _viewModelStreamController.onListen = () {
-      if (_state == _ScreenStateLifecycle.active) _sendModel();
+      if (_state == _PresenterStateLifecycle.active) _sendModel();
     };
 
     _createAndSend();
@@ -56,7 +56,7 @@ class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B
   Future<void> _createAndSend() async {
     await bloc.onCreate();
     unawaited(_sendModel());
-    _state = _ScreenStateLifecycle.active;
+    _state = _PresenterStateLifecycle.active;
   }
 
   Future<void> _sendModel() async {
@@ -88,7 +88,7 @@ class ScreenState<B extends Bloc<V>, V extends ViewModel> extends State<Screen<B
       stream: _viewModelStreamController.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return widget.buildLoadingScreen(context, bloc);
+          return widget.buildLoadingWidget(context, bloc);
         } else if (snapshot.hasData) {
           return widget.build(context, bloc, snapshot.data!);
         }

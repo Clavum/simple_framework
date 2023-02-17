@@ -4,20 +4,20 @@ import 'package:simple_framework/simple_framework.dart';
 import 'package:utilities/utilities.dart';
 
 extension WidgetTesterExtension on WidgetTester {
-  Future<void> pumpLoadingScreen(Screen screen) async {
+  Future<void> pumpLoadingWidget(Presenter presenter) async {
     await pumpWidget(TestWidgetWrapper(
-      child: screen.buildLoadingScreen(BuildContextMock(), getBloc(screen)),
+      child: presenter.buildLoadingWidget(BuildContextMock(), getBloc(presenter)),
     ));
   }
 
-  Future<void> pumpScreen(Screen screen, ViewModel viewModel) async {
+  Future<void> pumpPresenter(Presenter presenter, ViewModel viewModel) async {
     //TODO: catch TypeError and rethrow exception with more helpful info, if viewModel incompatible.
     await pumpWidget(TestWidgetWrapper(
-      child: screen.build(BuildContextMock(), getBloc(screen), viewModel),
+      child: presenter.build(BuildContextMock(), getBloc(presenter), viewModel),
     ));
   }
 
-  B getBloc<B extends Bloc<V>, V extends ViewModel>(Screen<B, V> screen) {
-    return ((screen as StatefulElement).state as ScreenState<B, V>).bloc;
+  B getBloc<B extends Bloc<V>, V extends ViewModel>(Presenter<B, V> presenter) {
+    return ((presenter as StatefulElement).state as PresenterState<B, V>).bloc;
   }
 }

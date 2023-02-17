@@ -5,8 +5,8 @@ A code structure and state management framework for Flutter with the goal of sim
 
 There are four components to the Simple Framework:
  - **Entity** - holds app state
- - **ViewModel** - define how a Screen is created
- - **Screen** - a Widget that builds from a ViewModel
+ - **ViewModel** - define how a Presenter is created
+ - **Presenter** - builds a Widget from a ViewModel
  - **Bloc** - ties the previous three components together
 
 ### Entity
@@ -39,7 +39,7 @@ More on this later!
 
 ### ViewModel
 
-**ViewModels** are model classes that define the data a **Screen** uses to build. They are created by the
+**ViewModels** are model classes that define the data a **Presenter** uses to build. They are created by the
 **Bloc** based on one or more **Entities**. **ViewModels** also use code generation, with `@generateViewModel`.
 
 ```dart
@@ -53,13 +53,13 @@ class CounterViewModel extends ViewModel with _$CounterViewModel {
 }
 ```
 
-### Screen
+### Presenter
 
-**Screens** are Widgets that build from a **ViewModel**. They are associated with a **Bloc** which will
+**Presenters** are Widgets that build from a **ViewModel**. They are associated with a **Bloc** which will
 provide the **ViewModels**.
 
 ```dart
-class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
+class CounterPresenter extends Presenter<CounterBloc, CounterViewModel> {
   @override
   CounterBloc createBloc() => CounterBloc();
 
@@ -80,7 +80,7 @@ A **Bloc** is a class which updates **Entities** based on user interaction.
 The `buildViewModel` method isn't as simple as it seems...some magic goes on in the background
 to recognize (in this example) that the `buildViewModel` method uses the `CounterEntity`. Then
 when `send()` is called on the `CounterEntity`, the `buildViewModel` method will be called again
-and the **Screen** is rebuilt with the new result.
+and the **Presenter** is rebuilt with the new result.
 
 ```dart
 class CounterBloc extends Bloc<CounterViewModel> {

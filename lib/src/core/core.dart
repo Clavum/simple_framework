@@ -13,9 +13,9 @@ part 'simple_framework_settings.dart';
 
 part 'stateless_bloc.dart';
 
-part 'ui/screen.dart';
+part 'ui/presenter.dart';
 
-part 'ui/stateless_screen.dart';
+part 'ui/stateless_presenter.dart';
 
 part 'models/entity.dart';
 

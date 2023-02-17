@@ -42,9 +42,9 @@ class Repository {
   /// Sends a [Model] to its corresponding Stream. This notifies any [Bloc] streaming from this
   /// [Model] to send a new ViewModel. The provided [model] will also be set in the [Repository].
   ///
-  /// If in debug mode, the [model] is an [Entity], and no [Screen] is subscribed to the [Entity],
+  /// If in debug mode, the [model] is an [Entity], and no [Presenter] is subscribed to the [Entity],
   /// a warning will be printed to help with debugging, as it may indicate a bug.
-  /// It's also possible that it is not a bug and that it is understood the screen may or may not
+  /// It's also possible that it is not a bug and that it is understood the presenter may or may not
   /// be displayed currently. In this case, the warning may become quite terribly annoying, like
   /// why-does-this-exist sort of annoying. So, to disable it, just provide [silent], and you will
   /// have peace again. At least, until the next time you forget to provide [silent].
@@ -57,7 +57,7 @@ class Repository {
     } else {
       if (kDebugMode && model is Entity && !silent) {
         SimpleFrameworkSettings.onLog(LogLevel.warning,
-            'An instance of ${model.runtimeType} was sent, but no Screen is subscribed to receive it');
+            'An instance of ${model.runtimeType} was sent, but no Presenter is subscribed to receive it');
       }
     }
   }
@@ -96,7 +96,7 @@ class Repository {
   }
 
   /// Whether the [Repository] has an active model stream of the specified type. Because [streamOf]
-  /// is typically only used by [Screen]s, this is a way to check if using [sendModel] with an
+  /// is typically only used by [Presenter]s, this is a way to check if using [sendModel] with an
   /// instance of [M] would possibly cause a visual update.
   ///
   /// This can be used to avoid unnecessary work. For example, you could have a timer on repeat
@@ -106,8 +106,8 @@ class Repository {
   /// known until runtime, the [type] parameter can be used instead.
   ///
   /// NOTE: Depending on your app's navigation, specifically if the state of previous routes are
-  /// maintained, this method will return `true` if *any* previous screen uses the model, not just
-  /// if the current screen uses it. Consider passing `maintainState` as `false` for every
+  /// maintained, this method will return `true` if *any* previous presenter uses the model, not
+  /// just if the current presenter uses it. Consider passing `maintainState` as `false` for every
   /// MaterialRoute or MaterialPage.
   bool hasActiveStream<M extends RepositoryModel>({Type? type}) {
     return _streams.containsKey(type ?? M);
@@ -117,7 +117,7 @@ class Repository {
   /// the model listened to.
   ///
   /// This is useful for refreshing the model's data without manually refreshing it from every
-  /// screen that uses it:
+  /// presenter that uses it:
   /// ```dart
   /// Repository().onStreamAdded.listen((type) {
   ///  if (type == MyModel) {
@@ -151,7 +151,7 @@ class Repository {
     Repository().setServiceModelStatus<M>(ServiceModelStatus.valid);
 
     /// Sending as apposed to setting here is important. Most importantly, it is needed to notify
-    /// that the model is done loading. Another advantage is rebuilding Screens based on this model,
+    /// that the model is done loading. Another advantage is rebuilding Presenters based on this model,
     /// because we might as well display the latest information.
     loadedModel.send();
 

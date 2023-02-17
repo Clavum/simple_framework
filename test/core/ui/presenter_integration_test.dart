@@ -12,7 +12,7 @@ class InheritedDependencyBloc extends Bloc<TestViewModel> {
   }
 }
 
-class InheritedDependencyScreen extends Screen<InheritedDependencyBloc, TestViewModel> {
+class InheritedDependencyPresenter extends Presenter<InheritedDependencyBloc, TestViewModel> {
   @override
   InheritedDependencyBloc createBloc() => InheritedDependencyBloc();
 
@@ -22,15 +22,15 @@ class InheritedDependencyScreen extends Screen<InheritedDependencyBloc, TestView
   }
 }
 
-// These tests aren't real integration tests, but they don't use mocks and test the Bloc and Screen
+// These tests aren't real integration tests, but they don't use mocks and test the Bloc and Presenter
 // together, so the name is appropriate.
 void main() {
-  group('Screen integration', () {
+  group('Presenter integration', () {
     testWidgets('updates with inherited widgets', (tester) async {
       await tester.pumpWidget(Material(
         child: Directionality(
           textDirection: TextDirection.ltr,
-          child: InheritedDependencyScreen(),
+          child: InheritedDependencyPresenter(),
         ),
       ));
       await tester.pumpAndSettle();
@@ -40,7 +40,7 @@ void main() {
       await tester.pumpWidget(Material(
         child: Directionality(
           textDirection: TextDirection.rtl,
-          child: InheritedDependencyScreen(),
+          child: InheritedDependencyPresenter(),
         ),
       ));
       await tester.pumpAndSettle();

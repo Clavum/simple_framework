@@ -6,7 +6,7 @@ import 'package:simple_framework/simple_framework.dart';
 import '../../test_classes/second_entity.dart';
 import '../../test_classes/test_bloc.dart';
 import '../../test_classes/test_entity.dart';
-import '../../test_classes/test_screen.dart';
+import '../../test_classes/test_presenter.dart';
 import '../../test_classes/test_view_model.dart';
 
 class TestBlocMock extends Mock implements TestBloc {
@@ -20,7 +20,7 @@ class TestBlocMock extends Mock implements TestBloc {
 }
 
 void main() {
-  group('Screen', () {
+  group('Presenter', () {
     late TestBlocMock bloc;
 
     setUp(() {
@@ -34,14 +34,14 @@ void main() {
     testWidgets('initially builds from the Bloc', (tester) async {
       Repository().set(testEntity.merge(value: 5));
 
-      await tester.pumpWidget(MaterialApp(home: TestScreen()));
+      await tester.pumpWidget(MaterialApp(home: TestPresenter()));
       await tester.pumpAndSettle();
 
       expect(find.text('5'), findsOneWidget);
     });
 
     testWidgets('rebuilds after Entity updates', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: TestScreen()));
+      await tester.pumpWidget(MaterialApp(home: TestPresenter()));
       await tester.pumpAndSettle();
 
       testEntity.merge(value: 10).send();
@@ -54,7 +54,7 @@ void main() {
     });
 
     testWidgets('works synchronously', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: TestScreen()));
+      await tester.pumpWidget(MaterialApp(home: TestPresenter()));
       await tester.pumpAndSettle();
 
       // If the Entity streams were async, then these two lines of code would run, then the
@@ -70,7 +70,7 @@ void main() {
     });
 
     testWidgets('with inconsistent build', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: TestScreen()));
+      await tester.pumpWidget(MaterialApp(home: TestPresenter()));
       await tester.pumpAndSettle();
 
       // Change the buildViewModel method to depend on SecondEntity. This might happen in real
@@ -91,7 +91,7 @@ void main() {
     });
 
     testWidgets('custom shouldSendViewModel method', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: TestScreen()));
+      await tester.pumpWidget(MaterialApp(home: TestPresenter()));
       await tester.pumpAndSettle();
 
       when(() => bloc.shouldSendNewModel(any(), any())).thenReturn(false);
@@ -102,18 +102,18 @@ void main() {
       expect(find.text('0'), findsOneWidget);
     });
 
-    testWidgets('builds loading screen until onCreate finishes', (tester) async {
+    testWidgets('builds loading widget until onCreate finishes', (tester) async {
       when(() => bloc.onCreate()).thenAnswer((_) async {
         await Future.delayed(const Duration(milliseconds: 100));
         Repository().set(testEntity.merge(value: 123));
       });
 
-      await tester.pumpWidget(MaterialApp(home: TestScreen()));
+      await tester.pumpWidget(MaterialApp(home: TestPresenter()));
       // Can't use pumpAndSettle or onCreate will finish!
 
       expect(find.text('0'), findsNothing);
       expect(find.text('123'), findsNothing);
-      expect(find.text('Loading Screen'), findsOneWidget);
+      expect(find.text('Loading Widget'), findsOneWidget);
 
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -122,7 +122,7 @@ void main() {
     });
 
     testWidgets('when disposed, Repository stream is cancelled', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: TestScreen()));
+      await tester.pumpWidget(MaterialApp(home: TestPresenter()));
       await tester.pumpAndSettle();
 
       expect(Repository().hasActiveStream<TestEntity>(), true);

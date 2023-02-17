@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:simple_framework/simple_framework.dart';
 
 /// A test group for any class not from the framework. Consider using:
-/// [screenTestGroup] for [Screen]s
+/// [presenterTestGroup] for [Presenter]s
 /// [blocTestGroup] for [Bloc]s
 /// [builderTest] for ModelBuilders
 @isTestGroup

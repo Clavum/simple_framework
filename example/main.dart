@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'counter/counter_screen.dart';
+import 'counter/counter_presenter.dart';
 
 /// A version of the classic Flutter Counter app, using the Simple Framework.
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CounterScreen(title: 'Simple Framework Counter'),
+      home: const CounterPresenter(title: 'Simple Framework Counter'),
     );
   }
 }

@@ -4,10 +4,10 @@ import 'package:simple_framework/simple_framework.dart';
 import 'counter_bloc.dart';
 import 'models/counter_view_model.dart';
 
-class CounterScreen extends Screen<CounterBloc, CounterViewModel> {
+class CounterPresenter extends Presenter<CounterBloc, CounterViewModel> {
   final String title;
 
-  const CounterScreen({required this.title});
+  const CounterPresenter({required this.title});
 
   @override
   CounterBloc createBloc() => CounterBloc();
