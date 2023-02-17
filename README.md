@@ -25,17 +25,26 @@ class CounterEntity extends Entity with _$CounterEntity {
 }
 ```
 
-The code generator will create a "modifier" named the same as the **Entity**, but in lower camel
-case. For the `CounterEntity` above, it would generate a modifier named `counterEntity`. You
-can use this modifier to quickly access and modify the values in the **Entity**. For example:
+The code generator will create a globally available "modifier" named the same as the **Entity**, but
+in lower camel case. For the `CounterEntity` above, it would generate a modifier named
+`counterEntity`. You can use this modifier to quickly access and modify entity values. For example:
 
 ```
-print(counterEntity.counter); //0
+print(counterEntity.counter); // "0"
 counterEntity.counter++;
-print(counterEntity.counter); //1
+
+// ...some code far away:
+
+print(counterEntity.counter); // "1"
 ```
 
-More on this later!
+**Note:** This "modifier" does not hold any state; both it and the `CounterEntity` model are
+immutable. The only state preserving class in the framework is the **Repository** which holds the
+current **Entities**. Getting a value from the modifier is a shortcut for getting the value from
+the **Entity** in the **Repository**. Setting a value is a shortcut for setting the **Entity** in
+the **Repository** to be a copy of the current **Entity** with the new value.
+
+More on this later! (When I write more documentation, that is.)
 
 ### ViewModel
 
