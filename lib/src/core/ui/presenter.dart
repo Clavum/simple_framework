@@ -44,7 +44,7 @@ class PresenterState<B extends Bloc<V>, V extends ViewModel> extends State<Prese
   void initState() {
     super.initState();
 
-    bloc = widget.createBloc().._presenterState = this;
+    bloc = widget.createBloc()..presenterState = this;
 
     _viewModelStreamController.onListen = () {
       if (_state == _PresenterStateLifecycle.active) _sendModel();

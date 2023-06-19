@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_element, sort_constructors_first, library_private_types_in_public_api
+// ignore_for_file: type=lint
 // coverage:ignore-file
 
 part of 'basic.dart';

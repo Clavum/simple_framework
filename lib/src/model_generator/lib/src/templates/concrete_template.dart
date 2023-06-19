@@ -42,7 +42,7 @@ class ${model.mainClassName} extends ${model.abstractClassName} {
         ${model.parametersWithCommas()}
       ];
 
-  ${mergeBuffer.toString()}
+  $mergeBuffer
   @override
   Type get runtimeType => ${model.className};
 }

@@ -27,7 +27,7 @@ class CounterPresenter extends Presenter<CounterBloc, CounterViewModel> {
             ),
             Text(
               viewModel.counter,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),

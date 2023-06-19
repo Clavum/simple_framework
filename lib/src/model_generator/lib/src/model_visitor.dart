@@ -78,7 +78,7 @@ class ModelVisitor extends SimpleElementVisitor<void> {
         defaultValue: element.defaultValue,
         type: parseTypeSource(element) ?? '',
         name: element.name,
-        isRequired: element.isNotOptional,
+        isRequired: element.isRequired,
         isDartCoreList: element.type.isDartCoreList,
         isDartCoreMap: element.type.isDartCoreMap,
         isDartCoreSet: element.type.isDartCoreSet,
@@ -95,7 +95,8 @@ extension DefaultValue on ParameterElement {
   bool get hasGeneratedModifier {
     return type.element != null &&
         type.element is ClassElement &&
-        (_typeChecker.firstAnnotationOf(type.element!))
+        _typeChecker
+                .firstAnnotationOf(type.element!)
                 ?.getField('shouldGenerateModifier')
                 ?.toBoolValue() ==
             true;
@@ -134,7 +135,7 @@ String? parseTypeSource(VariableElement element) {
   if (type.contains('dynamic') && element.nameOffset > 0) {
     final source = element.source!.contents.data.substring(0, element.nameOffset);
     if (element.type.element != null &&
-        element.type.isDynamic &&
+        element.type is DynamicType &&
         element.type.element!.isSynthetic) {
       final match = RegExp(r'(\w+\??)\s+$').firstMatch(source);
       return match?.group(1);
@@ -168,7 +169,7 @@ String resolveFullTypeStringFrom(
 }) {
   final owner = originLibrary.prefixes.firstWhereOrNull(
     (e) {
-      final librariesForPrefix = e.library.getImportsWithPrefix(e);
+      final librariesForPrefix = e.imports;
 
       return librariesForPrefix.any((l) {
         return l.importedLibrary!.anyTransitiveExport((library) {

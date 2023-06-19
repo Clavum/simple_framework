@@ -37,7 +37,7 @@ class Parameter {
     } else if (isDartCoreMap) {
       return 'Map';
     } else {
-      throw FallThroughError();
+      throw StateError('Parameter is not a collection type.');
     }
   }
 

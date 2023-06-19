@@ -29,7 +29,7 @@ mixin ${model.mixinName} {
 
   ${(model.options.shouldGenerateModifier) ? model.setterList(returnValue: 'throw ${model.bypassError}') : ''}
 
-  ${mergeBuffer.toString()}
+  $mergeBuffer
 
   List<Object?> get props => throw ${model.bypassError};
 }

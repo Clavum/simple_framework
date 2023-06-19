@@ -1,11 +1,12 @@
 part of 'core.dart';
 
 abstract class Bloc<V extends ViewModel> {
-  // Set by the PresenterState.
-  late PresenterState _presenterState;
+  @internal
+  late PresenterState presenterState;
+
   BuildContext? _mockContext;
 
-  BuildContext get context => _mockContext ?? _presenterState.context;
+  BuildContext get context => _mockContext ?? presenterState.context;
 
   /// If creating a bloc for unit tests, you'll need to use this to provide a mock context.
   @visibleForTesting
