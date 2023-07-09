@@ -82,4 +82,10 @@ void main() {
     removeMock<ExampleClass>();
     expect(ExampleClass().getValue(), 1);
   });
+
+  test('depends on object runtime type, not static type', () {
+    final Object mock = ExampleClassMock(5);
+    setMock<Object>(mock);
+    expect(ExampleClass().getValue(), 5);
+  });
 }
