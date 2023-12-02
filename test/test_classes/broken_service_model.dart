@@ -9,7 +9,6 @@ class BrokenServiceModel extends ServiceModel {
     this.value = 0,
   });
 
-  @override
   BrokenServiceModel merge({
     int? value,
   }) {

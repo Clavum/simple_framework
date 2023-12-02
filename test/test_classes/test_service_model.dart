@@ -15,7 +15,6 @@ class TestServiceModel extends ServiceModel {
     this.state = TestServiceModelState.defaultValue,
   });
 
-  @override
   TestServiceModel merge({
     int? value,
     TestServiceModelState? state,

@@ -11,7 +11,6 @@ class TestEntity extends Entity {
     this.extraneousField = 0,
   });
 
-  @override
   TestEntity merge({
     int? value,
     int? buildCallCount,

@@ -7,7 +7,6 @@ class SecondEntity extends Entity {
     this.value = 0,
   });
 
-  @override
   SecondEntity merge({
     int? value,
   }) {

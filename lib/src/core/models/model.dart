@@ -13,7 +13,3 @@ abstract class Model extends Equatable {
 
 /// Used to ensure only certain Models are put in the Repository.
 mixin RepositoryModel on Model {}
-
-mixin MergingModel on Model {
-  Model merge() => this;
-}
