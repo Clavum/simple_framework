@@ -2,6 +2,8 @@
 
 part of 'core.dart';
 
+typedef _RepositoryFetchCallback = void Function<M extends RepositoryModel>();
+
 class Repository {
   static Repository? _instance;
 
@@ -13,8 +15,6 @@ class Repository {
 
   final Map<Type, ServiceModelStatus> _serviceModelStatuses = {};
 
-  void Function<M extends RepositoryModel>()? _fetchCallback;
-
   final StreamController<Type> _onStreamAddedController = StreamController<Type>.broadcast();
 
   factory Repository() {
@@ -25,7 +25,8 @@ class Repository {
   /// Get a [Model] from the [Repository]. A [model] is required because it is what will be used if
   /// the [Model] does not exist in the [Repository] yet.
   M get<M extends RepositoryModel>(M model) {
-    _fetchCallback?.call<M>();
+    final _RepositoryFetchCallback? fetchCallback = Zone.current[_RepositoryFetchCallback];
+    fetchCallback?.call<M>();
     return _models.firstWhere((element) => element.runtimeType == model.runtimeType, orElse: () {
       _models.add(model);
       return model;
@@ -155,7 +156,8 @@ class Repository {
     /// because we might as well display the latest information.
     loadedModel.send();
 
-    _fetchCallback?.call<M>();
+    final _RepositoryFetchCallback? fetchCallback = Zone.current[_RepositoryFetchCallback];
+    fetchCallback?.call<M>();
     return loadedModel;
   }
 

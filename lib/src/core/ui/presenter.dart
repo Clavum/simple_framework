@@ -60,9 +60,10 @@ class PresenterState<B extends Bloc<V>, V extends ViewModel> extends State<Prese
   }
 
   Future<void> _sendModel() async {
-    Repository()._fetchCallback = _onModelRequested;
-    final V nextViewModel = await bloc.buildViewModel();
-    Repository()._fetchCallback = null;
+    final V nextViewModel = await runZoned(
+      bloc.buildViewModel,
+      zoneValues: {_RepositoryFetchCallback: _onModelRequested},
+    );
 
     if (bloc.shouldSendNewModel(_currentViewModel, nextViewModel)) {
       _currentViewModel = nextViewModel;
