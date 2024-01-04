@@ -21,10 +21,10 @@ class StreamMock<E extends Object> extends Mock implements Stream<E> {
 }
 
 class RepositoryMock extends Mock implements Repository {
-  /// Use this method in the `setUp` method of Bloc tests to mock a Model to be returned when it
-  /// is attempted to be fetched.
   void addMockModel<M extends RepositoryModel>(M mockModel) {
-    if (M == RepositoryModel) throw _addMockModelCalledWithoutType();
+    if (M == RepositoryModel) {
+      throw ArgumentError('addMockModel was called without a specific model type.');
+    }
     registerFallbackValue(mockModel);
     when(() => get<M>(any())).thenAnswer((_) => mockModel);
   }
@@ -33,8 +33,4 @@ class RepositoryMock extends Mock implements Repository {
   Stream<M> streamOf<M extends RepositoryModel>() {
     return StreamMock<M>();
   }
-}
-
-Error _addMockModelCalledWithoutType() {
-  return ArgumentError('addMockModel was called without a specific model type.');
 }

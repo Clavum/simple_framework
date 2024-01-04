@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simple_framework/simple_framework.dart';
 
 /// See [Mockable.getClass] for more information.
 ///
@@ -80,7 +79,6 @@ class Mockable {
   /// the mock implements.
   @visibleForTesting
   void setMock<T extends Object>(T mock) {
-    setupCommonMockStubs(mock);
     _mocks[T] = mock;
   }
 

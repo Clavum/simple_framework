@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_framework/simple_framework.dart';
 
+import '../../mocks.dart';
 import '../../test_classes/test_service_model.dart';
 
 void main() {
