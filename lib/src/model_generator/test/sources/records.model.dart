@@ -15,6 +15,8 @@ final _recordsModelBypassError = UnsupportedError(
 mixin _$RecordsModel {
   (int, String, double) get record => throw _recordsModelBypassError;
 
+  static const _sentinel = Object();
+
   RecordsModel merge({
     (int, String, double)? record,
   }) {
@@ -40,10 +42,10 @@ class _$_RecordsModel extends _RecordsModel {
 
   @override
   _RecordsModel merge({
-    (int, String, double)? record,
+    Object? record = _$RecordsModel._sentinel,
   }) {
     return _RecordsModel(
-      record: record ?? this.record,
+      record: record == _$RecordsModel._sentinel ? this.record : record as (int, String, double),
     );
   }
 

@@ -10,6 +10,7 @@ class ModifierEntity extends Entity with _$ModifierEntity {
 
   const factory ModifierEntity({
     @Default(0) int intValue,
+    int? nullableIntValue,
     @Default([]) List<int> listValue,
     @Default({}) Map<String, int> mapValue,
     @Default({}) Set<int> setValue,

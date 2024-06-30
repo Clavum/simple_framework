@@ -25,6 +25,8 @@ mixin _$VariousParametersEntity {
 
   set customClass(CustomClass customClass) => throw _variousParametersEntityBypassError;
 
+  static const _sentinel = Object();
+
   VariousParametersEntity merge({
     String? defaultParameter,
     bool? nullableParameter,
@@ -60,14 +62,20 @@ class _$_VariousParametersEntity extends _VariousParametersEntity {
 
   @override
   _VariousParametersEntity merge({
-    String? defaultParameter,
-    bool? nullableParameter,
-    CustomClass? customClass,
+    Object? defaultParameter = _$VariousParametersEntity._sentinel,
+    Object? nullableParameter = _$VariousParametersEntity._sentinel,
+    Object? customClass = _$VariousParametersEntity._sentinel,
   }) {
     return _VariousParametersEntity(
-      defaultParameter: defaultParameter ?? this.defaultParameter,
-      nullableParameter: nullableParameter ?? this.nullableParameter,
-      customClass: customClass ?? this.customClass,
+      defaultParameter: defaultParameter == _$VariousParametersEntity._sentinel
+          ? this.defaultParameter
+          : defaultParameter as String,
+      nullableParameter: nullableParameter == _$VariousParametersEntity._sentinel
+          ? this.nullableParameter
+          : nullableParameter as bool?,
+      customClass: customClass == _$VariousParametersEntity._sentinel
+          ? this.customClass
+          : customClass as CustomClass,
     );
   }
 
@@ -146,18 +154,18 @@ class $VariousParametersEntityModifier extends _$_VariousParametersEntity {
 
   @override
   _VariousParametersEntity merge({
-    String? defaultParameter,
-    bool? nullableParameter,
-    CustomClass? customClass,
+    Object? defaultParameter = _$VariousParametersEntity._sentinel,
+    Object? nullableParameter = _$VariousParametersEntity._sentinel,
+    Object? customClass = _$VariousParametersEntity._sentinel,
   }) {
-    if (defaultParameter != null) {
-      this.defaultParameter = defaultParameter;
+    if (defaultParameter != _$VariousParametersEntity._sentinel) {
+      this.defaultParameter = defaultParameter as String;
     }
-    if (nullableParameter != null) {
-      this.nullableParameter = nullableParameter;
+    if (nullableParameter != _$VariousParametersEntity._sentinel) {
+      this.nullableParameter = nullableParameter as bool?;
     }
-    if (customClass != null) {
-      this.customClass = customClass;
+    if (customClass != _$VariousParametersEntity._sentinel) {
+      this.customClass = customClass as CustomClass;
     }
     return this;
   }

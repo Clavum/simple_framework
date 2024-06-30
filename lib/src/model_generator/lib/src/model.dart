@@ -67,6 +67,12 @@ class Model {
   }
 
   /// --- Example format ---
+  /// Object? fieldName = _$ClassName._sentinel,
+  String mergeListWithSentinel() {
+    return parameters.map((parameter) => parameter.asSentinelParameter(mixinName)).join('\n');
+  }
+
+  /// --- Example format ---
   /// required this.fieldName,            <-- for required parameters
   /// this.fieldName = `defaultValue`,    <-- for default parameters
   String concreteParameterList() {
@@ -90,9 +96,9 @@ class Model {
 
   /// Used for the merge method's body.
   /// --- Example format ---
-  /// fieldName: fieldName ?? this.fieldName,
+  /// fieldName: fieldName == _$ClassName._sentinel ? this.fieldName : fieldName as String,
   String mergeFieldsList() {
-    return parameters.map((parameter) => parameter.mergeField()).join('\n');
+    return parameters.map((parameter) => parameter.mergeField(mixinName)).join('\n');
   }
 
   /// Lists every parameter in a format such that they can be redirected to
@@ -127,14 +133,14 @@ class Model {
 
   /// Used for the merge method of the modifier class.
   /// --- Example format ---
-  /// if (fieldName != null) {
-  /// this.fieldName = fieldName;
+  /// if (fieldName != _$ClassName._sentinel) {
+  /// this.fieldName = fieldName as String;
   /// }
   String modifierMergeSetters() {
     return parameters.expand((parameter) {
       return [
-        'if (${parameter.name} != null) {',
-        'this.${parameter.name} = ${parameter.name};',
+        'if (${parameter.name} != $mixinName._sentinel) {',
+        'this.${parameter.name} = ${parameter.name} as ${parameter.type};',
         '}',
       ];
     }).join('\n');

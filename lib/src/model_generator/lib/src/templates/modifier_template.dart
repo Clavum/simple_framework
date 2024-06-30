@@ -42,7 +42,7 @@ class ${model.modifierClassName} extends ${model.mainClassName} {
 
   @override
   ${model.abstractClassName} merge($maybeLeftBrace
-    ${model.nullableParameterList()}
+    ${model.mergeListWithSentinel()}
   $maybeRightBrace) {
     ${model.modifierMergeSetters()}
     return this;

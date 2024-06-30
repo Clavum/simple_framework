@@ -132,6 +132,12 @@ void main() {
     expect(modifierEntity.listValue, [1, 2, 3]);
   });
 
+  test('can set values to null', () {
+    modifierEntity.nullableIntValue = 10;
+    modifierEntity.nullableIntValue = null;
+    expect(modifierEntity.nullableIntValue, null);
+  });
+
   test("regression - iterable fields with same default value don't reset each other", () {
     modifierEntity.mapValue = {'a': 1};
     expect(modifierEntity.mapValue, {'a': 1});

@@ -17,6 +17,8 @@ mixin _$CustomMethodsEntity {
 
   set value(int value) => throw _customMethodsEntityBypassError;
 
+  static const _sentinel = Object();
+
   CustomMethodsEntity merge({
     int? value,
   }) {
@@ -42,10 +44,10 @@ class _$_CustomMethodsEntity extends _CustomMethodsEntity {
 
   @override
   _CustomMethodsEntity merge({
-    int? value,
+    Object? value = _$CustomMethodsEntity._sentinel,
   }) {
     return _CustomMethodsEntity(
-      value: value ?? this.value,
+      value: value == _$CustomMethodsEntity._sentinel ? this.value : value as int,
     );
   }
 
@@ -101,10 +103,10 @@ class $CustomMethodsEntityModifier extends _$_CustomMethodsEntity {
 
   @override
   _CustomMethodsEntity merge({
-    int? value,
+    Object? value = _$CustomMethodsEntity._sentinel,
   }) {
-    if (value != null) {
-      this.value = value;
+    if (value != _$CustomMethodsEntity._sentinel) {
+      this.value = value as int;
     }
     return this;
   }

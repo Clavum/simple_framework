@@ -283,6 +283,25 @@ ExampleModel? nestedModel,''',
       );
     });
 
+    test('mergeListWithSentinel', () {
+      expect(
+        testModel.mergeListWithSentinel(),
+        r'''
+Object? default = _$ClassName._sentinel,
+Object? customType = _$ClassName._sentinel,
+Object? requiredField = _$ClassName._sentinel,
+Object? nullable = _$ClassName._sentinel,
+Object? invalid = _$ClassName._sentinel,
+Object? requiredNullable = _$ClassName._sentinel,
+Object? defaultNullable = _$ClassName._sentinel,
+Object? list = _$ClassName._sentinel,
+Object? requiredList = _$ClassName._sentinel,
+Object? map = _$ClassName._sentinel,
+Object? set = _$ClassName._sentinel,
+Object? nestedModel = _$ClassName._sentinel,''',
+      );
+    });
+
     test('concreteParameterList', () {
       expect(
         testModel.concreteParameterList(),
@@ -355,19 +374,19 @@ nestedModel,''',
     test('mergeFieldsList', () {
       expect(
         testModel.mergeFieldsList(),
-        '''
-default: default ?? this.default,
-customType: customType ?? this.customType,
-requiredField: requiredField ?? this.requiredField,
-nullable: nullable ?? this.nullable,
-invalid: invalid ?? this.invalid,
-requiredNullable: requiredNullable ?? this.requiredNullable,
-defaultNullable: defaultNullable ?? this.defaultNullable,
-list: list ?? this.list,
-requiredList: requiredList ?? this.requiredList,
-map: map ?? this.map,
-set: set ?? this.set,
-nestedModel: nestedModel ?? this.nestedModel,''',
+        r'''
+default: default == _$ClassName._sentinel ? this.default : default as int,
+customType: customType == _$ClassName._sentinel ? this.customType : customType as Custom,
+requiredField: requiredField == _$ClassName._sentinel ? this.requiredField : requiredField as int,
+nullable: nullable == _$ClassName._sentinel ? this.nullable : nullable as int?,
+invalid: invalid == _$ClassName._sentinel ? this.invalid : invalid as int,
+requiredNullable: requiredNullable == _$ClassName._sentinel ? this.requiredNullable : requiredNullable as int?,
+defaultNullable: defaultNullable == _$ClassName._sentinel ? this.defaultNullable : defaultNullable as int?,
+list: list == _$ClassName._sentinel ? this.list : list as List<int>,
+requiredList: requiredList == _$ClassName._sentinel ? this.requiredList : requiredList as List<int>,
+map: map == _$ClassName._sentinel ? this.map : map as Map<String, int>,
+set: set == _$ClassName._sentinel ? this.set : set as Set<int>,
+nestedModel: nestedModel == _$ClassName._sentinel ? this.nestedModel : nestedModel as ExampleModel,''',
       );
     });
 

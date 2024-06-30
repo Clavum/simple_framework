@@ -19,7 +19,7 @@ void main() {
     expect(entity, const BasicEntity(value: 10));
 
     // Props lists all field values.
-    expect(entity.props, [10]);
+    expect(entity.props, [10, null]);
   });
 
   test('basic ViewModel functionality', () {
@@ -35,5 +35,11 @@ void main() {
 
     // Only entities have setters.
     expect(() => (viewModel as dynamic).value = 10, throwsNoSuchMethodError);
+  });
+
+  test('can merge with null values', () {
+    var entity = const BasicEntity(nullableValue: 10);
+    entity = entity.merge(nullableValue: null);
+    expect(entity.nullableValue, null);
   });
 }

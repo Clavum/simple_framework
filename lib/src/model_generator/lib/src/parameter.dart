@@ -74,6 +74,14 @@ class Parameter {
     return '$type$addNullable $name,';
   }
 
+  /// Format as a parameter with a sentinel value:
+  /// ```dart
+  /// Object? exampleName = _$ClassName._sentinel,
+  /// ```
+  String asSentinelParameter(String mixinName) {
+    return 'Object? $name = $mixinName._sentinel,';
+  }
+
   /// Format as a parameter with nothing else added.
   /// ```dart
   /// ExampleType exampleName,
@@ -114,10 +122,10 @@ class Parameter {
 
   /// Merges an optional value into a local field with the same name.
   /// ```dart
-  /// exampleName: exampleName ?? this.exampleName,
+  /// fieldName: fieldName == _$ClassName._sentinel ? this.fieldName : fieldName as String,
   /// ```
-  String mergeField() {
-    return '$name: $name ?? this.$name,';
+  String mergeField(String mixinClassName) {
+    return '$name: $name == $mixinClassName._sentinel ? this.$name : $name as $type,';
   }
 
   /// Format as a getter which returns the current value from the Repository.

@@ -13,6 +13,8 @@ class MixinTemplate {
     if (model.options.shouldGenerateMerge) {
       mergeBuffer.writeln(
         '''
+static const _sentinel = Object();
+
 ${model.className} merge($maybeLeftBrace
     ${model.nullableParameterList()}
   $maybeRightBrace) {

@@ -8,6 +8,7 @@ class BasicEntity extends Entity with _$BasicEntity {
 
   const factory BasicEntity({
     @Default(0) int value,
+    int? nullableValue,
   }) = _BasicEntity;
 }
 

@@ -15,6 +15,8 @@ final _modifierEntityBypassError = UnsupportedError(
 mixin _$ModifierEntity {
   int get intValue => throw _modifierEntityBypassError;
 
+  int? get nullableIntValue => throw _modifierEntityBypassError;
+
   List<int> get listValue => throw _modifierEntityBypassError;
 
   Map<String, int> get mapValue => throw _modifierEntityBypassError;
@@ -33,6 +35,8 @@ mixin _$ModifierEntity {
 
   set intValue(int intValue) => throw _modifierEntityBypassError;
 
+  set nullableIntValue(int? nullableIntValue) => throw _modifierEntityBypassError;
+
   set listValue(List<int> listValue) => throw _modifierEntityBypassError;
 
   set mapValue(Map<String, int> mapValue) => throw _modifierEntityBypassError;
@@ -49,8 +53,11 @@ mixin _$ModifierEntity {
 
   set defaultNullSet(Set<int>? defaultNullSet) => throw _modifierEntityBypassError;
 
+  static const _sentinel = Object();
+
   ModifierEntity merge({
     int? intValue,
+    int? nullableIntValue,
     List<int>? listValue,
     Map<String, int>? mapValue,
     Set<int>? setValue,
@@ -78,6 +85,7 @@ class _$_ModifierEntity extends _ModifierEntity {
 
   const _$_ModifierEntity({
     this.intValue = 0,
+    this.nullableIntValue,
     this.listValue = $listValueDefaultValue,
     this.mapValue = $mapValueDefaultValue,
     this.setValue = $setValueDefaultValue,
@@ -90,6 +98,8 @@ class _$_ModifierEntity extends _ModifierEntity {
 
   @override
   final int intValue;
+  @override
+  final int? nullableIntValue;
   @override
   final List<int> listValue;
   @override
@@ -110,6 +120,7 @@ class _$_ModifierEntity extends _ModifierEntity {
   @override
   List<Object?> get props => [
         intValue,
+        nullableIntValue,
         listValue,
         mapValue,
         setValue,
@@ -122,26 +133,39 @@ class _$_ModifierEntity extends _ModifierEntity {
 
   @override
   _ModifierEntity merge({
-    int? intValue,
-    List<int>? listValue,
-    Map<String, int>? mapValue,
-    Set<int>? setValue,
-    Map<String, int>? secondMap,
-    BasicEntity? basicEntity,
-    List<int>? defaultNullList,
-    Map<String, int>? defaultNullMap,
-    Set<int>? defaultNullSet,
+    Object? intValue = _$ModifierEntity._sentinel,
+    Object? nullableIntValue = _$ModifierEntity._sentinel,
+    Object? listValue = _$ModifierEntity._sentinel,
+    Object? mapValue = _$ModifierEntity._sentinel,
+    Object? setValue = _$ModifierEntity._sentinel,
+    Object? secondMap = _$ModifierEntity._sentinel,
+    Object? basicEntity = _$ModifierEntity._sentinel,
+    Object? defaultNullList = _$ModifierEntity._sentinel,
+    Object? defaultNullMap = _$ModifierEntity._sentinel,
+    Object? defaultNullSet = _$ModifierEntity._sentinel,
   }) {
     return _ModifierEntity(
-      intValue: intValue ?? this.intValue,
-      listValue: listValue ?? this.listValue,
-      mapValue: mapValue ?? this.mapValue,
-      setValue: setValue ?? this.setValue,
-      secondMap: secondMap ?? this.secondMap,
-      basicEntity: basicEntity ?? this.basicEntity,
-      defaultNullList: defaultNullList ?? this.defaultNullList,
-      defaultNullMap: defaultNullMap ?? this.defaultNullMap,
-      defaultNullSet: defaultNullSet ?? this.defaultNullSet,
+      intValue: intValue == _$ModifierEntity._sentinel ? this.intValue : intValue as int,
+      nullableIntValue: nullableIntValue == _$ModifierEntity._sentinel
+          ? this.nullableIntValue
+          : nullableIntValue as int?,
+      listValue: listValue == _$ModifierEntity._sentinel ? this.listValue : listValue as List<int>,
+      mapValue:
+          mapValue == _$ModifierEntity._sentinel ? this.mapValue : mapValue as Map<String, int>,
+      setValue: setValue == _$ModifierEntity._sentinel ? this.setValue : setValue as Set<int>,
+      secondMap:
+          secondMap == _$ModifierEntity._sentinel ? this.secondMap : secondMap as Map<String, int>,
+      basicEntity:
+          basicEntity == _$ModifierEntity._sentinel ? this.basicEntity : basicEntity as BasicEntity,
+      defaultNullList: defaultNullList == _$ModifierEntity._sentinel
+          ? this.defaultNullList
+          : defaultNullList as List<int>?,
+      defaultNullMap: defaultNullMap == _$ModifierEntity._sentinel
+          ? this.defaultNullMap
+          : defaultNullMap as Map<String, int>?,
+      defaultNullSet: defaultNullSet == _$ModifierEntity._sentinel
+          ? this.defaultNullSet
+          : defaultNullSet as Set<int>?,
     );
   }
 
@@ -153,6 +177,7 @@ class _$_ModifierEntity extends _ModifierEntity {
 abstract class _ModifierEntity extends ModifierEntity {
   const factory _ModifierEntity({
     int intValue,
+    int? nullableIntValue,
     List<int> listValue,
     Map<String, int> mapValue,
     Set<int> setValue,
@@ -167,6 +192,9 @@ abstract class _ModifierEntity extends ModifierEntity {
 
   @override
   int get intValue;
+
+  @override
+  int? get nullableIntValue;
 
   @override
   List<int> get listValue;
@@ -226,6 +254,13 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
 
   @override
   set intValue(int intValue) => _set(_get.merge(intValue: intValue));
+
+  @override
+  int? get nullableIntValue => _get.nullableIntValue;
+
+  @override
+  set nullableIntValue(int? nullableIntValue) =>
+      _set(_get.merge(nullableIntValue: nullableIntValue));
 
   @override
   List<int> get listValue {
@@ -318,42 +353,46 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
 
   @override
   _ModifierEntity merge({
-    int? intValue,
-    List<int>? listValue,
-    Map<String, int>? mapValue,
-    Set<int>? setValue,
-    Map<String, int>? secondMap,
-    BasicEntity? basicEntity,
-    List<int>? defaultNullList,
-    Map<String, int>? defaultNullMap,
-    Set<int>? defaultNullSet,
+    Object? intValue = _$ModifierEntity._sentinel,
+    Object? nullableIntValue = _$ModifierEntity._sentinel,
+    Object? listValue = _$ModifierEntity._sentinel,
+    Object? mapValue = _$ModifierEntity._sentinel,
+    Object? setValue = _$ModifierEntity._sentinel,
+    Object? secondMap = _$ModifierEntity._sentinel,
+    Object? basicEntity = _$ModifierEntity._sentinel,
+    Object? defaultNullList = _$ModifierEntity._sentinel,
+    Object? defaultNullMap = _$ModifierEntity._sentinel,
+    Object? defaultNullSet = _$ModifierEntity._sentinel,
   }) {
-    if (intValue != null) {
-      this.intValue = intValue;
+    if (intValue != _$ModifierEntity._sentinel) {
+      this.intValue = intValue as int;
     }
-    if (listValue != null) {
-      this.listValue = listValue;
+    if (nullableIntValue != _$ModifierEntity._sentinel) {
+      this.nullableIntValue = nullableIntValue as int?;
     }
-    if (mapValue != null) {
-      this.mapValue = mapValue;
+    if (listValue != _$ModifierEntity._sentinel) {
+      this.listValue = listValue as List<int>;
     }
-    if (setValue != null) {
-      this.setValue = setValue;
+    if (mapValue != _$ModifierEntity._sentinel) {
+      this.mapValue = mapValue as Map<String, int>;
     }
-    if (secondMap != null) {
-      this.secondMap = secondMap;
+    if (setValue != _$ModifierEntity._sentinel) {
+      this.setValue = setValue as Set<int>;
     }
-    if (basicEntity != null) {
-      this.basicEntity = basicEntity;
+    if (secondMap != _$ModifierEntity._sentinel) {
+      this.secondMap = secondMap as Map<String, int>;
     }
-    if (defaultNullList != null) {
-      this.defaultNullList = defaultNullList;
+    if (basicEntity != _$ModifierEntity._sentinel) {
+      this.basicEntity = basicEntity as BasicEntity;
     }
-    if (defaultNullMap != null) {
-      this.defaultNullMap = defaultNullMap;
+    if (defaultNullList != _$ModifierEntity._sentinel) {
+      this.defaultNullList = defaultNullList as List<int>?;
     }
-    if (defaultNullSet != null) {
-      this.defaultNullSet = defaultNullSet;
+    if (defaultNullMap != _$ModifierEntity._sentinel) {
+      this.defaultNullMap = defaultNullMap as Map<String, int>?;
+    }
+    if (defaultNullSet != _$ModifierEntity._sentinel) {
+      this.defaultNullSet = defaultNullSet as Set<int>?;
     }
     return this;
   }

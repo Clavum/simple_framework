@@ -17,6 +17,8 @@ mixin _$PersonModel {
 
   String get lastName => throw _personModelBypassError;
 
+  static const _sentinel = Object();
+
   PersonModel merge({
     String? firstName,
     String? lastName,
@@ -47,12 +49,12 @@ class _$_PersonModel extends _PersonModel {
 
   @override
   _PersonModel merge({
-    String? firstName,
-    String? lastName,
+    Object? firstName = _$PersonModel._sentinel,
+    Object? lastName = _$PersonModel._sentinel,
   }) {
     return _PersonModel(
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
+      firstName: firstName == _$PersonModel._sentinel ? this.firstName : firstName as String,
+      lastName: lastName == _$PersonModel._sentinel ? this.lastName : lastName as String,
     );
   }
 
@@ -90,6 +92,8 @@ mixin _$UsesModelEntity {
 
   set person(PersonModel person) => throw _usesModelEntityBypassError;
 
+  static const _sentinel = Object();
+
   UsesModelEntity merge({
     List<PersonModel>? people,
     PersonModel? person,
@@ -122,12 +126,12 @@ class _$_UsesModelEntity extends _UsesModelEntity {
 
   @override
   _UsesModelEntity merge({
-    List<PersonModel>? people,
-    PersonModel? person,
+    Object? people = _$UsesModelEntity._sentinel,
+    Object? person = _$UsesModelEntity._sentinel,
   }) {
     return _UsesModelEntity(
-      people: people ?? this.people,
-      person: person ?? this.person,
+      people: people == _$UsesModelEntity._sentinel ? this.people : people as List<PersonModel>,
+      person: person == _$UsesModelEntity._sentinel ? this.person : person as PersonModel,
     );
   }
 
@@ -198,14 +202,14 @@ class $UsesModelEntityModifier extends _$_UsesModelEntity {
 
   @override
   _UsesModelEntity merge({
-    List<PersonModel>? people,
-    PersonModel? person,
+    Object? people = _$UsesModelEntity._sentinel,
+    Object? person = _$UsesModelEntity._sentinel,
   }) {
-    if (people != null) {
-      this.people = people;
+    if (people != _$UsesModelEntity._sentinel) {
+      this.people = people as List<PersonModel>;
     }
-    if (person != null) {
-      this.person = person;
+    if (person != _$UsesModelEntity._sentinel) {
+      this.person = person as PersonModel;
     }
     return this;
   }

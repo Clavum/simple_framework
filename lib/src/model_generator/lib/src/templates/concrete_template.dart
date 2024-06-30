@@ -15,7 +15,7 @@ class ConcreteTemplate {
         '''
   @override
   ${model.abstractClassName} merge($maybeLeftBrace
-    ${model.nullableParameterList()}
+    ${model.mergeListWithSentinel()}
   $maybeRightBrace) {
     return ${model.abstractClassName}(
       ${model.mergeFieldsList()}

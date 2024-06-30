@@ -15,10 +15,17 @@ final _basicEntityBypassError = UnsupportedError(
 mixin _$BasicEntity {
   int get value => throw _basicEntityBypassError;
 
+  int? get nullableValue => throw _basicEntityBypassError;
+
   set value(int value) => throw _basicEntityBypassError;
+
+  set nullableValue(int? nullableValue) => throw _basicEntityBypassError;
+
+  static const _sentinel = Object();
 
   BasicEntity merge({
     int? value,
+    int? nullableValue,
   }) {
     throw _basicEntityBypassError;
   }
@@ -30,22 +37,29 @@ mixin _$BasicEntity {
 class _$_BasicEntity extends _BasicEntity {
   const _$_BasicEntity({
     this.value = 0,
+    this.nullableValue,
   }) : super._();
 
   @override
   final int value;
+  @override
+  final int? nullableValue;
 
   @override
   List<Object?> get props => [
         value,
+        nullableValue,
       ];
 
   @override
   _BasicEntity merge({
-    int? value,
+    Object? value = _$BasicEntity._sentinel,
+    Object? nullableValue = _$BasicEntity._sentinel,
   }) {
     return _BasicEntity(
-      value: value ?? this.value,
+      value: value == _$BasicEntity._sentinel ? this.value : value as int,
+      nullableValue:
+          nullableValue == _$BasicEntity._sentinel ? this.nullableValue : nullableValue as int?,
     );
   }
 
@@ -57,12 +71,16 @@ class _$_BasicEntity extends _BasicEntity {
 abstract class _BasicEntity extends BasicEntity {
   const factory _BasicEntity({
     int value,
+    int? nullableValue,
   }) = _$_BasicEntity;
 
   const _BasicEntity._() : super._();
 
   @override
   int get value;
+
+  @override
+  int? get nullableValue;
 }
 
 /// Looking for your model's code? You can go-to-source of this: [BasicEntity].
@@ -86,9 +104,7 @@ class $BasicEntityModifier extends _$_BasicEntity {
       (_getOverride != null) ? _getOverride!.call() : Repository().get(const BasicEntity());
 
   void _set(BasicEntity model) =>
-      (_setOverride != null)
-          ? _setOverride!.call(model)
-          : Repository().set(model);
+      (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
 
   @override
   void send({bool silent = false}) => (_sendOverride != null)
@@ -102,11 +118,21 @@ class $BasicEntityModifier extends _$_BasicEntity {
   set value(int value) => _set(_get.merge(value: value));
 
   @override
+  int? get nullableValue => _get.nullableValue;
+
+  @override
+  set nullableValue(int? nullableValue) => _set(_get.merge(nullableValue: nullableValue));
+
+  @override
   _BasicEntity merge({
-    int? value,
+    Object? value = _$BasicEntity._sentinel,
+    Object? nullableValue = _$BasicEntity._sentinel,
   }) {
-    if (value != null) {
-      this.value = value;
+    if (value != _$BasicEntity._sentinel) {
+      this.value = value as int;
+    }
+    if (nullableValue != _$BasicEntity._sentinel) {
+      this.nullableValue = nullableValue as int?;
     }
     return this;
   }

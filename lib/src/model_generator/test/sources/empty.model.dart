@@ -13,6 +13,8 @@ final _emptyEntityBypassError = UnsupportedError(
 
 /// @nodoc
 mixin _$EmptyEntity {
+  static const _sentinel = Object();
+
   EmptyEntity merge() {
     throw _emptyEntityBypassError;
   }
