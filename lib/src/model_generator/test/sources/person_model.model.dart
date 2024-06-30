@@ -182,7 +182,9 @@ class $UsesModelEntityModifier extends _$_UsesModelEntity {
   @override
   List<PersonModel> get people {
     final value = _get.people;
-    return (value == _$_UsesModelEntity.$peopleDefaultValue) ? people = List.from(value) : value;
+    return (value == _$_UsesModelEntity.$peopleDefaultValue && value != null)
+        ? people = List.from(value)
+        : value;
   }
 
   @override

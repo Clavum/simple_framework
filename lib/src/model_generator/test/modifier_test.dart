@@ -89,6 +89,18 @@ void main() {
     expect(modifierEntity.setValue, {1, 2, 3});
   });
 
+  test('works with null by default collections', () {
+    expect(modifierEntity.defaultNullList, null);
+    modifierEntity.defaultNullList = [1, 2, 3];
+    expect(modifierEntity.defaultNullList, [1, 2, 3]);
+    expect(modifierEntity.defaultNullMap, null);
+    modifierEntity.defaultNullMap = {'a': 1};
+    expect(modifierEntity.defaultNullMap, {'a': 1});
+    expect(modifierEntity.defaultNullSet, null);
+    modifierEntity.defaultNullSet = {1, 2, 3};
+    expect(modifierEntity.defaultNullSet, {1, 2, 3});
+  });
+
   test('can modify nested models', () {
     modifierEntity.basicEntity.value = 10;
     expect(modifierEntity.basicEntity.value, 10);

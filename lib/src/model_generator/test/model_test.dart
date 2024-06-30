@@ -439,7 +439,7 @@ set defaultNullable(int? defaultNullable) => _set(_get.merge(defaultNullable: de
 @override
 List<int> get list {
   final value = _get.list;
-  return (value == _$_ClassName.$listDefaultValue) ? list = List.from(value) : value;
+  return (value == _$_ClassName.$listDefaultValue && value != null) ? list = List.from(value) : value;
 }
 
 @override
@@ -454,7 +454,7 @@ set requiredList(List<int> requiredList) => _set(_get.merge(requiredList: requir
 @override
 Map<String, int> get map {
   final value = _get.map;
-  return (value == _$_ClassName.$mapDefaultValue) ? map = Map.from(value) : value;
+  return (value == _$_ClassName.$mapDefaultValue && value != null) ? map = Map.from(value) : value;
 }
 
 @override
@@ -463,7 +463,7 @@ set map(Map<String, int> map) => _set(_get.merge(map: map));
 @override
 Set<int> get set {
   final value = _get.set;
-  return (value == _$_ClassName.$setDefaultValue) ? set = Set.from(value) : value;
+  return (value == _$_ClassName.$setDefaultValue && value != null) ? set = Set.from(value) : value;
 }
 
 @override

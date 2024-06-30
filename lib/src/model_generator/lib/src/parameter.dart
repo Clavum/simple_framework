@@ -127,7 +127,7 @@ class Parameter {
 @override
 $type get $name {
   final value = _get.$name;
-  return (value == $mainClassName.$defaultValueName) ? $name = $collectionName.from(value) : value;
+  return (value == $mainClassName.$defaultValueName && value != null) ? $name = $collectionName.from(value) : value;
 }''';
     } else if (hasGeneratedModifier) {
       return '''

@@ -86,7 +86,9 @@ class $BasicEntityModifier extends _$_BasicEntity {
       (_getOverride != null) ? _getOverride!.call() : Repository().get(const BasicEntity());
 
   void _set(BasicEntity model) =>
-      (_setOverride != null) ? _setOverride!.call(model) : Repository().set(model);
+      (_setOverride != null)
+          ? _setOverride!.call(model)
+          : Repository().set(model);
 
   @override
   void send({bool silent = false}) => (_sendOverride != null)

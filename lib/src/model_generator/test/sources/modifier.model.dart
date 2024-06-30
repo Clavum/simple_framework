@@ -25,6 +25,12 @@ mixin _$ModifierEntity {
 
   BasicEntity get basicEntity => throw _modifierEntityBypassError;
 
+  List<int>? get defaultNullList => throw _modifierEntityBypassError;
+
+  Map<String, int>? get defaultNullMap => throw _modifierEntityBypassError;
+
+  Set<int>? get defaultNullSet => throw _modifierEntityBypassError;
+
   set intValue(int intValue) => throw _modifierEntityBypassError;
 
   set listValue(List<int> listValue) => throw _modifierEntityBypassError;
@@ -37,6 +43,12 @@ mixin _$ModifierEntity {
 
   set basicEntity(BasicEntity basicEntity) => throw _modifierEntityBypassError;
 
+  set defaultNullList(List<int>? defaultNullList) => throw _modifierEntityBypassError;
+
+  set defaultNullMap(Map<String, int>? defaultNullMap) => throw _modifierEntityBypassError;
+
+  set defaultNullSet(Set<int>? defaultNullSet) => throw _modifierEntityBypassError;
+
   ModifierEntity merge({
     int? intValue,
     List<int>? listValue,
@@ -44,6 +56,9 @@ mixin _$ModifierEntity {
     Set<int>? setValue,
     Map<String, int>? secondMap,
     BasicEntity? basicEntity,
+    List<int>? defaultNullList,
+    Map<String, int>? defaultNullMap,
+    Set<int>? defaultNullSet,
   }) {
     throw _modifierEntityBypassError;
   }
@@ -57,6 +72,9 @@ class _$_ModifierEntity extends _ModifierEntity {
   static const Map<String, int> $mapValueDefaultValue = {};
   static const Set<int> $setValueDefaultValue = {};
   static const Map<String, int> $secondMapDefaultValue = {};
+  static const List<int>? $defaultNullListDefaultValue = null;
+  static const Map<String, int>? $defaultNullMapDefaultValue = null;
+  static const Set<int>? $defaultNullSetDefaultValue = null;
 
   const _$_ModifierEntity({
     this.intValue = 0,
@@ -65,6 +83,9 @@ class _$_ModifierEntity extends _ModifierEntity {
     this.setValue = $setValueDefaultValue,
     this.secondMap = $secondMapDefaultValue,
     this.basicEntity = const BasicEntity(),
+    this.defaultNullList,
+    this.defaultNullMap,
+    this.defaultNullSet,
   }) : super._();
 
   @override
@@ -79,6 +100,12 @@ class _$_ModifierEntity extends _ModifierEntity {
   final Map<String, int> secondMap;
   @override
   final BasicEntity basicEntity;
+  @override
+  final List<int>? defaultNullList;
+  @override
+  final Map<String, int>? defaultNullMap;
+  @override
+  final Set<int>? defaultNullSet;
 
   @override
   List<Object?> get props => [
@@ -88,6 +115,9 @@ class _$_ModifierEntity extends _ModifierEntity {
         setValue,
         secondMap,
         basicEntity,
+        defaultNullList,
+        defaultNullMap,
+        defaultNullSet,
       ];
 
   @override
@@ -98,6 +128,9 @@ class _$_ModifierEntity extends _ModifierEntity {
     Set<int>? setValue,
     Map<String, int>? secondMap,
     BasicEntity? basicEntity,
+    List<int>? defaultNullList,
+    Map<String, int>? defaultNullMap,
+    Set<int>? defaultNullSet,
   }) {
     return _ModifierEntity(
       intValue: intValue ?? this.intValue,
@@ -106,6 +139,9 @@ class _$_ModifierEntity extends _ModifierEntity {
       setValue: setValue ?? this.setValue,
       secondMap: secondMap ?? this.secondMap,
       basicEntity: basicEntity ?? this.basicEntity,
+      defaultNullList: defaultNullList ?? this.defaultNullList,
+      defaultNullMap: defaultNullMap ?? this.defaultNullMap,
+      defaultNullSet: defaultNullSet ?? this.defaultNullSet,
     );
   }
 
@@ -122,6 +158,9 @@ abstract class _ModifierEntity extends ModifierEntity {
     Set<int> setValue,
     Map<String, int> secondMap,
     BasicEntity basicEntity,
+    List<int>? defaultNullList,
+    Map<String, int>? defaultNullMap,
+    Set<int>? defaultNullSet,
   }) = _$_ModifierEntity;
 
   const _ModifierEntity._() : super._();
@@ -143,6 +182,15 @@ abstract class _ModifierEntity extends ModifierEntity {
 
   @override
   BasicEntity get basicEntity;
+
+  @override
+  List<int>? get defaultNullList;
+
+  @override
+  Map<String, int>? get defaultNullMap;
+
+  @override
+  Set<int>? get defaultNullSet;
 }
 
 /// Looking for your model's code? You can go-to-source of this: [ModifierEntity].
@@ -182,7 +230,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
   @override
   List<int> get listValue {
     final value = _get.listValue;
-    return (value == _$_ModifierEntity.$listValueDefaultValue)
+    return (value == _$_ModifierEntity.$listValueDefaultValue && value != null)
         ? listValue = List.from(value)
         : value;
   }
@@ -193,7 +241,9 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
   @override
   Map<String, int> get mapValue {
     final value = _get.mapValue;
-    return (value == _$_ModifierEntity.$mapValueDefaultValue) ? mapValue = Map.from(value) : value;
+    return (value == _$_ModifierEntity.$mapValueDefaultValue && value != null)
+        ? mapValue = Map.from(value)
+        : value;
   }
 
   @override
@@ -202,7 +252,9 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
   @override
   Set<int> get setValue {
     final value = _get.setValue;
-    return (value == _$_ModifierEntity.$setValueDefaultValue) ? setValue = Set.from(value) : value;
+    return (value == _$_ModifierEntity.$setValueDefaultValue && value != null)
+        ? setValue = Set.from(value)
+        : value;
   }
 
   @override
@@ -211,7 +263,7 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
   @override
   Map<String, int> get secondMap {
     final value = _get.secondMap;
-    return (value == _$_ModifierEntity.$secondMapDefaultValue)
+    return (value == _$_ModifierEntity.$secondMapDefaultValue && value != null)
         ? secondMap = Map.from(value)
         : value;
   }
@@ -230,6 +282,41 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
   set basicEntity(BasicEntity basicEntity) => _set(_get.merge(basicEntity: basicEntity));
 
   @override
+  List<int>? get defaultNullList {
+    final value = _get.defaultNullList;
+    return (value == _$_ModifierEntity.$defaultNullListDefaultValue && value != null)
+        ? defaultNullList = List.from(value)
+        : value;
+  }
+
+  @override
+  set defaultNullList(List<int>? defaultNullList) =>
+      _set(_get.merge(defaultNullList: defaultNullList));
+
+  @override
+  Map<String, int>? get defaultNullMap {
+    final value = _get.defaultNullMap;
+    return (value == _$_ModifierEntity.$defaultNullMapDefaultValue && value != null)
+        ? defaultNullMap = Map.from(value)
+        : value;
+  }
+
+  @override
+  set defaultNullMap(Map<String, int>? defaultNullMap) =>
+      _set(_get.merge(defaultNullMap: defaultNullMap));
+
+  @override
+  Set<int>? get defaultNullSet {
+    final value = _get.defaultNullSet;
+    return (value == _$_ModifierEntity.$defaultNullSetDefaultValue && value != null)
+        ? defaultNullSet = Set.from(value)
+        : value;
+  }
+
+  @override
+  set defaultNullSet(Set<int>? defaultNullSet) => _set(_get.merge(defaultNullSet: defaultNullSet));
+
+  @override
   _ModifierEntity merge({
     int? intValue,
     List<int>? listValue,
@@ -237,6 +324,9 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
     Set<int>? setValue,
     Map<String, int>? secondMap,
     BasicEntity? basicEntity,
+    List<int>? defaultNullList,
+    Map<String, int>? defaultNullMap,
+    Set<int>? defaultNullSet,
   }) {
     if (intValue != null) {
       this.intValue = intValue;
@@ -255,6 +345,15 @@ class $ModifierEntityModifier extends _$_ModifierEntity {
     }
     if (basicEntity != null) {
       this.basicEntity = basicEntity;
+    }
+    if (defaultNullList != null) {
+      this.defaultNullList = defaultNullList;
+    }
+    if (defaultNullMap != null) {
+      this.defaultNullMap = defaultNullMap;
+    }
+    if (defaultNullSet != null) {
+      this.defaultNullSet = defaultNullSet;
     }
     return this;
   }
