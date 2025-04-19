@@ -68,7 +68,7 @@ abstract class _CustomMethodsEntity extends CustomMethodsEntity {
 }
 
 /// Looking for your model's code? You can go-to-source of this: [CustomMethodsEntity].
-$CustomMethodsEntityModifier get customMethodsEntity => $CustomMethodsEntityModifier();
+CustomMethodsEntity get customMethodsEntity => $CustomMethodsEntityModifier();
 
 set customMethodsEntity(CustomMethodsEntity model) => Repository().set(model);
 

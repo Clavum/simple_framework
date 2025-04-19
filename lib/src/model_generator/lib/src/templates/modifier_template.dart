@@ -11,7 +11,7 @@ class ModifierTemplate {
     final String maybeRightBrace = model.parameters.isEmpty ? '' : '}';
     return '''
 /// Looking for your model's code? You can go-to-source of this: [${model.className}].
-${model.modifierClassName} get ${model.camelCaseName} => ${model.modifierClassName}();
+${model.className} get ${model.camelCaseName} => ${model.modifierClassName}();
 
 set ${model.camelCaseName}(${model.className} model) => Repository().set(model);
 

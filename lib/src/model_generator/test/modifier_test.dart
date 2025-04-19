@@ -20,6 +20,16 @@ void main() {
     expect(modifierEntity.intValue, 10);
   });
 
+  // As an example, this property is necessary to be able to use `check`, such as:
+  // `check(modifierEntity).equals(const ModifierEntity())`
+  test('type is equivalent to the base class', () {
+    void Function(T) test<T extends ModifierEntity>(T entity) {
+      return (_) {};
+    }
+
+    test(modifierEntity)(const ModifierEntity());
+  });
+
   test('can set values', () {
     modifierEntity.intValue = 10;
     expect(modifierEntity.intValue, 10);

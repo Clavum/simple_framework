@@ -84,7 +84,7 @@ abstract class _BasicEntity extends BasicEntity {
 }
 
 /// Looking for your model's code? You can go-to-source of this: [BasicEntity].
-$BasicEntityModifier get basicEntity => $BasicEntityModifier();
+BasicEntity get basicEntity => $BasicEntityModifier();
 
 set basicEntity(BasicEntity model) => Repository().set(model);
 

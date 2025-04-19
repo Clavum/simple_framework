@@ -46,7 +46,7 @@ abstract class _EmptyEntity extends EmptyEntity {
 }
 
 /// Looking for your model's code? You can go-to-source of this: [EmptyEntity].
-$EmptyEntityModifier get emptyEntity => $EmptyEntityModifier();
+EmptyEntity get emptyEntity => $EmptyEntityModifier();
 
 set emptyEntity(EmptyEntity model) => Repository().set(model);
 
