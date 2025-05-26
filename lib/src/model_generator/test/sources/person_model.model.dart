@@ -1,5 +1,6 @@
 // ignore_for_file: type=lint
 // coverage:ignore-file
+// dart format off
 
 part of 'person_model.dart';
 

@@ -9,6 +9,7 @@ Builder generateModelBuilder(BuilderOptions options) {
     header: '''
 // ignore_for_file: type=lint
 // coverage:ignore-file
+// dart format off
 ''',
   );
 }
